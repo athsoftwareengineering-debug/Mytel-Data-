@@ -709,7 +709,14 @@
         const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3bnh1enVva3lvbHRkanphc255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NTY1MjEsImV4cCI6MjA5NzUzMjUyMX0.bporyz_B_tDM1SU_QX6xGebXV-voal-zTrNfaLebyf4';
 
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true,
+                detectSessionInUrl: true
+            }
+        });
+
         console.log('✅ Supabase client created');
 
         // ============================================================
@@ -997,7 +1004,51 @@
         }
 
         // ============================================================
-        //  8. 🔐 LOGIN
+        //  8. TEST CONNECTION
+        // ============================================================
+        async function testSupabaseConnection() {
+            try {
+                console.log('🔍 Testing Supabase connection...');
+
+                const { data, error, count } = await supabaseClient
+                    .from('users')
+                    .select('*', { count: 'exact', head: true });
+
+                if (error) {
+                    console.error('❌ Connection test failed:', error);
+
+                    if (error.message.includes('Invalid API key')) {
+                        console.error('🔑 The ANON key is invalid or expired!');
+                        console.log('📝 Solution: Get a new ANON key from:');
+                        console.log('   https://app.supabase.com/project/cwnxuzuokylotdjzasny/settings/api');
+                    } else if (error.message.includes('does not exist')) {
+                        console.log('ℹ️ users table does not exist.');
+                        console.log('📝 Please create it in Supabase SQL Editor:');
+                        console.log(`
+                            CREATE TABLE IF NOT EXISTS users (
+                                id UUID PRIMARY KEY,
+                                phone TEXT UNIQUE NOT NULL,
+                                name TEXT NOT NULL,
+                                password TEXT NOT NULL,
+                                created_at TIMESTAMP DEFAULT NOW()
+                            );
+                            ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+                            CREATE POLICY "Allow all" ON users FOR ALL USING (true) WITH CHECK (true);
+                        `);
+                    } else if (error.message.includes('permission denied')) {
+                        console.log('ℹ️ Permission denied. Check RLS policies.');
+                    }
+                } else {
+                    console.log('✅ Connection test successful!');
+                    console.log('📊 Users count:', count);
+                }
+            } catch (err) {
+                console.error('❌ Connection error:', err);
+            }
+        }
+
+        // ============================================================
+        //  9. 🔐 LOGIN
         // ============================================================
         async function handleLogin(e) {
             e.preventDefault();
@@ -1011,6 +1062,8 @@
             }
 
             try {
+                showMessage('loginMsg', '⏳ ဝင်ရောက်နေပါပြီ...', '');
+
                 var result = await supabaseClient.auth.signInWithPassword({
                     phone: phone,
                     password: password
@@ -1018,7 +1071,17 @@
 
                 if (result.error) {
                     console.error('Login error:', result.error);
-                    showMessage('loginMsg', '❌ ' + t.loginError, 'error');
+
+                    var errorMsg = t.loginError;
+                    if (result.error.message.includes('Invalid login credentials')) {
+                        errorMsg = '❌ ဖုန်းနံပါတ် သို့မဟုတ် စကားဝှက် မှားနေပါတယ်';
+                    } else if (result.error.message.includes('Invalid API key')) {
+                        errorMsg = '❌ API Key မှားနေပါတယ်။ Anon Key အသစ်ယူပါ။';
+                    } else if (result.error.message.includes('rate limit')) {
+                        errorMsg = '❌ အကြိမ်ကန့်သတ်ချက်ကျော်လွန်နေပါပြီ။ ခဏစောင့်ပါ';
+                    }
+
+                    showMessage('loginMsg', errorMsg, 'error');
                     return;
                 }
 
@@ -1035,7 +1098,7 @@
         }
 
         // ============================================================
-        //  9. 📝 REGISTER
+        //  10. 📝 REGISTER
         // ============================================================
         async function handleRegister(e) {
             e.preventDefault();
@@ -1060,6 +1123,8 @@
             }
 
             try {
+                showMessage('regMsg', '⏳ မှတ်ပုံတင်နေပါပြီ...', '');
+
                 var result = await supabaseClient.auth.signUp({
                     phone: phone,
                     password: password,
@@ -1073,11 +1138,17 @@
 
                 if (result.error) {
                     console.error('Registration error:', result.error);
+
+                    var errorMsg = result.error.message;
                     if (result.error.message.includes('already registered')) {
-                        showMessage('regMsg', '❌ ' + t.duplicatePhone, 'error');
-                    } else {
-                        showMessage('regMsg', '❌ ' + result.error.message, 'error');
+                        errorMsg = '❌ ' + t.duplicatePhone;
+                    } else if (result.error.message.includes('Invalid API key')) {
+                        errorMsg = '❌ API Key မှားနေပါတယ်။ Anon Key အသစ်ယူပါ။';
+                    } else if (result.error.message.includes('rate limit')) {
+                        errorMsg = '❌ အကြိမ်ကန့်သတ်ချက်ကျော်လွန်နေပါပြီ။ ခဏစောင့်ပါ';
                     }
+
+                    showMessage('regMsg', errorMsg, 'error');
                     return;
                 }
 
@@ -1095,6 +1166,8 @@
 
                         if (insertError) {
                             console.warn('Could not save to users table:', insertError);
+                        } else {
+                            console.log('✅ User saved to users table');
                         }
                     } catch (dbError) {
                         console.warn('Database operation skipped:', dbError);
@@ -1118,7 +1191,7 @@
         }
 
         // ============================================================
-        //  10. DOM READY - ✅ All functions are defined before this
+        //  11. DOM READY
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             var modal = document.getElementById('videoModal');
@@ -1131,6 +1204,8 @@
             switchLanguage('my');
             console.log('✅ Language set to Myanmar');
             console.log('✅ All functions loaded successfully');
+
+            setTimeout(testSupabaseConnection, 2000);
         });
     </script>
 
