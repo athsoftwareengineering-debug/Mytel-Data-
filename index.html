@@ -585,17 +585,17 @@
                 <span class="arrow" id="dropdownArrow">▼</span>
             </button>
             <div class="dropdown-menu" id="langMenu">
-                <button onclick="switchLanguage('my', this)" class="active-lang">
+                <button onclick="switchLanguage('my')" class="active-lang">
                     <span class="flag">🇲🇲</span>
                     <span class="lang-name">မြန်မာ</span>
                     <span class="check"><i class="fas fa-check"></i></span>
                 </button>
-                <button onclick="switchLanguage('en', this)">
+                <button onclick="switchLanguage('en')">
                     <span class="flag">🇬🇧</span>
                     <span class="lang-name">English</span>
                     <span class="check"><i class="fas fa-check"></i></span>
                 </button>
-                <button onclick="switchLanguage('zh', this)">
+                <button onclick="switchLanguage('zh')">
                     <span class="flag">🇨🇳</span>
                     <span class="lang-name">中文</span>
                     <span class="check"><i class="fas fa-check"></i></span>
@@ -861,44 +861,55 @@
         // ============================================================
         //  SWITCH LANGUAGE (ပြင်ဆင်ပြီး)
         // ============================================================
-        function switchLanguage(langCode, btn) {
+        function switchLanguage(langCode) {
             currentLang = langCode;
             const t = lang[langCode];
 
+            // Dropdown ကိုပိတ်မယ်
             document.getElementById('langMenu').classList.remove('show');
             document.getElementById('dropdownArrow').classList.remove('open');
 
-            document.querySelectorAll('#langMenu button').forEach(b => b.classList.remove('active-lang'));
-            if (btn) btn.classList.add('active-lang');
+            // Dropdown ထဲက active state ပြောင်းမယ်
+            document.querySelectorAll('#langMenu button').forEach(b => {
+                b.classList.remove('active-lang');
+            });
+            document.querySelectorAll('#langMenu button').forEach(b => {
+                if (b.querySelector('.lang-name').textContent === t.label ||
+                    b.querySelector('.lang-name').textContent === t.label) {
+                    b.classList.add('active-lang');
+                }
+            });
 
+            // ခေါင်းစဉ်ပြောင်းမယ်
             document.getElementById('currentLangLabel').textContent = t.label;
 
+            // ---- စာသားအကုန်ပြောင်းမယ် ----
             document.getElementById('tabLogin').textContent = t.tabLogin;
             document.getElementById('tabRegister').textContent = t.tabRegister;
 
             document.getElementById('labelLoginPhone').innerHTML =
-            `<i class="fas fa-phone"></i> ${t.labelLoginPhone}`;
+                `<i class="fas fa-phone"></i> ${t.labelLoginPhone}`;
             document.getElementById('labelLoginPass').innerHTML =
-            `<i class="fas fa-lock"></i> ${t.labelLoginPass}`;
+                `<i class="fas fa-lock"></i> ${t.labelLoginPass}`;
             document.getElementById('labelRememberMe').textContent = t.labelRememberMe;
             document.querySelector('#btnLogin span').textContent = t.btnLogin;
 
             document.getElementById('labelRegPhone').innerHTML =
-            `<i class="fas fa-phone"></i> ${t.labelRegPhone}`;
+                `<i class="fas fa-phone"></i> ${t.labelRegPhone}`;
             document.getElementById('labelRegName').innerHTML =
-            `<i class="fas fa-user"></i> ${t.labelRegName}`;
+                `<i class="fas fa-user"></i> ${t.labelRegName}`;
             document.getElementById('labelRegPass').innerHTML =
-            `<i class="fas fa-lock"></i> ${t.labelRegPass}`;
+                `<i class="fas fa-lock"></i> ${t.labelRegPass}`;
             document.getElementById('hintPhone').innerHTML =
-            `<i class="fas fa-info-circle"></i> ${t.hintPhone}`;
+                `<i class="fas fa-info-circle"></i> ${t.hintPhone}`;
             document.getElementById('hintPass').innerHTML =
-            `<i class="fas fa-info-circle"></i> ${t.hintPass}`;
+                `<i class="fas fa-info-circle"></i> ${t.hintPass}`;
             document.querySelector('#btnRegister span').textContent = t.btnRegister;
 
             document.getElementById('footerText').innerHTML =
                 `<i class="fas fa-shield-alt"></i> <span>${t.footer}</span><span class="footer-brand">${t.copyright}</span>`;
             document.getElementById('videoTitle').innerHTML =
-            `<i class="fas fa-play-circle"></i> ${t.videoTitle}`;
+                `<i class="fas fa-play-circle"></i> ${t.videoTitle}`;
             document.querySelector('#videoFooter span').textContent = t.videoFooter;
 
             document.getElementById('loginPhone').placeholder = '09xxxxxxxxx';
