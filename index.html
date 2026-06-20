@@ -6,9 +6,8 @@
     <title>ATH DIGITAL HUB - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ခင်ဗျားရဲ့ CSS အားလုံးကို ဒီမှာထည့်ပါ */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
@@ -23,6 +22,21 @@
             justify-content: center;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(72, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 200, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
@@ -30,10 +44,13 @@
             max-width: 440px;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 32px;
             padding: 40px 32px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
             animation: fadeInUp 0.6s ease-out;
         }
 
@@ -48,7 +65,37 @@
             }
         }
 
-        /* Language Dropdown */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
         .lang-dropdown {
             position: absolute;
             top: 20px;
@@ -73,6 +120,20 @@
 
         .lang-selector:hover {
             background: rgba(255, 255, 255, 0.15);
+        }
+
+        .lang-selector i {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .lang-selector .arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .lang-selector .arrow.open {
+            transform: rotate(180deg);
         }
 
         .lang-menu {
@@ -114,44 +175,26 @@
             color: white;
         }
 
+        .lang-menu button .lang-flag {
+            font-size: 18px;
+        }
+
+        .lang-menu button .lang-name {
+            flex: 1;
+            text-align: left;
+        }
+
         .lang-menu button.active-lang {
             background: rgba(0, 210, 255, 0.15);
             color: #00d2ff;
         }
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
+        .lang-menu button.active-lang::after {
+            content: ' ✓';
+            color: #00d2ff;
+            font-weight: 700;
         }
 
-        .logo {
-            font-size: 32px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .logo i {
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 28px;
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 4px;
@@ -181,7 +224,10 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* Forms */
+        .tabs button:hover:not(.active) {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
         .form {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -313,6 +359,10 @@
             box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
         }
 
+        .btn:active {
+            transform: translateY(0);
+        }
+
         .btn i {
             margin-right: 8px;
         }
@@ -326,7 +376,6 @@
             box-shadow: 0 8px 25px rgba(255, 255, 255, 0.05);
         }
 
-        /* Message */
         .message {
             margin-top: 16px;
             padding: 12px 16px;
@@ -352,7 +401,6 @@
             color: #ff4070;
         }
 
-        /* Footer */
         .footer {
             margin-top: 28px;
             padding-top: 20px;
@@ -377,7 +425,6 @@
             font-size: 13px;
         }
 
-        /* Video Modal */
         .video-modal {
             position: fixed;
             top: 0;
@@ -404,7 +451,6 @@
             border-radius: 24px;
             padding: 24px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
         }
 
         .video-modal .video-header {
@@ -496,11 +542,28 @@
                 padding: 16px;
             }
         }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
     </style>
 </head>
 <body>
 
-    <div class="container" style="position:relative;">
+    <div class="container">
         <!-- Language Dropdown -->
         <div class="lang-dropdown">
             <div class="lang-selector" onclick="toggleDropdown(event)">
@@ -637,15 +700,15 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     <script>
         // ============================================================
-        //  🔐 SUPABASE CONFIG - ANON KEY (လုံခြုံပါတယ်)
+        //  SUPABASE CONFIG
         // ============================================================
         const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3bnh1enVva3lvbHRkanphc255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NTY1MjEsImV4cCI6MjA5NzUzMjUyMX0.bporyz_B_tDM1SU_QX6xGebXV-voal-zTrNfaLebyf4';
 
-        // ✅ ANON Key ကို လုံခြုံစွာ သုံးပါ
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ============================================================
@@ -767,10 +830,15 @@
             event.stopPropagation();
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
-            if (menu) menu.classList.toggle('show');
-            if (arrow) arrow.classList.toggle('open');
+            if (menu) {
+                menu.classList.toggle('show');
+            }
+            if (arrow) {
+                arrow.classList.toggle('open');
+            }
         }
 
+        // Click outside to close dropdown
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
@@ -782,80 +850,94 @@
         });
 
         // ============================================================
-        //  SWITCH LANGUAGE
+        //  SWITCH LANGUAGE - FIXED!
         // ============================================================
         function switchLanguage(langCode) {
             currentLang = langCode;
             const t = lang[langCode];
 
+            // Close dropdown
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
             if (menu) menu.classList.remove('show');
             if (arrow) arrow.classList.remove('open');
 
-            document.querySelectorAll('#langMenu button').forEach(b => {
+            // Update active language in dropdown
+            document.querySelectorAll('#langMenu button').forEach(function(b) {
                 b.classList.remove('active-lang');
             });
-            document.querySelectorAll('#langMenu button').forEach(b => {
+            document.querySelectorAll('#langMenu button').forEach(function(b) {
                 const nameEl = b.querySelector('.lang-name');
                 if (nameEl && nameEl.textContent === t.label) {
                     b.classList.add('active-lang');
                 }
             });
 
+            // Update current language label
             const labelEl = document.getElementById('currentLangLabel');
             if (labelEl) labelEl.textContent = t.label;
 
+            // Update tab buttons
             const tabLogin = document.getElementById('tabLogin');
             const tabRegister = document.getElementById('tabRegister');
             if (tabLogin) tabLogin.textContent = t.tabLogin;
             if (tabRegister) tabRegister.textContent = t.tabRegister;
 
+            // Update login form labels
             const labelLoginPhone = document.getElementById('labelLoginPhone');
             const labelLoginPass = document.getElementById('labelLoginPass');
             const labelRememberMe = document.getElementById('labelRememberMe');
             const btnLoginSpan = document.querySelector('#btnLogin span');
-            if (labelLoginPhone) labelLoginPhone.innerHTML = `<i class="fas fa-phone"></i> ${t.labelLoginPhone}`;
-            if (labelLoginPass) labelLoginPass.innerHTML = `<i class="fas fa-lock"></i> ${t.labelLoginPass}`;
+
+            if (labelLoginPhone) labelLoginPhone.innerHTML = '<i class="fas fa-phone"></i> ' + t.labelLoginPhone;
+            if (labelLoginPass) labelLoginPass.innerHTML = '<i class="fas fa-lock"></i> ' + t.labelLoginPass;
             if (labelRememberMe) labelRememberMe.textContent = t.labelRememberMe;
             if (btnLoginSpan) btnLoginSpan.textContent = t.btnLogin;
 
+            // Update register form labels
             const labelRegPhone = document.getElementById('labelRegPhone');
             const labelRegName = document.getElementById('labelRegName');
             const labelRegPass = document.getElementById('labelRegPass');
             const hintPhone = document.getElementById('hintPhone');
             const hintPass = document.getElementById('hintPass');
             const btnRegisterSpan = document.querySelector('#btnRegister span');
-            if (labelRegPhone) labelRegPhone.innerHTML = `<i class="fas fa-phone"></i> ${t.labelRegPhone}`;
-            if (labelRegName) labelRegName.innerHTML = `<i class="fas fa-user"></i> ${t.labelRegName}`;
-            if (labelRegPass) labelRegPass.innerHTML = `<i class="fas fa-lock"></i> ${t.labelRegPass}`;
-            if (hintPhone) hintPhone.innerHTML = `<i class="fas fa-info-circle"></i> ${t.hintPhone}`;
-            if (hintPass) hintPass.innerHTML = `<i class="fas fa-info-circle"></i> ${t.hintPass}`;
+
+            if (labelRegPhone) labelRegPhone.innerHTML = '<i class="fas fa-phone"></i> ' + t.labelRegPhone;
+            if (labelRegName) labelRegName.innerHTML = '<i class="fas fa-user"></i> ' + t.labelRegName;
+            if (labelRegPass) labelRegPass.innerHTML = '<i class="fas fa-lock"></i> ' + t.labelRegPass;
+            if (hintPhone) hintPhone.innerHTML = '<i class="fas fa-info-circle"></i> ' + t.hintPhone;
+            if (hintPass) hintPass.innerHTML = '<i class="fas fa-info-circle"></i> ' + t.hintPass;
             if (btnRegisterSpan) btnRegisterSpan.textContent = t.btnRegister;
 
+            // Update footer
             const footerText = document.getElementById('footerText');
             if (footerText) {
                 footerText.innerHTML =
-                    `<i class="fas fa-shield-alt"></i> <span>${t.footer}</span><span class="footer-brand">${t.copyright}</span>`;
+                    '<i class="fas fa-shield-alt"></i> <span>' + t.footer + '</span><span class="footer-brand">' + t
+                    .copyright + '</span>';
             }
 
+            // Update video modal
             const videoTitle = document.getElementById('videoTitle');
             const videoFooterSpan = document.querySelector('#videoFooter span');
-            if (videoTitle) videoTitle.innerHTML = `<i class="fas fa-play-circle"></i> ${t.videoTitle}`;
+            if (videoTitle) videoTitle.innerHTML = '<i class="fas fa-play-circle"></i> ' + t.videoTitle;
             if (videoFooterSpan) videoFooterSpan.textContent = t.videoFooter;
 
+            // Update placeholders
             const loginPhone = document.getElementById('loginPhone');
             const loginPass = document.getElementById('loginPass');
             const regPhone = document.getElementById('regPhone');
             const regName = document.getElementById('regName');
             const regPass = document.getElementById('regPass');
+
             if (loginPhone) loginPhone.placeholder = '09xxxxxxxxx';
             if (loginPass) loginPass.placeholder = '••••••••';
             if (regPhone) regPhone.placeholder = '09xxxxxxxxx';
             if (regName) regName.placeholder = t.namePlaceholder;
             if (regPass) regPass.placeholder = t.passPlaceholder;
 
-            document.querySelectorAll('.message').forEach(msg => {
+            // Clear messages
+            document.querySelectorAll('.message').forEach(function(msg) {
                 msg.classList.remove('show', 'success', 'error');
                 msg.textContent = '';
             });
@@ -865,18 +947,20 @@
         //  FORM FUNCTIONS
         // ============================================================
         function isValidMyanmarPhone(phone) {
-            const cleaned = phone.replace(/\s/g, '');
+            var cleaned = phone.replace(/\s/g, '');
             return /^09\d{9}$/.test(cleaned);
         }
 
         function showForm(type) {
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            const tabButtons = document.querySelectorAll('.tabs button');
+            var loginForm = document.getElementById('loginForm');
+            var registerForm = document.getElementById('registerForm');
+            var tabButtons = document.querySelectorAll('.tabs button');
 
             if (loginForm) loginForm.classList.remove('active');
             if (registerForm) registerForm.classList.remove('active');
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabButtons.forEach(function(btn) {
+                btn.classList.remove('active');
+            });
 
             if (type === 'login') {
                 if (loginForm) loginForm.classList.add('active');
@@ -886,14 +970,14 @@
                 if (tabButtons[1]) tabButtons[1].classList.add('active');
             }
 
-            document.querySelectorAll('.message').forEach(msg => {
+            document.querySelectorAll('.message').forEach(function(msg) {
                 msg.classList.remove('show', 'success', 'error');
                 msg.textContent = '';
             });
         }
 
         function showMessage(elementId, text, type) {
-            const el = document.getElementById(elementId);
+            var el = document.getElementById(elementId);
             if (el) {
                 el.textContent = text;
                 el.className = 'message show ' + type;
@@ -904,41 +988,43 @@
         //  VIDEO FUNCTIONS
         // ============================================================
         function openVideo() {
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('introVideo');
+            var modal = document.getElementById('videoModal');
+            var video = document.getElementById('introVideo');
             if (modal) modal.classList.add('show');
             if (video) {
                 video.currentTime = 0;
-                video.play().catch(err => console.log('Auto-play blocked:', err));
+                video.play().catch(function(err) {
+                    console.log('Auto-play blocked:', err);
+                });
             }
         }
 
         function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const video = document.getElementById('introVideo');
+            var modal = document.getElementById('videoModal');
+            var video = document.getElementById('introVideo');
             if (video) video.pause();
             if (modal) modal.classList.remove('show');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('videoModal');
+            var modal = document.getElementById('videoModal');
             if (modal) {
                 modal.addEventListener('click', function(e) {
                     if (e.target === this) closeVideo();
                 });
             }
-            // Set default language
+            // Set default language to Myanmar
             switchLanguage('my');
         });
 
         // ============================================================
-        //  🔐 LOGIN - Supabase Auth API (လုံခြုံ)
+        //  LOGIN
         // ============================================================
         async function handleLogin(e) {
             e.preventDefault();
-            const t = lang[currentLang];
-            const phone = document.getElementById('loginPhone').value.trim();
-            const password = document.getElementById('loginPass').value;
+            var t = lang[currentLang];
+            var phone = document.getElementById('loginPhone').value.trim();
+            var password = document.getElementById('loginPass').value;
 
             if (!isValidMyanmarPhone(phone)) {
                 showMessage('loginMsg', '❌ ' + t.phoneError, 'error');
@@ -946,19 +1032,18 @@
             }
 
             try {
-                // ✅ Supabase Auth API ကိုသုံးပါ
-                const { data, error } = await supabase.auth.signInWithPassword({
+                var result = await supabase.auth.signInWithPassword({
                     phone: phone,
                     password: password
                 });
 
-                if (error) {
-                    console.error('Login error:', error);
+                if (result.error) {
+                    console.error('Login error:', result.error);
                     showMessage('loginMsg', '❌ ' + t.loginError, 'error');
                     return;
                 }
 
-                if (data.user) {
+                if (result.data.user) {
                     showMessage('loginMsg', '✅ ' + t.loginSuccess, 'success');
                     setTimeout(openVideo, 800);
                 } else {
@@ -971,14 +1056,14 @@
         }
 
         // ============================================================
-        //  📝 REGISTER - Supabase Auth API (လုံခြုံ)
+        //  REGISTER
         // ============================================================
         async function handleRegister(e) {
             e.preventDefault();
-            const t = lang[currentLang];
-            const phone = document.getElementById('regPhone').value.trim();
-            const name = document.getElementById('regName').value.trim();
-            const password = document.getElementById('regPass').value;
+            var t = lang[currentLang];
+            var phone = document.getElementById('regPhone').value.trim();
+            var name = document.getElementById('regName').value.trim();
+            var password = document.getElementById('regPass').value;
 
             if (!isValidMyanmarPhone(phone)) {
                 showMessage('regMsg', '❌ ' + t.regPhoneError, 'error');
@@ -996,8 +1081,7 @@
             }
 
             try {
-                // ✅ Supabase Auth API ကိုသုံးပါ
-                const { data, error } = await supabase.auth.signUp({
+                var result = await supabase.auth.signUp({
                     phone: phone,
                     password: password,
                     options: {
@@ -1008,30 +1092,30 @@
                     }
                 });
 
-                if (error) {
-                    console.error('Registration error:', error);
-                    if (error.message.includes('already registered')) {
+                if (result.error) {
+                    console.error('Registration error:', result.error);
+                    if (result.error.message.includes('already registered')) {
                         showMessage('regMsg', '❌ ' + t.duplicatePhone, 'error');
                     } else {
-                        showMessage('regMsg', '❌ ' + error.message, 'error');
+                        showMessage('regMsg', '❌ ' + result.error.message, 'error');
                     }
                     return;
                 }
 
-                if (data.user) {
-                    // Optional: users table မှာသိမ်းချင်ရင်
+                if (result.data.user) {
+                    // Save to users table (optional)
                     try {
                         await supabase
                             .from('users')
                             .insert([{
-                                id: data.user.id,
+                                id: result.data.user.id,
                                 phone: phone,
                                 name: name,
                                 password: password,
                                 created_at: new Date().toISOString()
                             }]);
                     } catch (dbError) {
-                        console.warn('Users table မှာသိမ်းမရဘူး:', dbError);
+                        console.warn('Could not save to users table:', dbError);
                     }
 
                     showMessage('regMsg', '✅ ' + t.regSuccess, 'success');
@@ -1040,7 +1124,7 @@
                     document.getElementById('regName').value = '';
                     document.getElementById('regPass').value = '';
 
-                    setTimeout(() => {
+                    setTimeout(function() {
                         showForm('login');
                     }, 2000);
                 }
