@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATH DIGITAL HUB - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -723,17 +721,16 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     <script>
         // ============================================================
-        //  SUPABASE CONFIG - FIXED: Don't redeclare, use existing global
+        //  SUPABASE CONFIG - FIXED: Proper initialization
         // ============================================================
         const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_SQLVLvSCAWTNzw-oB4PXKQ_JtZ92xiQ';
 
-        // Use the existing global supabase object instead of redeclaring
-        // The script tag loads supabase globally, so we just use it directly
-        // No need for: const supabase = supabase.createClient(...)
-        // Instead, call it on the existing global object
+        // Create the Supabase client properly
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ============================================================
@@ -782,7 +779,8 @@
                 regPassError: "လျှို့ဝှက်နံပါတ် အနည်းဆုံး ၆ လုံးထည့်ပါ",
                 regNameError: "နာမည် အနည်းဆုံး ၂ လုံးထည့်ပါ",
                 namePlaceholder: "သင့်နာမည်",
-                passPlaceholder: "အနည်းဆုံး ၆ လုံး"
+                passPlaceholder: "အနည်းဆုံး ၆ လုံး",
+                duplicatePhone: "ဖုန်းနံပါတ် ရှိပြီးသားပါ"
             },
             en: {
                 label: "English",
@@ -810,7 +808,8 @@
                 regPassError: "Password must be at least 6 characters",
                 regNameError: "Name must be at least 2 characters",
                 namePlaceholder: "Your name",
-                passPlaceholder: "Min 6 chars"
+                passPlaceholder: "Min 6 chars",
+                duplicatePhone: "Phone number already exists"
             },
             zh: {
                 label: "中文",
@@ -838,7 +837,8 @@
                 regPassError: "密码至少6个字符",
                 regNameError: "姓名至少2个字符",
                 namePlaceholder: "您的姓名",
-                passPlaceholder: "至少6个字符"
+                passPlaceholder: "至少6个字符",
+                duplicatePhone: "手机号码已存在"
             }
         };
 
@@ -872,19 +872,17 @@
         });
 
         // ============================================================
-        //  SWITCH LANGUAGE (ပြင်ဆင်ပြီး)
+        //  SWITCH LANGUAGE
         // ============================================================
         function switchLanguage(langCode) {
             currentLang = langCode;
             const t = lang[langCode];
 
-            // Dropdown ကိုပိတ်မယ်
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
             if (menu) menu.classList.remove('show');
             if (arrow) arrow.classList.remove('open');
 
-            // Dropdown ထဲက active state ပြောင်းမယ်
             document.querySelectorAll('#langMenu button').forEach(b => {
                 b.classList.remove('active-lang');
             });
@@ -895,11 +893,9 @@
                 }
             });
 
-            // ခေါင်းစဉ်ပြောင်းမယ်
             const labelEl = document.getElementById('currentLangLabel');
             if (labelEl) labelEl.textContent = t.label;
 
-            // ---- စာသားအကုန်ပြောင်းမယ် ----
             const tabLogin = document.getElementById('tabLogin');
             const tabRegister = document.getElementById('tabRegister');
             if (tabLogin) tabLogin.textContent = t.tabLogin;
@@ -1014,7 +1010,6 @@
             if (modal) modal.classList.remove('show');
         }
 
-        // Close video modal when clicking overlay
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('videoModal');
             if (modal) {
@@ -1039,13 +1034,20 @@
             }
 
             try {
+                // First check if user exists
                 const { data, error } = await supabaseClient
                     .from('users')
                     .select('id, name, password')
                     .eq('phone', phone)
-                    .single();
+                    .maybeSingle();
 
-                if (error || !data) {
+                if (error) {
+                    console.error('Login error:', error);
+                    showMessage('loginMsg', '❌ ' + t.loginError, 'error');
+                    return;
+                }
+
+                if (!data) {
                     showMessage('loginMsg', '❌ ' + t.loginError, 'error');
                     return;
                 }
@@ -1057,7 +1059,8 @@
                     showMessage('loginMsg', '❌ ' + t.loginError, 'error');
                 }
             } catch (err) {
-                showMessage('loginMsg', '❌ Server error', 'error');
+                console.error('Login exception:', err);
+                showMessage('loginMsg', '❌ Server error: ' + err.message, 'error');
             }
         }
 
@@ -1089,11 +1092,17 @@
             try {
                 const { data, error } = await supabaseClient
                     .from('users')
-                    .insert([{ phone: phone, name: name, password: password }]);
+                    .insert([{ 
+                        phone: phone, 
+                        name: name, 
+                        password: password 
+                    }])
+                    .select();
 
                 if (error) {
+                    console.error('Registration error:', error);
                     if (error.code === '23505') {
-                        showMessage('regMsg', '❌ ဖုန်းနံပါတ် ရှိပြီးသားပါ', 'error');
+                        showMessage('regMsg', '❌ ' + t.duplicatePhone, 'error');
                     } else {
                         showMessage('regMsg', '❌ ' + error.message, 'error');
                     }
@@ -1101,8 +1110,20 @@
                 }
 
                 showMessage('regMsg', '✅ ' + t.regSuccess, 'success');
+                
+                // Clear form
+                document.getElementById('regPhone').value = '';
+                document.getElementById('regName').value = '';
+                document.getElementById('regPass').value = '';
+                
+                // Switch to login after 2 seconds
+                setTimeout(() => {
+                    showForm('login');
+                }, 2000);
+                
             } catch (err) {
-                showMessage('regMsg', '❌ Server error', 'error');
+                console.error('Registration exception:', err);
+                showMessage('regMsg', '❌ Server error: ' + err.message, 'error');
             }
         }
     </script>
