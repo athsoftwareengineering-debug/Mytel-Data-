@@ -228,6 +228,24 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
+        /* Divider for social login */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 13px;
+            gap: 16px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         .form {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -345,35 +363,57 @@
             padding: 16px;
             border: none;
             border-radius: 14px;
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-            color: white;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
         }
 
         .btn:active {
             transform: translateY(0);
         }
 
-        .btn i {
-            margin-right: 8px;
+        .btn-primary {
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
         }
 
         .btn-register {
             background: rgba(255, 255, 255, 0.08);
+            color: white;
         }
 
         .btn-register:hover {
             background: rgba(255, 255, 255, 0.15);
             box-shadow: 0 8px 25px rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-google {
+            background: #ffffff;
+            color: #333;
+        }
+
+        .btn-google:hover {
+            background: #f1f3f4;
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-google i {
+            color: #ea4335;
+            font-size: 20px;
         }
 
         .message {
@@ -606,14 +646,14 @@
         <div class="form active" id="loginForm">
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label id="labelLoginPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
+                    <label id="labelLoginEmail"><i class="fas fa-envelope"></i> အီးမေးလ်</label>
                     <div class="input-wrapper">
-                        <input type="tel" id="loginPhone" placeholder="09xxxxxxxxx" required>
+                        <input type="email" id="loginEmail" placeholder="you@example.com" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label id="labelLoginPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
+                    <label id="labelLoginPass"><i class="fas fa-lock"></i> စကားဝှက်</label>
                     <div class="input-wrapper">
                         <input type="password" id="loginPass" placeholder="••••••••" required>
                         <button type="button" class="toggle-password" onclick="togglePassword('loginPass', this)">
@@ -627,11 +667,20 @@
                     <label for="rememberMe" id="labelRememberMe">မှတ်ထားမည်</label>
                 </div>
 
-                <button type="submit" class="btn" id="btnLogin">
+                <button type="submit" class="btn btn-primary" id="btnLogin">
                     <i class="fas fa-sign-in-alt"></i>
                     <span>ဝင်မည်</span>
                 </button>
             </form>
+
+            <!-- Divider -->
+            <div class="divider">သို့မဟုတ်</div>
+
+            <!-- Google Login Button -->
+            <button onclick="signInWithGoogle()" class="btn btn-google">
+                <i class="fab fa-google"></i> Google ဖြင့် ဝင်မည်
+            </button>
+
             <div class="message" id="loginMsg"></div>
         </div>
 
@@ -639,11 +688,10 @@
         <div class="form" id="registerForm">
             <form onsubmit="handleRegister(event)">
                 <div class="form-group">
-                    <label id="labelRegPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
+                    <label id="labelRegEmail"><i class="fas fa-envelope"></i> အီးမေးလ်</label>
                     <div class="input-wrapper">
-                        <input type="tel" id="regPhone" placeholder="09xxxxxxxxx" required>
+                        <input type="email" id="regEmail" placeholder="you@example.com" required>
                     </div>
-                    <div class="hint" id="hintPhone"><i class="fas fa-info-circle"></i> 09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး</div>
                 </div>
 
                 <div class="form-group">
@@ -654,7 +702,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label id="labelRegPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
+                    <label id="labelRegPass"><i class="fas fa-lock"></i> စကားဝှက်</label>
                     <div class="input-wrapper">
                         <input type="password" id="regPass" placeholder="အနည်းဆုံး ၆ လုံး" required>
                         <button type="button" class="toggle-password" onclick="togglePassword('regPass', this)">
@@ -704,7 +752,7 @@
     </script>
     <script>
         // ============================================================
-        //  1. SUPABASE CONFIG - ✅ FIXED WITH NEW PROJECT
+        //  1. SUPABASE CONFIG
         // ============================================================
         const SUPABASE_URL = 'https://zyccyxsklbccwexrzefr.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5Y2N5eHNrbGJjY3dleHJ6ZWZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NjAyMzAsImV4cCI6MjA5NzUzNjIzMH0.nOPiDG9kgz5U06IJSkGvZdEjhf_VjXmbLjbCMs33WQ4';
@@ -718,10 +766,64 @@
         });
 
         console.log('✅ Supabase client created');
-        console.log('📁 Project URL:', SUPABASE_URL);
 
         // ============================================================
-        //  2. TOGGLE PASSWORD
+        //  2. GOOGLE LOGIN - ✅ NEW
+        // ============================================================
+        async function signInWithGoogle() {
+            try {
+                showMessage('loginMsg', '⏳ Google သို့ ပြန်ညွှန်းနေပါပြီ...', '');
+
+                const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent',
+                        }
+                    }
+                });
+
+                if (error) {
+                    console.error('Google login error:', error);
+                    showMessage('loginMsg', '❌ Google login မအောင်မြင်ပါ: ' + error.message, 'error');
+                    return;
+                }
+
+                // OAuth will redirect automatically
+                console.log('✅ Redirecting to Google...');
+            } catch (err) {
+                console.error('Google login exception:', err);
+                showMessage('loginMsg', '❌ Server error: ' + err.message, 'error');
+            }
+        }
+
+        // ============================================================
+        //  3. HANDLE OAUTH CALLBACK (When user returns from Google)
+        // ============================================================
+        async function handleOAuthCallback() {
+            try {
+                // Get the session after OAuth callback
+                const { data, error } = await supabaseClient.auth.getSession();
+
+                if (error) {
+                    console.error('OAuth callback error:', error);
+                    return;
+                }
+
+                if (data.session) {
+                    console.log('✅ OAuth login successful!', data.session.user);
+                    showMessage('loginMsg', '✅ Google ဖြင့် အောင်မြင်စွာ ဝင်ရောက်ပြီးပါပြီ', 'success');
+                    setTimeout(openVideo, 800);
+                }
+            } catch (err) {
+                console.error('OAuth callback exception:', err);
+            }
+        }
+
+        // ============================================================
+        //  4. TOGGLE PASSWORD
         // ============================================================
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -737,20 +839,20 @@
         }
 
         // ============================================================
-        //  3. LANGUAGE DATA
+        //  5. LANGUAGE DATA
         // ============================================================
         const lang = {
             my: {
                 label: "မြန်မာ",
                 tabLogin: "ဝင်မည်",
                 tabRegister: "မှတ်ပုံတင်မည်",
-                labelLoginPhone: "ဖုန်းနံပါတ်",
-                labelLoginPass: "လျှို့ဝှက်နံပါတ်",
+                labelLoginEmail: "အီးမေးလ်",
+                labelLoginPass: "စကားဝှက်",
                 labelRememberMe: "မှတ်ထားမည်",
                 btnLogin: "ဝင်မည်",
-                labelRegPhone: "ဖုန်းနံပါတ်",
+                labelRegEmail: "အီးမေးလ်",
                 labelRegName: "နာမည်",
-                labelRegPass: "လျှို့ဝှက်နံပါတ်",
+                labelRegPass: "စကားဝှက်",
                 hintPhone: "09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး",
                 hintPass: "အနည်းဆုံး ၆ လုံးထည့်ပါ",
                 btnRegister: "မှတ်ပုံတင်မည်",
@@ -759,25 +861,25 @@
                 videoTitle: "ကြိုဆိုပါတယ်!",
                 videoFooter: "အကောင့်ဝင်ခြင်း အောင်မြင်ပါပြီ။ ခံစားလိုက်ပါ။",
                 loginSuccess: "အောင်မြင်ပါတယ်",
-                loginError: "ဖုန်းနံပါတ် သို့မဟုတ် လျှို့ဝှက်နံပါတ် မှားနေတယ်",
-                phoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09xxxxxxxxx ပုံစံထည့်ပါ",
-                regSuccess: "အကောင့် အောင်မြင်စွာ ဖွင့်ပြီးပါပြီ",
-                regPhoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09 နဲ့စပြီး ၁၁ လုံးထည့်ပါ",
-                regPassError: "လျှို့ဝှက်နံပါတ် အနည်းဆုံး ၆ လုံးထည့်ပါ",
+                loginError: "အီးမေးလ် သို့မဟုတ် စကားဝှက် မှားနေတယ်",
+                emailError: "မှန်ကန်တဲ့ အီးမေးလ် ထည့်ပါ",
+                regSuccess: "အကောင့် အောင်မြင်စွာ ဖွင့်ပြီးပါပြီ။ သင့်အီးမေးလ်ကို အတည်ပြုပါ။",
+                regEmailError: "မှန်ကန်တဲ့ အီးမေးလ် ထည့်ပါ",
+                regPassError: "စကားဝှက် အနည်းဆုံး ၆ လုံးထည့်ပါ",
                 regNameError: "နာမည် အနည်းဆုံး ၂ လုံးထည့်ပါ",
                 namePlaceholder: "သင့်နာမည်",
                 passPlaceholder: "အနည်းဆုံး ၆ လုံး",
-                duplicatePhone: "ဖုန်းနံပါတ် ရှိပြီးသားပါ"
+                duplicateEmail: "ဒီအီးမေးလ် ရှိပြီးသားပါ"
             },
             en: {
                 label: "English",
                 tabLogin: "Login",
                 tabRegister: "Register",
-                labelLoginPhone: "Phone Number",
+                labelLoginEmail: "Email",
                 labelLoginPass: "Password",
                 labelRememberMe: "Remember Me",
                 btnLogin: "Login",
-                labelRegPhone: "Phone Number",
+                labelRegEmail: "Email",
                 labelRegName: "Name",
                 labelRegPass: "Password",
                 hintPhone: "Start with 09 and total 11 digits",
@@ -788,25 +890,25 @@
                 videoTitle: "Welcome!",
                 videoFooter: "Login successful. Enjoy!",
                 loginSuccess: "Login successful",
-                loginError: "Invalid phone or password",
-                phoneError: "Invalid phone. Use 09xxxxxxxxx format",
-                regSuccess: "Account created successfully",
-                regPhoneError: "Invalid phone. Start with 09 and 11 digits",
+                loginError: "Invalid email or password",
+                emailError: "Please enter a valid email",
+                regSuccess: "Account created successfully. Please verify your email.",
+                regEmailError: "Please enter a valid email",
                 regPassError: "Password must be at least 6 characters",
                 regNameError: "Name must be at least 2 characters",
                 namePlaceholder: "Your name",
                 passPlaceholder: "Min 6 chars",
-                duplicatePhone: "Phone number already exists"
+                duplicateEmail: "Email already exists"
             },
             zh: {
                 label: "中文",
                 tabLogin: "登录",
                 tabRegister: "注册",
-                labelLoginPhone: "手机号码",
+                labelLoginEmail: "电子邮件",
                 labelLoginPass: "密码",
                 labelRememberMe: "记住我",
                 btnLogin: "登录",
-                labelRegPhone: "手机号码",
+                labelRegEmail: "电子邮件",
                 labelRegName: "姓名",
                 labelRegPass: "密码",
                 hintPhone: "以09开头，共11位数字",
@@ -817,22 +919,22 @@
                 videoTitle: "欢迎！",
                 videoFooter: "登录成功。请欣赏！",
                 loginSuccess: "登录成功",
-                loginError: "手机号或密码错误",
-                phoneError: "手机号格式错误。请使用 09xxxxxxxxx 格式",
-                regSuccess: "账户创建成功",
-                regPhoneError: "手机号格式错误。以09开头，共11位",
+                loginError: "邮箱或密码错误",
+                emailError: "请输入有效的邮箱",
+                regSuccess: "账户创建成功。请验证您的邮箱。",
+                regEmailError: "请输入有效的邮箱",
                 regPassError: "密码至少6个字符",
                 regNameError: "姓名至少2个字符",
                 namePlaceholder: "您的姓名",
                 passPlaceholder: "至少6个字符",
-                duplicatePhone: "手机号码已存在"
+                duplicateEmail: "邮箱已存在"
             }
         };
 
         let currentLang = 'my';
 
         // ============================================================
-        //  4. DROPDOWN TOGGLE
+        //  6. DROPDOWN TOGGLE
         // ============================================================
         function toggleDropdown(event) {
             if (!event) return;
@@ -858,7 +960,7 @@
         });
 
         // ============================================================
-        //  5. SWITCH LANGUAGE
+        //  7. SWITCH LANGUAGE
         // ============================================================
         function switchLanguage(langCode) {
             currentLang = langCode;
@@ -887,27 +989,25 @@
             if (tabLogin) tabLogin.textContent = t.tabLogin;
             if (tabRegister) tabRegister.textContent = t.tabRegister;
 
-            const labelLoginPhone = document.getElementById('labelLoginPhone');
+            const labelLoginEmail = document.getElementById('labelLoginEmail');
             const labelLoginPass = document.getElementById('labelLoginPass');
             const labelRememberMe = document.getElementById('labelRememberMe');
             const btnLoginSpan = document.querySelector('#btnLogin span');
 
-            if (labelLoginPhone) labelLoginPhone.innerHTML = '<i class="fas fa-phone"></i> ' + t.labelLoginPhone;
+            if (labelLoginEmail) labelLoginEmail.innerHTML = '<i class="fas fa-envelope"></i> ' + t.labelLoginEmail;
             if (labelLoginPass) labelLoginPass.innerHTML = '<i class="fas fa-lock"></i> ' + t.labelLoginPass;
             if (labelRememberMe) labelRememberMe.textContent = t.labelRememberMe;
             if (btnLoginSpan) btnLoginSpan.textContent = t.btnLogin;
 
-            const labelRegPhone = document.getElementById('labelRegPhone');
+            const labelRegEmail = document.getElementById('labelRegEmail');
             const labelRegName = document.getElementById('labelRegName');
             const labelRegPass = document.getElementById('labelRegPass');
-            const hintPhone = document.getElementById('hintPhone');
             const hintPass = document.getElementById('hintPass');
             const btnRegisterSpan = document.querySelector('#btnRegister span');
 
-            if (labelRegPhone) labelRegPhone.innerHTML = '<i class="fas fa-phone"></i> ' + t.labelRegPhone;
+            if (labelRegEmail) labelRegEmail.innerHTML = '<i class="fas fa-envelope"></i> ' + t.labelRegEmail;
             if (labelRegName) labelRegName.innerHTML = '<i class="fas fa-user"></i> ' + t.labelRegName;
             if (labelRegPass) labelRegPass.innerHTML = '<i class="fas fa-lock"></i> ' + t.labelRegPass;
-            if (hintPhone) hintPhone.innerHTML = '<i class="fas fa-info-circle"></i> ' + t.hintPhone;
             if (hintPass) hintPass.innerHTML = '<i class="fas fa-info-circle"></i> ' + t.hintPass;
             if (btnRegisterSpan) btnRegisterSpan.textContent = t.btnRegister;
 
@@ -923,15 +1023,15 @@
             if (videoTitle) videoTitle.innerHTML = '<i class="fas fa-play-circle"></i> ' + t.videoTitle;
             if (videoFooterSpan) videoFooterSpan.textContent = t.videoFooter;
 
-            const loginPhone = document.getElementById('loginPhone');
+            const loginEmail = document.getElementById('loginEmail');
             const loginPass = document.getElementById('loginPass');
-            const regPhone = document.getElementById('regPhone');
+            const regEmail = document.getElementById('regEmail');
             const regName = document.getElementById('regName');
             const regPass = document.getElementById('regPass');
 
-            if (loginPhone) loginPhone.placeholder = '09xxxxxxxxx';
+            if (loginEmail) loginEmail.placeholder = 'you@example.com';
             if (loginPass) loginPass.placeholder = '••••••••';
-            if (regPhone) regPhone.placeholder = '09xxxxxxxxx';
+            if (regEmail) regEmail.placeholder = 'you@example.com';
             if (regName) regName.placeholder = t.namePlaceholder;
             if (regPass) regPass.placeholder = t.passPlaceholder;
 
@@ -942,11 +1042,10 @@
         }
 
         // ============================================================
-        //  6. FORM FUNCTIONS
+        //  8. FORM FUNCTIONS
         // ============================================================
-        function isValidMyanmarPhone(phone) {
-            var cleaned = phone.replace(/\s/g, '');
-            return /^09\d{9}$/.test(cleaned);
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         function showForm(type) {
@@ -983,7 +1082,7 @@
         }
 
         // ============================================================
-        //  7. VIDEO FUNCTIONS
+        //  9. VIDEO FUNCTIONS
         // ============================================================
         function openVideo() {
             var modal = document.getElementById('videoModal');
@@ -1005,49 +1104,16 @@
         }
 
         // ============================================================
-        //  8. TEST CONNECTION
-        // ============================================================
-        async function testSupabaseConnection() {
-            try {
-                console.log('🔍 Testing Supabase connection...');
-                console.log('📡 Endpoint:', SUPABASE_URL + '/rest/v1/');
-
-                const { data, error, count } = await supabaseClient
-                    .from('users')
-                    .select('*', { count: 'exact', head: true });
-
-                if (error) {
-                    console.error('❌ Connection test failed:', error);
-
-                    if (error.message.includes('Invalid API key')) {
-                        console.error('🔑 The ANON key is invalid or expired!');
-                        console.log('📝 Solution: Get a new ANON key from Supabase Dashboard');
-                    } else if (error.message.includes('does not exist')) {
-                        console.log('ℹ️ users table does not exist.');
-                        console.log('📝 Please create it in Supabase SQL Editor');
-                    } else if (error.message.includes('permission denied')) {
-                        console.log('ℹ️ Permission denied. Check RLS policies.');
-                    }
-                } else {
-                    console.log('✅ Connection test successful!');
-                    console.log('📊 Users count:', count);
-                }
-            } catch (err) {
-                console.error('❌ Connection error:', err);
-            }
-        }
-
-        // ============================================================
-        //  9. 🔐 LOGIN
+        //  10. 🔐 LOGIN - Email Version
         // ============================================================
         async function handleLogin(e) {
             e.preventDefault();
             var t = lang[currentLang];
-            var phone = document.getElementById('loginPhone').value.trim();
+            var email = document.getElementById('loginEmail').value.trim();
             var password = document.getElementById('loginPass').value;
 
-            if (!isValidMyanmarPhone(phone)) {
-                showMessage('loginMsg', '❌ ' + t.phoneError, 'error');
+            if (!isValidEmail(email)) {
+                showMessage('loginMsg', '❌ ' + t.emailError, 'error');
                 return;
             }
 
@@ -1055,7 +1121,7 @@
                 showMessage('loginMsg', '⏳ ဝင်ရောက်နေပါပြီ...', '');
 
                 var result = await supabaseClient.auth.signInWithPassword({
-                    phone: phone,
+                    email: email,
                     password: password
                 });
 
@@ -1063,12 +1129,8 @@
                     console.error('Login error:', result.error);
 
                     var errorMsg = t.loginError;
-                    if (result.error.message.includes('Invalid login credentials')) {
-                        errorMsg = '❌ ဖုန်းနံပါတ် သို့မဟုတ် စကားဝှက် မှားနေပါတယ်';
-                    } else if (result.error.message.includes('Invalid API key')) {
-                        errorMsg = '❌ API Key မှားနေပါတယ်။ Anon Key အသစ်ယူပါ။';
-                    } else if (result.error.message.includes('rate limit')) {
-                        errorMsg = '❌ အကြိမ်ကန့်သတ်ချက်ကျော်လွန်နေပါပြီ။ ခဏစောင့်ပါ';
+                    if (result.error.message.includes('Email not confirmed')) {
+                        errorMsg = '❌ အီးမေးလ် အတည်မပြုရသေးပါ။ သင့်အီးမေးလ်ကို စစ်ဆေးပါ။';
                     }
 
                     showMessage('loginMsg', errorMsg, 'error');
@@ -1088,17 +1150,17 @@
         }
 
         // ============================================================
-        //  10. 📝 REGISTER
+        //  11. 📝 REGISTER - Email Version
         // ============================================================
         async function handleRegister(e) {
             e.preventDefault();
             var t = lang[currentLang];
-            var phone = document.getElementById('regPhone').value.trim();
+            var email = document.getElementById('regEmail').value.trim();
             var name = document.getElementById('regName').value.trim();
             var password = document.getElementById('regPass').value;
 
-            if (!isValidMyanmarPhone(phone)) {
-                showMessage('regMsg', '❌ ' + t.regPhoneError, 'error');
+            if (!isValidEmail(email)) {
+                showMessage('regMsg', '❌ ' + t.regEmailError, 'error');
                 return;
             }
 
@@ -1116,12 +1178,12 @@
                 showMessage('regMsg', '⏳ မှတ်ပုံတင်နေပါပြီ...', '');
 
                 var result = await supabaseClient.auth.signUp({
-                    phone: phone,
+                    email: email,
                     password: password,
                     options: {
                         data: {
                             name: name,
-                            phone: phone
+                            email: email
                         }
                     }
                 });
@@ -1131,9 +1193,7 @@
 
                     var errorMsg = result.error.message;
                     if (result.error.message.includes('already registered')) {
-                        errorMsg = '❌ ' + t.duplicatePhone;
-                    } else if (result.error.message.includes('Invalid API key')) {
-                        errorMsg = '❌ API Key မှားနေပါတယ်။ Anon Key အသစ်ယူပါ။';
+                        errorMsg = '❌ ' + t.duplicateEmail;
                     } else if (result.error.message.includes('rate limit')) {
                         errorMsg = '❌ အကြိမ်ကန့်သတ်ချက်ကျော်လွန်နေပါပြီ။ ခဏစောင့်ပါ';
                     }
@@ -1143,35 +1203,15 @@
                 }
 
                 if (result.data.user) {
-                    try {
-                        const { error: insertError } = await supabaseClient
-                            .from('users')
-                            .insert([{
-                                id: result.data.user.id,
-                                phone: phone,
-                                name: name,
-                                password: password,
-                                created_at: new Date().toISOString()
-                            }]);
-
-                        if (insertError) {
-                            console.warn('Could not save to users table:', insertError);
-                        } else {
-                            console.log('✅ User saved to users table');
-                        }
-                    } catch (dbError) {
-                        console.warn('Database operation skipped:', dbError);
-                    }
-
                     showMessage('regMsg', '✅ ' + t.regSuccess, 'success');
 
-                    document.getElementById('regPhone').value = '';
+                    document.getElementById('regEmail').value = '';
                     document.getElementById('regName').value = '';
                     document.getElementById('regPass').value = '';
 
                     setTimeout(function() {
                         showForm('login');
-                    }, 2000);
+                    }, 3000);
                 }
 
             } catch (err) {
@@ -1181,7 +1221,7 @@
         }
 
         // ============================================================
-        //  11. DOM READY
+        //  12. DOM READY
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             var modal = document.getElementById('videoModal');
@@ -1195,7 +1235,12 @@
             console.log('✅ Language set to Myanmar');
             console.log('✅ All functions loaded successfully');
 
-            setTimeout(testSupabaseConnection, 2000);
+            // ✅ Check if user is returning from Google OAuth
+            const hash = window.location.hash;
+            if (hash && hash.includes('access_token')) {
+                console.log('🔍 OAuth callback detected');
+                handleOAuthCallback();
+            }
         });
     </script>
 
