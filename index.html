@@ -704,10 +704,10 @@
     </script>
     <script>
         // ============================================================
-        //  1. SUPABASE CONFIG
+        //  1. SUPABASE CONFIG - ✅ FIXED WITH NEW PROJECT
         // ============================================================
-        const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3bnh1enVva3lvbHRkanphc255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NTY1MjEsImV4cCI6MjA5NzUzMjUyMX0.bporyz_B_tDM1SU_QX6xGebXV-voal-zTrNfaLebyf4';
+        const SUPABASE_URL = 'https://zyccyxsklbccwexrzefr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5Y2N5eHNrbGJjY3dleHJ6ZWZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NjAyMzAsImV4cCI6MjA5NzUzNjIzMH0.nOPiDG9kgz5U06IJSkGvZdEjhf_VjXmbLjbCMs33WQ4';
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
             auth: {
@@ -718,6 +718,7 @@
         });
 
         console.log('✅ Supabase client created');
+        console.log('📁 Project URL:', SUPABASE_URL);
 
         // ============================================================
         //  2. TOGGLE PASSWORD
@@ -1009,6 +1010,7 @@
         async function testSupabaseConnection() {
             try {
                 console.log('🔍 Testing Supabase connection...');
+                console.log('📡 Endpoint:', SUPABASE_URL + '/rest/v1/');
 
                 const { data, error, count } = await supabaseClient
                     .from('users')
@@ -1019,22 +1021,10 @@
 
                     if (error.message.includes('Invalid API key')) {
                         console.error('🔑 The ANON key is invalid or expired!');
-                        console.log('📝 Solution: Get a new ANON key from:');
-                        console.log('   https://app.supabase.com/project/cwnxuzuokylotdjzasny/settings/api');
+                        console.log('📝 Solution: Get a new ANON key from Supabase Dashboard');
                     } else if (error.message.includes('does not exist')) {
                         console.log('ℹ️ users table does not exist.');
-                        console.log('📝 Please create it in Supabase SQL Editor:');
-                        console.log(`
-                            CREATE TABLE IF NOT EXISTS users (
-                                id UUID PRIMARY KEY,
-                                phone TEXT UNIQUE NOT NULL,
-                                name TEXT NOT NULL,
-                                password TEXT NOT NULL,
-                                created_at TIMESTAMP DEFAULT NOW()
-                            );
-                            ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-                            CREATE POLICY "Allow all" ON users FOR ALL USING (true) WITH CHECK (true);
-                        `);
+                        console.log('📝 Please create it in Supabase SQL Editor');
                     } else if (error.message.includes('permission denied')) {
                         console.log('ℹ️ Permission denied. Check RLS policies.');
                     }
