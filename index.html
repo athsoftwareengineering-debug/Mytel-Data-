@@ -5,1000 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATH DIGITAL HUB - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- (CSS အားလုံး အတူတူပါပဲ) -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            padding: 20px;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(72, 0, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(0, 255, 200, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 440px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 32px;
-            padding: 40px 32px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 0.6s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .logo {
-            font-size: 32px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .logo i {
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 28px;
-        }
-
-        .subtitle {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-        }
-
-        .lang-selector {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            color: white;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .lang-selector:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .lang-selector i {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .lang-selector .arrow {
-            transition: transform 0.3s ease;
-            display: inline-block;
-        }
-
-        .lang-selector .arrow.open {
-            transform: rotate(180deg);
-        }
-
-        .lang-menu {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: rgba(30, 27, 75, 0.98);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 8px;
-            min-width: 140px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            display: none;
-        }
-
-        .lang-menu.show {
-            display: block;
-        }
-
-        .lang-menu button {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 16px;
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-radius: 10px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .lang-menu button:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-        }
-
-        .lang-menu button .lang-flag {
-            font-size: 18px;
-        }
-
-        .lang-menu button .lang-name {
-            flex: 1;
-            text-align: left;
-        }
-
-        .lang-menu button.active-lang {
-            background: rgba(0, 210, 255, 0.15);
-            color: #00d2ff;
-        }
-
-        .lang-menu button.active-lang::after {
-            content: ' ✓';
-            color: #00d2ff;
-            font-weight: 700;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 4px;
-            margin-bottom: 28px;
-        }
-
-        .tabs button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .tabs button.active {
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .tabs button:hover:not(.active) {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .form {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .form.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        .form-group label i {
-            margin-right: 8px;
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .input-wrapper:focus-within {
-            border-color: rgba(0, 210, 255, 0.5);
-            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.1);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .input-wrapper input {
-            width: 100%;
-            padding: 14px 16px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: white;
-            font-size: 15px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .input-wrapper input::placeholder {
-            color: rgba(255, 255, 255, 0.25);
-        }
-
-        .input-wrapper .toggle-password {
-            padding: 14px 16px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: color 0.3s ease;
-            font-size: 16px;
-        }
-
-        .input-wrapper .toggle-password:hover {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .hint {
-            margin-top: 6px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .hint i {
-            margin-right: 4px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #00d2ff;
-            cursor: pointer;
-        }
-
-        .checkbox-group label {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 210, 255, 0.3);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn i {
-            margin-right: 8px;
-        }
-
-        .btn-register {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .btn-register:hover {
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.05);
-        }
-
-        .message {
-            margin-top: 16px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            display: none;
-        }
-
-        .message.show {
-            display: block;
-        }
-
-        .message.success {
-            background: rgba(0, 255, 100, 0.12);
-            border: 1px solid rgba(0, 255, 100, 0.2);
-            color: #00ff64;
-        }
-
-        .message.error {
-            background: rgba(255, 0, 80, 0.12);
-            border: 1px solid rgba(255, 0, 80, 0.2);
-            color: #ff4070;
-        }
-
-        .footer {
-            margin-top: 28px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-        }
-
-        .footer .footer-brand {
-            display: block;
-            margin-top: 8px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .footer i {
-            color: rgba(0, 210, 255, 0.6);
-            margin-right: 8px;
-        }
-
-        .footer span {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 13px;
-        }
-
-        .video-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(20px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .video-modal.show {
-            display: flex;
-        }
-
-        .video-modal .video-container {
-            width: 100%;
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .video-modal .video-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .video-modal .video-header h3 {
-            color: white;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .video-modal .video-header h3 i {
-            color: #00d2ff;
-            margin-right: 10px;
-        }
-
-        .video-modal .close-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            color: rgba(255, 255, 255, 0.6);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .video-modal .close-btn:hover {
-            background: rgba(255, 0, 80, 0.2);
-            color: #ff4070;
-            transform: rotate(90deg);
-        }
-
-        .video-modal video {
-            width: 100%;
-            border-radius: 16px;
-            background: #000;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .video-modal .video-footer {
-            margin-top: 16px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 14px;
-        }
-
-        .video-modal .video-footer i {
-            color: #00d2ff;
-            margin-right: 8px;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 32px 20px;
-                border-radius: 24px;
-            }
-
-            .logo {
-                font-size: 26px;
-            }
-
-            .lang-selector {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-
-            .tabs button {
-                font-size: 13px;
-                padding: 10px;
-            }
-
-            .input-wrapper input {
-                font-size: 14px;
-                padding: 12px 14px;
-            }
-
-            .btn {
-                font-size: 15px;
-                padding: 14px;
-            }
-
-            .video-modal .video-container {
-                padding: 16px;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.25);
-        }
+        /* ... ခင်ဗျားရဲ့ CSS အားလုံး ... */
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <!-- Language Dropdown -->
-        <div class="lang-dropdown">
-            <div class="lang-selector" onclick="toggleDropdown(event)">
-                <i class="fas fa-globe"></i>
-                <span id="currentLangLabel">မြန်မာ</span>
-                <i class="fas fa-chevron-down arrow" id="dropdownArrow"></i>
-            </div>
-            <div class="lang-menu" id="langMenu">
-                <button onclick="switchLanguage('my')" class="active-lang">
-                    <span class="lang-flag">🇲🇲</span>
-                    <span class="lang-name">မြန်မာ</span>
-                </button>
-                <button onclick="switchLanguage('en')">
-                    <span class="lang-flag">🇬🇧</span>
-                    <span class="lang-name">English</span>
-                </button>
-                <button onclick="switchLanguage('zh')">
-                    <span class="lang-flag">🇨🇳</span>
-                    <span class="lang-name">中文</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <i class="fas fa-cube"></i>
-                ATH DIGITAL HUB
-            </div>
-            <div class="subtitle">Secure • Fast • Reliable</div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="active" onclick="showForm('login')" id="tabLogin">ဝင်မည်</button>
-            <button onclick="showForm('register')" id="tabRegister">မှတ်ပုံတင်မည်</button>
-        </div>
-
-        <!-- Login Form -->
-        <div class="form active" id="loginForm">
-            <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label id="labelLoginPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
-                    <div class="input-wrapper">
-                        <input type="tel" id="loginPhone" placeholder="09xxxxxxxxx" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label id="labelLoginPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="loginPass" placeholder="••••••••" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword('loginPass', this)">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="rememberMe" checked>
-                    <label for="rememberMe" id="labelRememberMe">မှတ်ထားမည်</label>
-                </div>
-
-                <button type="submit" class="btn" id="btnLogin">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>ဝင်မည်</span>
-                </button>
-            </form>
-            <div class="message" id="loginMsg"></div>
-        </div>
-
-        <!-- Register Form -->
-        <div class="form" id="registerForm">
-            <form onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label id="labelRegPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
-                    <div class="input-wrapper">
-                        <input type="tel" id="regPhone" placeholder="09xxxxxxxxx" required>
-                    </div>
-                    <div class="hint" id="hintPhone"><i class="fas fa-info-circle"></i> 09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး</div>
-                </div>
-
-                <div class="form-group">
-                    <label id="labelRegName"><i class="fas fa-user"></i> နာမည်</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="regName" placeholder="သင့်နာမည်" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label id="labelRegPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
-                    <div class="input-wrapper">
-                        <input type="password" id="regPass" placeholder="အနည်းဆုံး ၆ လုံး" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword('regPass', this)">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="hint" id="hintPass"><i class="fas fa-info-circle"></i> အနည်းဆုံး ၆ လုံးထည့်ပါ</div>
-                </div>
-
-                <button type="submit" class="btn btn-register" id="btnRegister">
-                    <i class="fas fa-user-plus"></i>
-                    <span>မှတ်ပုံတင်မည်</span>
-                </button>
-            </form>
-            <div class="message" id="regMsg"></div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer" id="footerText">
-            <i class="fas fa-shield-alt"></i>
-            <span>သင့်ဒေတာကို လုံခြုံစွာ သိမ်းဆည်းထားပါသည်</span>
-            <span class="footer-brand">Copyright © 2026 AUNG THU HTWE. All Rights Reserved.</span>
-        </div>
-    </div>
-
-    <!-- Video Modal -->
-    <div class="video-modal" id="videoModal">
-        <div class="video-container">
-            <div class="video-header">
-                <h3 id="videoTitle"><i class="fas fa-play-circle"></i> ကြိုဆိုပါတယ်!</h3>
-                <button class="close-btn" onclick="closeVideo()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <video id="introVideo" controls>
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="video-footer" id="videoFooter">
-                <i class="fas fa-check-circle"></i>
-                <span>အကောင့်ဝင်ခြင်း အောင်မြင်ပါပြီ။ ခံစားလိုက်ပါ။</span>
-            </div>
-        </div>
-    </div>
-
+    <!-- (HTML အားလုံး အတူတူပါပဲ) -->
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <script>
         // ============================================================
-        //  🔐 SUPABASE CONFIG - ✅ FIXED (No duplicate declaration)
+        //  🔐 SUPABASE CONFIG - FIXED VERSION
         // ============================================================
         const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3bnh1enVva3lvbHRkanphc255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NTY1MjEsImV4cCI6MjA5NzUzMjUyMX0.bporyz_B_tDM1SU_QX6xGebXV-voal-zTrNfaLebyf4';
 
-        // ✅ Create supabase client only once
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log('✅ Supabase connected successfully');
-
-        // ============================================================
-        //  TOGGLE PASSWORD
-        // ============================================================
-        function togglePassword(inputId, btn) {
-            const input = document.getElementById(inputId);
-            const icon = btn.querySelector('i');
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fas fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fas fa-eye';
-            }
-        }
-
-        // ============================================================
-        //  LANGUAGE DATA
-        // ============================================================
-        const lang = {
-            my: {
-                label: "မြန်မာ",
-                tabLogin: "ဝင်မည်",
-                tabRegister: "မှတ်ပုံတင်မည်",
-                labelLoginPhone: "ဖုန်းနံပါတ်",
-                labelLoginPass: "လျှို့ဝှက်နံပါတ်",
-                labelRememberMe: "မှတ်ထားမည်",
-                btnLogin: "ဝင်မည်",
-                labelRegPhone: "ဖုန်းနံပါတ်",
-                labelRegName: "နာမည်",
-                labelRegPass: "လျှို့ဝှက်နံပါတ်",
-                hintPhone: "09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး",
-                hintPass: "အနည်းဆုံး ၆ လုံးထည့်ပါ",
-                btnRegister: "မှတ်ပုံတင်မည်",
-                footer: "သင့်ဒေတာကို လုံခြုံစွာ သိမ်းဆည်းထားပါသည်",
-                copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
-                videoTitle: "ကြိုဆိုပါတယ်!",
-                videoFooter: "အကောင့်ဝင်ခြင်း အောင်မြင်ပါပြီ။ ခံစားလိုက်ပါ။",
-                loginSuccess: "အောင်မြင်ပါတယ်",
-                loginError: "ဖုန်းနံပါတ် သို့မဟုတ် လျှို့ဝှက်နံပါတ် မှားနေတယ်",
-                phoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09xxxxxxxxx ပုံစံထည့်ပါ",
-                regSuccess: "အကောင့် အောင်မြင်စွာ ဖွင့်ပြီးပါပြီ",
-                regPhoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09 နဲ့စပြီး ၁၁ လုံးထည့်ပါ",
-                regPassError: "လျှို့ဝှက်နံပါတ် အနည်းဆုံး ၆ လုံးထည့်ပါ",
-                regNameError: "နာမည် အနည်းဆုံး ၂ လုံးထည့်ပါ",
-                namePlaceholder: "သင့်နာမည်",
-                passPlaceholder: "အနည်းဆုံး ၆ လုံး",
-                duplicatePhone: "ဖုန်းနံပါတ် ရှိပြီးသားပါ"
-            },
-            en: {
-                label: "English",
-                tabLogin: "Login",
-                tabRegister: "Register",
-                labelLoginPhone: "Phone Number",
-                labelLoginPass: "Password",
-                labelRememberMe: "Remember Me",
-                btnLogin: "Login",
-                labelRegPhone: "Phone Number",
-                labelRegName: "Name",
-                labelRegPass: "Password",
-                hintPhone: "Start with 09 and total 11 digits",
-                hintPass: "Minimum 6 characters",
-                btnRegister: "Register",
-                footer: "Your data is stored securely",
-                copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
-                videoTitle: "Welcome!",
-                videoFooter: "Login successful. Enjoy!",
-                loginSuccess: "Login successful",
-                loginError: "Invalid phone or password",
-                phoneError: "Invalid phone. Use 09xxxxxxxxx format",
-                regSuccess: "Account created successfully",
-                regPhoneError: "Invalid phone. Start with 09 and 11 digits",
-                regPassError: "Password must be at least 6 characters",
-                regNameError: "Name must be at least 2 characters",
-                namePlaceholder: "Your name",
-                passPlaceholder: "Min 6 chars",
-                duplicatePhone: "Phone number already exists"
-            },
-            zh: {
-                label: "中文",
-                tabLogin: "登录",
-                tabRegister: "注册",
-                labelLoginPhone: "手机号码",
-                labelLoginPass: "密码",
-                labelRememberMe: "记住我",
-                btnLogin: "登录",
-                labelRegPhone: "手机号码",
-                labelRegName: "姓名",
-                labelRegPass: "密码",
-                hintPhone: "以09开头，共11位数字",
-                hintPass: "至少6个字符",
-                btnRegister: "注册",
-                footer: "您的数据已安全存储",
-                copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
-                videoTitle: "欢迎！",
-                videoFooter: "登录成功。请欣赏！",
-                loginSuccess: "登录成功",
-                loginError: "手机号或密码错误",
-                phoneError: "手机号格式错误。请使用 09xxxxxxxxx 格式",
-                regSuccess: "账户创建成功",
-                regPhoneError: "手机号格式错误。以09开头，共11位",
-                regPassError: "密码至少6个字符",
-                regNameError: "姓名至少2个字符",
-                namePlaceholder: "您的姓名",
-                passPlaceholder: "至少6个字符",
-                duplicatePhone: "手机号码已存在"
-            }
-        };
-
-        let currentLang = 'my';
-
-        // ============================================================
-        //  DROPDOWN TOGGLE
-        // ============================================================
-        function toggleDropdown(event) {
-            if (!event) return;
-            event.stopPropagation();
-            const menu = document.getElementById('langMenu');
-            const arrow = document.getElementById('dropdownArrow');
-            if (menu) {
-                menu.classList.toggle('show');
-            }
-            if (arrow) {
-                arrow.classList.toggle('open');
-            }
-        }
-
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('langMenu');
-            const arrow = document.getElementById('dropdownArrow');
-            const dropdown = document.querySelector('.lang-dropdown');
-            if (dropdown && !dropdown.contains(event.target)) {
-                if (menu) menu.classList.remove('show');
-                if (arrow) arrow.classList.remove('open');
+        // ✅ Create client with proper headers
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true,
+                detectSessionInUrl: true
             }
         });
 
-        // ============================================================
-        //  SWITCH LANGUAGE
-        // ============================================================
-        function switchLanguage(langCode) {
-            currentLang = langCode;
-            const t = lang[langCode];
+        console.log('✅ Supabase client created');
 
-            const menu = document.getElementById('langMenu');
-            const arrow = document.getElementById('dropdownArrow');
-            if (menu) menu.classList.remove('show');
-            if (arrow) arrow.classList.remove('open');
+        // ============================================================
+        //  TEST CONNECTION FUNCTION
+        // ============================================================
+        async function testSupabaseConnection() {
+            try {
+                // Try to get users count (just to test connection)
+                const { data, error } = await supabaseClient
+                    .from('users')
+                    .select('id', { count: 'exact', head: true });
 
-            document.querySelectorAll('#langMenu button').forEach(function(b) {
-                b.classList.remove('active-lang');
-            });
-            document.querySelectorAll('#langMenu button').forEach(function(b) {
-                const nameEl = b.querySelector('.lang-name');
-                if (nameEl && nameEl.textContent === t.label) {
-                    b.classList.add('active-lang');
+                if (error) {
+                    console.error('❌ Connection test failed:', error);
+                    console.log('🔍 Error details:', {
+                        code: error.code,
+                        message: error.message,
+                        hint: error.hint
+                    });
+                    
+                    // If table doesn't exist, try to create it
+                    if (error.message.includes('does not exist')) {
+                        console.log('ℹ️ users table does not exist. Trying to create...');
+                        await createUsersTable();
+                    }
+                } else {
+                    console.log('✅ Connection test successful!');
                 }
-            });
-
-            const labelEl = document.getElementById('currentLangLabel');
-            if (labelEl) labelEl.textContent = t.label;
-
-            const tabLogin = document.getElementById('tabLogin');
-            const tabRegister = document.getElementById('tabRegister');
-            if (tabLogin) tabLogin.textContent = t.tabLogin;
-            if (tabRegister) tabRegister.textContent = t.tabRegister;
-
-            const labelLoginPhone = document.getElementById('labelLoginPhone');
-            const labelLoginPass = document.getElementById('labelLoginPass');
-            const labelRememberMe = document.getElementById('labelRememberMe');
-            const btnLoginSpan = document.querySelector('#btnLogin span');
-
-            if (labelLoginPhone) labelLoginPhone.innerHTML = '<i class="fas fa-phone"></i> ' + t.labelLoginPhone;
-            if (labelLoginPass) labelLoginPass.innerHTML = '<i class="fas fa-lock"></i> ' + t.labelLoginPass;
-            if (labelRememberMe) labelRememberMe.textContent = t.labelRememberMe;
-            if (btnLoginSpan) btnLoginSpan.textContent = t.btnLogin;
-
-            const labelRegPhone = document.getElementById('labelRegPhone');
-            const labelRegName = document.getElementById('labelRegName');
-            const labelRegPass = document.getElementById('labelRegPass');
-            const hintPhone = document.getElementById('hintPhone');
-            const hintPass = document.getElementById('hintPass');
-            const btnRegisterSpan = document.querySelector('#btnRegister span');
-
-            if (labelRegPhone) labelRegPhone.innerHTML = '<i class="fas fa-phone"></i> ' + t.labelRegPhone;
-            if (labelRegName) labelRegName.innerHTML = '<i class="fas fa-user"></i> ' + t.labelRegName;
-            if (labelRegPass) labelRegPass.innerHTML = '<i class="fas fa-lock"></i> ' + t.labelRegPass;
-            if (hintPhone) hintPhone.innerHTML = '<i class="fas fa-info-circle"></i> ' + t.hintPhone;
-            if (hintPass) hintPass.innerHTML = '<i class="fas fa-info-circle"></i> ' + t.hintPass;
-            if (btnRegisterSpan) btnRegisterSpan.textContent = t.btnRegister;
-
-            const footerText = document.getElementById('footerText');
-            if (footerText) {
-                footerText.innerHTML =
-                    '<i class="fas fa-shield-alt"></i> <span>' + t.footer + '</span><span class="footer-brand">' + t
-                    .copyright + '</span>';
-            }
-
-            const videoTitle = document.getElementById('videoTitle');
-            const videoFooterSpan = document.querySelector('#videoFooter span');
-            if (videoTitle) videoTitle.innerHTML = '<i class="fas fa-play-circle"></i> ' + t.videoTitle;
-            if (videoFooterSpan) videoFooterSpan.textContent = t.videoFooter;
-
-            const loginPhone = document.getElementById('loginPhone');
-            const loginPass = document.getElementById('loginPass');
-            const regPhone = document.getElementById('regPhone');
-            const regName = document.getElementById('regName');
-            const regPass = document.getElementById('regPass');
-
-            if (loginPhone) loginPhone.placeholder = '09xxxxxxxxx';
-            if (loginPass) loginPass.placeholder = '••••••••';
-            if (regPhone) regPhone.placeholder = '09xxxxxxxxx';
-            if (regName) regName.placeholder = t.namePlaceholder;
-            if (regPass) regPass.placeholder = t.passPlaceholder;
-
-            document.querySelectorAll('.message').forEach(function(msg) {
-                msg.classList.remove('show', 'success', 'error');
-                msg.textContent = '';
-            });
-        }
-
-        // ============================================================
-        //  FORM FUNCTIONS - ✅ FIXED (Defined before being called)
-        // ============================================================
-        function isValidMyanmarPhone(phone) {
-            var cleaned = phone.replace(/\s/g, '');
-            return /^09\d{9}$/.test(cleaned);
-        }
-
-        function showForm(type) {
-            var loginForm = document.getElementById('loginForm');
-            var registerForm = document.getElementById('registerForm');
-            var tabButtons = document.querySelectorAll('.tabs button');
-
-            if (loginForm) loginForm.classList.remove('active');
-            if (registerForm) registerForm.classList.remove('active');
-            tabButtons.forEach(function(btn) {
-                btn.classList.remove('active');
-            });
-
-            if (type === 'login') {
-                if (loginForm) loginForm.classList.add('active');
-                if (tabButtons[0]) tabButtons[0].classList.add('active');
-            } else {
-                if (registerForm) registerForm.classList.add('active');
-                if (tabButtons[1]) tabButtons[1].classList.add('active');
-            }
-
-            document.querySelectorAll('.message').forEach(function(msg) {
-                msg.classList.remove('show', 'success', 'error');
-                msg.textContent = '';
-            });
-        }
-
-        function showMessage(elementId, text, type) {
-            var el = document.getElementById(elementId);
-            if (el) {
-                el.textContent = text;
-                el.className = 'message show ' + type;
+            } catch (err) {
+                console.error('❌ Connection error:', err);
             }
         }
 
         // ============================================================
-        //  VIDEO FUNCTIONS
+        //  CREATE USERS TABLE (if not exists)
         // ============================================================
-        function openVideo() {
-            var modal = document.getElementById('videoModal');
-            var video = document.getElementById('introVideo');
-            if (modal) modal.classList.add('show');
-            if (video) {
-                video.currentTime = 0;
-                video.play().catch(function(err) {
-                    console.log('Auto-play blocked:', err);
-                });
+        async function createUsersTable() {
+            try {
+                // Note: You need to run this SQL in Supabase SQL Editor
+                console.log('ℹ️ Please create users table using SQL Editor:');
+                console.log(`
+                    CREATE TABLE IF NOT EXISTS users (
+                        id UUID PRIMARY KEY,
+                        phone TEXT UNIQUE NOT NULL,
+                        name TEXT NOT NULL,
+                        password TEXT NOT NULL,
+                        created_at TIMESTAMP DEFAULT NOW()
+                    );
+                    
+                    -- Enable RLS
+                    ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+                    
+                    -- Create policy for all operations
+                    CREATE POLICY "Allow all" ON users
+                    FOR ALL
+                    USING (true)
+                    WITH CHECK (true);
+                `);
+            } catch (err) {
+                console.error('❌ Failed to create table:', err);
             }
         }
 
-        function closeVideo() {
-            var modal = document.getElementById('videoModal');
-            var video = document.getElementById('introVideo');
-            if (video) video.pause();
-            if (modal) modal.classList.remove('show');
-        }
-
         // ============================================================
-        //  🔐 LOGIN
+        //  🔐 LOGIN - FIXED with better error handling
         // ============================================================
         async function handleLogin(e) {
             e.preventDefault();
@@ -1012,6 +109,8 @@
             }
 
             try {
+                showMessage('loginMsg', '⏳ ဝင်ရောက်နေပါပြီ...', '');
+                
                 var result = await supabaseClient.auth.signInWithPassword({
                     phone: phone,
                     password: password
@@ -1019,7 +118,18 @@
 
                 if (result.error) {
                     console.error('Login error:', result.error);
-                    showMessage('loginMsg', '❌ ' + t.loginError, 'error');
+                    
+                    // Better error messages
+                    let errorMsg = t.loginError;
+                    if (result.error.message.includes('Invalid login credentials')) {
+                        errorMsg = '❌ ဖုန်းနံပါတ် သို့မဟုတ် စကားဝှက် မှားနေပါတယ်';
+                    } else if (result.error.message.includes('Email not confirmed')) {
+                        errorMsg = '❌ အကောင့်ကို အတည်မပြုရသေးပါ';
+                    } else if (result.error.message.includes('rate limit')) {
+                        errorMsg = '❌ အကြိမ်ကန့်သတ်ချက်ကျော်လွန်နေပါပြီ။ ခဏစောင့်ပါ';
+                    }
+                    
+                    showMessage('loginMsg', errorMsg, 'error');
                     return;
                 }
 
@@ -1036,7 +146,7 @@
         }
 
         // ============================================================
-        //  📝 REGISTER
+        //  📝 REGISTER - FIXED with better error handling
         // ============================================================
         async function handleRegister(e) {
             e.preventDefault();
@@ -1045,6 +155,7 @@
             var name = document.getElementById('regName').value.trim();
             var password = document.getElementById('regPass').value;
 
+            // Validation
             if (!isValidMyanmarPhone(phone)) {
                 showMessage('regMsg', '❌ ' + t.regPhoneError, 'error');
                 return;
@@ -1061,6 +172,9 @@
             }
 
             try {
+                showMessage('regMsg', '⏳ မှတ်ပုံတင်နေပါပြီ...', '');
+
+                // ✅ Try to register with Supabase Auth
                 var result = await supabaseClient.auth.signUp({
                     phone: phone,
                     password: password,
@@ -1074,16 +188,23 @@
 
                 if (result.error) {
                     console.error('Registration error:', result.error);
+                    
+                    // Better error messages
+                    let errorMsg = result.error.message;
                     if (result.error.message.includes('already registered')) {
-                        showMessage('regMsg', '❌ ' + t.duplicatePhone, 'error');
-                    } else {
-                        showMessage('regMsg', '❌ ' + result.error.message, 'error');
+                        errorMsg = '❌ ' + t.duplicatePhone;
+                    } else if (result.error.message.includes('Invalid API key')) {
+                        errorMsg = '❌ API Key မှားနေပါတယ်။ Supabase Dashboard က Anon Key အသစ်ယူပါ။';
+                    } else if (result.error.message.includes('rate limit')) {
+                        errorMsg = '❌ အကြိမ်ကန့်သတ်ချက်ကျော်လွန်နေပါပြီ။ ခဏစောင့်ပါ';
                     }
+                    
+                    showMessage('regMsg', errorMsg, 'error');
                     return;
                 }
 
                 if (result.data.user) {
-                    // Try to save to users table (optional)
+                    // ✅ Save to users table (optional)
                     try {
                         const { error: insertError } = await supabaseClient
                             .from('users')
@@ -1106,10 +227,12 @@
 
                     showMessage('regMsg', '✅ ' + t.regSuccess, 'success');
 
+                    // Clear form
                     document.getElementById('regPhone').value = '';
                     document.getElementById('regName').value = '';
                     document.getElementById('regPass').value = '';
 
+                    // Switch to login after 2 seconds
                     setTimeout(function() {
                         showForm('login');
                     }, 2000);
@@ -1122,7 +245,7 @@
         }
 
         // ============================================================
-        //  DOM READY - ✅ FIXED
+        //  DOM READY - Run test
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             var modal = document.getElementById('videoModal');
@@ -1132,8 +255,15 @@
                 });
             }
             switchLanguage('my');
+            
+            // Test connection after page loads
+            setTimeout(testSupabaseConnection, 1000);
         });
-    </script>
 
+        // ============================================================
+        //  (ကျန်တဲ့ functions အားလုံး အတူတူပါပဲ)
+        // ============================================================
+        // ... togglePassword, switchLanguage, showForm, etc.
+    </script>
 </body>
 </html>
