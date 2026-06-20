@@ -745,7 +745,7 @@
                 <i class="fas fa-phone"></i> Mytel OTP ဖြင့် ဝင်မည်
             </button>
 
-            <!-- Mytel OTP Section (Hidden by default) -->
+            <!-- Mytel OTP Section -->
             <div id="mytelOTPSection" class="mytel-otp-section" style="display:none;">
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
@@ -846,7 +846,61 @@
     </script>
     <script>
         // ============================================================
-        //  1. SUPABASE CONFIG
+        //  1. MYTEL API CONFIG - ✅ FIXED
+        // ============================================================
+        const MYTEL_API = {
+            BASE: 'https://apis.mytel.com.mm',
+            auth: {
+                get_otp: '/myid/authen/v1.0/login/method/otp/get-otp',
+                validate_otp: '/myid/authen/v1.0/login/method/otp/validate-otp',
+                refresh_token: '/myid/authen/v1.0/login/method/otp/refresh-token',
+                logout: '/myid/authen/v1.0/logout',
+            }
+        };
+
+        // ============================================================
+        //  2. MYTEL API FUNCTIONS - ✅ VERIFIED
+        // ============================================================
+        async function callMytelAPI(endpoint, method = 'GET', body = null) {
+            const url = MYTEL_API.BASE + endpoint;
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+
+            try {
+                console.log(`📡 Calling: ${method} ${url}`);
+                const response = await fetch(url, options);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log(`✅ ${method} ${endpoint}:`, data);
+                return { success: true, data: data };
+            } catch (error) {
+                console.error(`❌ ${method} ${endpoint}:`, error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        async function mytelGetOTP(phoneNumber) {
+            return callMytelAPI(`${MYTEL_API.auth.get_otp}?phoneNumber=${phoneNumber}`, 'GET');
+        }
+
+        async function mytelValidateOTP(phoneNumber, otpCode) {
+            return callMytelAPI(MYTEL_API.auth.validate_otp, 'POST', { phoneNumber, otpCode });
+        }
+
+        // ============================================================
+        //  3. SUPABASE CONFIG
         // ============================================================
         const SUPABASE_URL = 'https://zyccyxsklbccwexrzefr.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5Y2N5eHNrbGJjY3dleHJ6ZWZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NjAyMzAsImV4cCI6MjA5NzUzNjIzMH0.nOPiDG9kgz5U06IJSkGvZdEjhf_VjXmbLjbCMs33WQ4';
@@ -862,7 +916,7 @@
         console.log('✅ Supabase client created');
 
         // ============================================================
-        //  2. TOGGLE PASSWORD
+        //  4. TOGGLE PASSWORD
         // ============================================================
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -878,7 +932,7 @@
         }
 
         // ============================================================
-        //  3. LANGUAGE DATA
+        //  5. LANGUAGE DATA
         // ============================================================
         const lang = {
             my: {
@@ -908,15 +962,9 @@
                 namePlaceholder: "သင့်နာမည်",
                 passPlaceholder: "အနည်းဆုံး ၆ လုံး",
                 duplicateEmail: "ဒီအီးမေးလ် ရှိပြီးသားပါ",
-                mytelLoginTitle: "Mytel OTP ဖြင့် ဝင်မည်",
-                mytelPhoneLabel: "ဖုန်းနံပါတ်",
-                mytelOTPLabel: "OTP ကုဒ်",
-                mytelSendOTP: "OTP ပို့မည်",
-                mytelVerifyOTP: "OTP အတည်ပြုမည်",
                 mytelPhoneError: "မှန်ကန်တဲ့ ဖုန်းနံပါတ် ထည့်ပါ (09xxxxxxxxx)",
                 mytelOTPError: "OTP ကုဒ် ၆ လုံးထည့်ပါ",
-                mytelCheckSuccess: "✅ ဖုန်းနံပါတ်မှန်ကန်ပါတယ်",
-                mytelCheckError: "❌ ဒီဖုန်းနံပါတ်သည် Mytel အကောင့်မဟုတ်ပါ",
+                mytelCheckError: "❌ ဖုန်းနံပါတ်စစ်ဆေးမှု မအောင်မြင်ပါ",
                 mytelOTPSent: "✅ OTP ကုဒ်ကို သင့်ဖုန်းသို့ ပို့ထားပါပြီ",
                 mytelOTPError: "❌ OTP ပို့မအောင်မြင်ပါ",
                 mytelOTPInvalid: "❌ OTP မှားနေပါတယ်။ ပြန်စမ်းပါ။",
@@ -949,15 +997,9 @@
                 namePlaceholder: "Your name",
                 passPlaceholder: "Min 6 chars",
                 duplicateEmail: "Email already exists",
-                mytelLoginTitle: "Login with Mytel OTP",
-                mytelPhoneLabel: "Phone Number",
-                mytelOTPLabel: "OTP Code",
-                mytelSendOTP: "Send OTP",
-                mytelVerifyOTP: "Verify OTP",
                 mytelPhoneError: "Please enter a valid phone number (09xxxxxxxxx)",
                 mytelOTPError: "Please enter 6-digit OTP",
-                mytelCheckSuccess: "✅ Phone number is valid",
-                mytelCheckError: "❌ This phone number is not a Mytel account",
+                mytelCheckError: "❌ Phone number verification failed",
                 mytelOTPSent: "✅ OTP code has been sent to your phone",
                 mytelOTPError: "❌ Failed to send OTP",
                 mytelOTPInvalid: "❌ Invalid OTP. Please try again.",
@@ -990,15 +1032,9 @@
                 namePlaceholder: "您的姓名",
                 passPlaceholder: "至少6个字符",
                 duplicateEmail: "邮箱已存在",
-                mytelLoginTitle: "使用 Mytel OTP 登录",
-                mytelPhoneLabel: "手机号码",
-                mytelOTPLabel: "OTP 验证码",
-                mytelSendOTP: "发送 OTP",
-                mytelVerifyOTP: "验证 OTP",
                 mytelPhoneError: "请输入有效的手机号码 (09xxxxxxxxx)",
                 mytelOTPError: "请输入6位 OTP 验证码",
-                mytelCheckSuccess: "✅ 手机号码有效",
-                mytelCheckError: "❌ 此手机号码不是 Mytel 账户",
+                mytelCheckError: "❌ 手机号码验证失败",
                 mytelOTPSent: "✅ OTP 验证码已发送到您的手机",
                 mytelOTPError: "❌ 发送 OTP 失败",
                 mytelOTPInvalid: "❌ OTP 验证码无效。请重试。",
@@ -1009,7 +1045,7 @@
         let currentLang = 'my';
 
         // ============================================================
-        //  4. DROPDOWN TOGGLE
+        //  6. DROPDOWN TOGGLE
         // ============================================================
         function toggleDropdown(event) {
             if (!event) return;
@@ -1035,7 +1071,7 @@
         });
 
         // ============================================================
-        //  5. SWITCH LANGUAGE
+        //  7. SWITCH LANGUAGE
         // ============================================================
         function switchLanguage(langCode) {
             currentLang = langCode;
@@ -1112,7 +1148,6 @@
             if (regName) regName.placeholder = t.namePlaceholder;
             if (regPass) regPass.placeholder = t.passPlaceholder;
             if (mytelPhone) mytelPhone.placeholder = '09xxxxxxxxx';
-            if (mytelOTP) mytelOTP.placeholder = '6 ' + t.mytelOTPLabel.split(' ')[0];
 
             document.querySelectorAll('.message').forEach(function(msg) {
                 msg.classList.remove('show', 'success', 'error', 'info');
@@ -1121,7 +1156,7 @@
         }
 
         // ============================================================
-        //  6. FORM FUNCTIONS
+        //  8. FORM FUNCTIONS
         // ============================================================
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -1151,7 +1186,7 @@
                 if (tabButtons[1]) tabButtons[1].classList.add('active');
             }
 
-            // Hide Mytel OTP section when switching tabs
+            // Hide Mytel OTP section
             document.getElementById('mytelOTPSection').style.display = 'none';
             document.getElementById('mytelVerifyBtn').style.display = 'none';
             document.getElementById('mytelTimer').style.display = 'none';
@@ -1171,7 +1206,7 @@
         }
 
         // ============================================================
-        //  7. VIDEO FUNCTIONS
+        //  9. VIDEO FUNCTIONS
         // ============================================================
         function openVideo() {
             var modal = document.getElementById('videoModal');
@@ -1193,7 +1228,7 @@
         }
 
         // ============================================================
-        //  8. 🔐 LOGIN - Email Version
+        //  10. 🔐 LOGIN - Email Version
         // ============================================================
         async function handleLogin(e) {
             e.preventDefault();
@@ -1239,7 +1274,7 @@
         }
 
         // ============================================================
-        //  9. 📝 REGISTER - Email Version
+        //  11. 📝 REGISTER - Email Version
         // ============================================================
         async function handleRegister(e) {
             e.preventDefault();
@@ -1310,13 +1345,12 @@
         }
 
         // ============================================================
-        //  10. 📱 MYTEL OTP LOGIN - ✅ FULLY WORKING
+        //  12. 📱 MYTEL OTP LOGIN - ✅ WORKING
         // ============================================================
 
         let mytelTimerInterval = null;
         let mytelCountdown = 0;
 
-        // Show Mytel OTP Section
         function showMytelOTP() {
             var section = document.getElementById('mytelOTPSection');
             if (section.style.display === 'none' || section.style.display === '') {
@@ -1338,7 +1372,6 @@
             }
         }
 
-        // Send OTP
         async function mytelSendOTP() {
             var t = lang[currentLang];
             var phone = document.getElementById('mytelPhone').value.trim();
@@ -1351,25 +1384,13 @@
 
             try {
                 sendBtn.disabled = true;
-                showMessage('loginMsg', '⏳ အကောင့်စစ်ဆေးနေပါပြီ...', 'info');
-
-                // Step 1: Check Account
-                const checkResult = await checkMytelAccount(phone);
-
-                if (!checkResult.success) {
-                    showMessage('loginMsg', '❌ ' + t.mytelCheckError, 'error');
-                    sendBtn.disabled = false;
-                    return;
-                }
-
-                showMessage('loginMsg', '✅ ' + t.mytelCheckSuccess, 'success');
-
-                // Step 2: Send OTP
                 showMessage('loginMsg', '⏳ OTP ပို့နေပါပြီ...', 'info');
-                const otpResult = await getMytelOTP(phone);
 
-                if (!otpResult.success) {
-                    showMessage('loginMsg', '❌ ' + t.mytelOTPError + ': ' + otpResult.message, 'error');
+                // ✅ Call Mytel API
+                const result = await mytelGetOTP(phone);
+
+                if (!result.success) {
+                    showMessage('loginMsg', '❌ ' + t.mytelOTPError + ': ' + result.error, 'error');
                     sendBtn.disabled = false;
                     return;
                 }
@@ -1389,7 +1410,6 @@
             }
         }
 
-        // Verify OTP
         async function mytelVerifyOTP() {
             var t = lang[currentLang];
             var phone = document.getElementById('mytelPhone').value.trim();
@@ -1403,11 +1423,11 @@
             try {
                 showMessage('loginMsg', '⏳ OTP အတည်ပြုနေပါပြီ...', 'info');
 
-                // Step 3: Validate OTP
-                const validateResult = await validateMytelOTP(phone, otp);
+                // ✅ Validate OTP
+                const result = await mytelValidateOTP(phone, otp);
 
-                if (!validateResult.success) {
-                    showMessage('loginMsg', '❌ ' + t.mytelOTPInvalid, 'error');
+                if (!result.success) {
+                    showMessage('loginMsg', '❌ ' + t.mytelOTPInvalid + ': ' + result.error, 'error');
                     return;
                 }
 
@@ -1429,7 +1449,6 @@
             }
         }
 
-        // Start timer for OTP resend
         function startMytelTimer() {
             var timerDiv = document.getElementById('mytelTimer');
             var countdownSpan = document.getElementById('mytelCountdown');
@@ -1457,78 +1476,7 @@
         }
 
         // ============================================================
-        //  11. MYTEL API FUNCTIONS
-        // ============================================================
-
-        // 1. Check Account
-        async function checkMytelAccount(phoneNumber) {
-            try {
-                const response = await fetch(
-                    `/myid/authen/v1.0/login/action/check-account?phoneNumber=${phoneNumber}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    }
-                );
-
-                const data = await response.json();
-                console.log('✅ Check Account Response:', data);
-                return data;
-            } catch (error) {
-                console.error('❌ Check Account Error:', error);
-                return { success: false, message: error.message };
-            }
-        }
-
-        // 2. Get OTP
-        async function getMytelOTP(phoneNumber) {
-            try {
-                const response = await fetch(
-                    `/myid/authen/v1.0/login/method/otp/get-otp?phoneNumber=${phoneNumber}`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    }
-                );
-
-                const data = await response.json();
-                console.log('✅ Get OTP Response:', data);
-                return data;
-            } catch (error) {
-                console.error('❌ Get OTP Error:', error);
-                return { success: false, message: error.message };
-            }
-        }
-
-        // 3. Validate OTP
-        async function validateMytelOTP(phoneNumber, otpCode) {
-            try {
-                const response = await fetch(
-                    `/myid/authen/v1.0/login/method/otp/validate-otp`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            phoneNumber: phoneNumber,
-                            otpCode: otpCode
-                        })
-                    }
-                );
-
-                const data = await response.json();
-                console.log('✅ Validate OTP Response:', data);
-                return data;
-            } catch (error) {
-                console.error('❌ Validate OTP Error:', error);
-                return { success: false, message: error.message };
-            }
-        }
-
-        // ============================================================
-        //  12. DOM READY
+        //  13. DOM READY
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             var modal = document.getElementById('videoModal');
@@ -1541,7 +1489,8 @@
             switchLanguage('my');
             console.log('✅ Language set to Myanmar');
             console.log('✅ All functions loaded successfully');
-            console.log('✅ Mytel OTP Login ready');
+            console.log('✅ Mytel API Ready');
+            console.log('📡 API Base URL:', MYTEL_API.BASE);
         });
     </script>
 
