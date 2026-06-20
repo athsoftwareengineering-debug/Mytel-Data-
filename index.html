@@ -766,20 +766,20 @@
         console.log('✅ Supabase client created');
 
         // ============================================================
-        //  2. GOOGLE LOGIN - ✅ FULLY WORKING
+        //  2. GOOGLE LOGIN - ✅ FULLY WORKING (FIXED)
         // ============================================================
         async function signInWithGoogle() {
             try {
                 showMessage('loginMsg', '⏳ Google သို့ ပြန်ညွှန်းနေပါပြီ...', '');
 
-                // ✅ Get current origin for redirect
+                // ✅ Get current origin for redirect (တစ်ခါပဲ သတ်မှတ်ပါ)
                 const redirectUrl = window.location.origin;
                 console.log('📡 Redirect URL:', redirectUrl);
 
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: redirectUrl,
+                        redirectTo: redirectUrl,  // ✅ ဒီမှာ ထည့်ပါ
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'consent',
