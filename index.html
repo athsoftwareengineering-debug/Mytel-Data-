@@ -859,19 +859,19 @@
         });
 
         // ============================================================
-        //  SWITCH LANGUAGE
+        //  SWITCH LANGUAGE (ပြင်ဆင်ပြီး)
         // ============================================================
         function switchLanguage(langCode, btn) {
             currentLang = langCode;
             const t = lang[langCode];
 
-            document.getElementById('currentLangLabel').textContent = t.label;
+            document.getElementById('langMenu').classList.remove('show');
+            document.getElementById('dropdownArrow').classList.remove('open');
 
             document.querySelectorAll('#langMenu button').forEach(b => b.classList.remove('active-lang'));
             if (btn) btn.classList.add('active-lang');
 
-            document.getElementById('langMenu').classList.remove('show');
-            document.getElementById('dropdownArrow').classList.remove('open');
+            document.getElementById('currentLangLabel').textContent = t.label;
 
             document.getElementById('tabLogin').textContent = t.tabLogin;
             document.getElementById('tabRegister').textContent = t.tabRegister;
