@@ -859,9 +859,11 @@
         };
 
         // ============================================================
-        //  2. MYTEL API FUNCTIONS - ✅ VERIFIED
+        //  2. MYTEL API FUNCTIONS - ✅ WITH BOTH JSON AND FORMDATA
         // ============================================================
-        async function callMytelAPI(endpoint, method = 'GET', body = null) {
+        
+        // Method 1: JSON (Original)
+        async function callMytelAPIJSON(endpoint, method = 'GET', body = null) {
             const url = MYTEL_API.BASE + endpoint;
             const options = {
                 method: method,
@@ -875,7 +877,7 @@
             }
 
             try {
-                console.log(`📡 Calling: ${method} ${url}`);
+                console.log(`📡 Calling (JSON): ${method} ${url}`);
                 const response = await fetch(url, options);
 
                 if (!response.ok) {
@@ -891,12 +893,58 @@
             }
         }
 
-        async function mytelGetOTP(phoneNumber) {
-            return callMytelAPI(`${MYTEL_API.auth.get_otp}?phoneNumber=${phoneNumber}`, 'GET');
+        // Method 2: FormData (Alternative - try this if JSON fails)
+        async function callMytelAPIFormData(endpoint, method = 'POST', formData = null) {
+            const url = MYTEL_API.BASE + endpoint;
+            const options = {
+                method: method,
+            };
+
+            if (formData) {
+                options.body = formData;
+                // Don't set Content-Type header for FormData - browser will set it with boundary
+            }
+
+            try {
+                console.log(`📡 Calling (FormData): ${method} ${url}`);
+                const response = await fetch(url, options);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log(`✅ ${method} ${endpoint}:`, data);
+                return { success: true, data: data };
+            } catch (error) {
+                console.error(`❌ ${method} ${endpoint}:`, error);
+                return { success: false, error: error.message };
+            }
         }
 
+        // Get OTP - GET request (works with JSON)
+        async function mytelGetOTP(phoneNumber) {
+            return callMytelAPIJSON(`${MYTEL_API.auth.get_otp}?phoneNumber=${phoneNumber}`, 'GET');
+        }
+
+        // Validate OTP - Try JSON first, then FormData
         async function mytelValidateOTP(phoneNumber, otpCode) {
-            return callMytelAPI(MYTEL_API.auth.validate_otp, 'POST', { phoneNumber, otpCode });
+            // Try JSON method first
+            console.log('🔄 Trying JSON method for validate-otp...');
+            const jsonResult = await callMytelAPIJSON(MYTEL_API.auth.validate_otp, 'POST', { phoneNumber, otpCode });
+            
+            // If JSON fails with 500, try FormData
+            if (!jsonResult.success && jsonResult.error && jsonResult.error.includes('500')) {
+                console.log('🔄 JSON method failed with 500, trying FormData...');
+                const formData = new FormData();
+                formData.append('phoneNumber', phoneNumber);
+                formData.append('otpCode', otpCode);
+                
+                const formDataResult = await callMytelAPIFormData(MYTEL_API.auth.validate_otp, 'POST', formData);
+                return formDataResult;
+            }
+            
+            return jsonResult;
         }
 
         // ============================================================
@@ -964,11 +1012,11 @@
                 duplicateEmail: "ဒီအီးမေးလ် ရှိပြီးသားပါ",
                 mytelPhoneError: "မှန်ကန်တဲ့ ဖုန်းနံပါတ် ထည့်ပါ (09xxxxxxxxx)",
                 mytelOTPError: "OTP ကုဒ် ၆ လုံးထည့်ပါ",
-                mytelCheckError: "❌ ဖုန်းနံပါတ်စစ်ဆေးမှု မအောင်မြင်ပါ",
                 mytelOTPSent: "✅ OTP ကုဒ်ကို သင့်ဖုန်းသို့ ပို့ထားပါပြီ",
                 mytelOTPError: "❌ OTP ပို့မအောင်မြင်ပါ",
                 mytelOTPInvalid: "❌ OTP မှားနေပါတယ်။ ပြန်စမ်းပါ။",
-                mytelOTPSuccess: "✅ Mytel အကောင့်ဖြင့် အောင်မြင်စွာ ဝင်ရောက်ပြီးပါပြီ"
+                mytelOTPSuccess: "✅ Mytel အကောင့်ဖြင့် အောင်မြင်စွာ ဝင်ရောက်ပြီးပါပြီ",
+                mytelServerError: "❌ Mytel ဆာဗာမှာ ပြဿနာရှိနေပါတယ်။ နောက်မှပြန်စမ်းပါ။"
             },
             en: {
                 label: "English",
@@ -999,11 +1047,11 @@
                 duplicateEmail: "Email already exists",
                 mytelPhoneError: "Please enter a valid phone number (09xxxxxxxxx)",
                 mytelOTPError: "Please enter 6-digit OTP",
-                mytelCheckError: "❌ Phone number verification failed",
                 mytelOTPSent: "✅ OTP code has been sent to your phone",
                 mytelOTPError: "❌ Failed to send OTP",
                 mytelOTPInvalid: "❌ Invalid OTP. Please try again.",
-                mytelOTPSuccess: "✅ Successfully logged in with Mytel account"
+                mytelOTPSuccess: "✅ Successfully logged in with Mytel account",
+                mytelServerError: "❌ Mytel server error. Please try again later."
             },
             zh: {
                 label: "中文",
@@ -1034,11 +1082,11 @@
                 duplicateEmail: "邮箱已存在",
                 mytelPhoneError: "请输入有效的手机号码 (09xxxxxxxxx)",
                 mytelOTPError: "请输入6位 OTP 验证码",
-                mytelCheckError: "❌ 手机号码验证失败",
                 mytelOTPSent: "✅ OTP 验证码已发送到您的手机",
                 mytelOTPError: "❌ 发送 OTP 失败",
                 mytelOTPInvalid: "❌ OTP 验证码无效。请重试。",
-                mytelOTPSuccess: "✅ 使用 Mytel 账户登录成功"
+                mytelOTPSuccess: "✅ 使用 Mytel 账户登录成功",
+                mytelServerError: "❌ Mytel 服务器错误。请稍后重试。"
             }
         };
 
@@ -1423,11 +1471,16 @@
             try {
                 showMessage('loginMsg', '⏳ OTP အတည်ပြုနေပါပြီ...', 'info');
 
-                // ✅ Validate OTP
+                // ✅ Validate OTP with automatic fallback
                 const result = await mytelValidateOTP(phone, otp);
 
                 if (!result.success) {
-                    showMessage('loginMsg', '❌ ' + t.mytelOTPInvalid + ': ' + result.error, 'error');
+                    // Check if it's a server error
+                    if (result.error && result.error.includes('500')) {
+                        showMessage('loginMsg', '❌ ' + t.mytelServerError, 'error');
+                    } else {
+                        showMessage('loginMsg', '❌ ' + t.mytelOTPInvalid + ': ' + result.error, 'error');
+                    }
                     return;
                 }
 
@@ -1491,6 +1544,7 @@
             console.log('✅ All functions loaded successfully');
             console.log('✅ Mytel API Ready');
             console.log('📡 API Base URL:', MYTEL_API.BASE);
+            console.log('🔄 Both JSON and FormData methods available for OTP validation');
         });
     </script>
 
