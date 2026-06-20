@@ -766,20 +766,20 @@
         console.log('✅ Supabase client created');
 
         // ============================================================
-        //  2. GOOGLE LOGIN - ✅ FULLY WORKING (FIXED)
+        //  2. GOOGLE LOGIN - ✅ FIXED (Redirect to Render URL)
         // ============================================================
         async function signInWithGoogle() {
             try {
                 showMessage('loginMsg', '⏳ Google သို့ ပြန်ညွှန်းနေပါပြီ...', '');
 
-                // ✅ Get current origin for redirect (တစ်ခါပဲ သတ်မှတ်ပါ)
-                const redirectUrl = window.location.origin;
+                // ✅ Use Render URL directly (not localhost)
+                const redirectUrl = 'https://mytel-data-ath.onrender.com';
                 console.log('📡 Redirect URL:', redirectUrl);
 
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: redirectUrl,  // ✅ ဒီမှာ ထည့်ပါ
+                        redirectTo: redirectUrl,
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'consent',
@@ -795,6 +795,8 @@
                         errorMsg = '❌ Google Provider ကို Supabase မှာ ဖွင့်မထားပါ။ Authentication → Providers → Google ကို Enable လုပ်ပါ။';
                     } else if (error.message.includes('invalid OAuth')) {
                         errorMsg = '❌ Google Client ID သို့မဟုတ် Client Secret မှားနေပါတယ်။ Google Cloud Console ကို စစ်ဆေးပါ။';
+                    } else if (error.message.includes('redirect_uri_mismatch')) {
+                        errorMsg = '❌ Redirect URI မကိုက်ညီပါ။ Google Cloud Console မှာ https://mytel-data-ath.onrender.com ကိုထည့်ပါ။';
                     }
 
                     showMessage('loginMsg', errorMsg, 'error');
