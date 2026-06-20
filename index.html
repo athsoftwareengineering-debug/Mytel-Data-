@@ -725,12 +725,16 @@
 
     <script>
         // ============================================================
-        //  SUPABASE CONFIG
+        //  SUPABASE CONFIG - FIXED: Don't redeclare, use existing global
         // ============================================================
         const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_SQLVLvSCAWTNzw-oB4PXKQ_JtZ92xiQ';
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Use the existing global supabase object instead of redeclaring
+        // The script tag loads supabase globally, so we just use it directly
+        // No need for: const supabase = supabase.createClient(...)
+        // Instead, call it on the existing global object
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ============================================================
         //  TOGGLE PASSWORD
@@ -844,18 +848,27 @@
         //  DROPDOWN TOGGLE
         // ============================================================
         function toggleDropdown(event) {
+            if (!event) return;
             event.stopPropagation();
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
-            menu.classList.toggle('show');
-            arrow.classList.toggle('open');
+            if (menu) {
+                menu.classList.toggle('show');
+            }
+            if (arrow) {
+                arrow.classList.toggle('open');
+            }
         }
 
-        document.addEventListener('click', function() {
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
-            menu.classList.remove('show');
-            arrow.classList.remove('open');
+            const dropdown = document.querySelector('.lang-dropdown');
+            if (dropdown && !dropdown.contains(event.target)) {
+                if (menu) menu.classList.remove('show');
+                if (arrow) arrow.classList.remove('open');
+            }
         });
 
         // ============================================================
@@ -866,57 +879,75 @@
             const t = lang[langCode];
 
             // Dropdown ကိုပိတ်မယ်
-            document.getElementById('langMenu').classList.remove('show');
-            document.getElementById('dropdownArrow').classList.remove('open');
+            const menu = document.getElementById('langMenu');
+            const arrow = document.getElementById('dropdownArrow');
+            if (menu) menu.classList.remove('show');
+            if (arrow) arrow.classList.remove('open');
 
             // Dropdown ထဲက active state ပြောင်းမယ်
             document.querySelectorAll('#langMenu button').forEach(b => {
                 b.classList.remove('active-lang');
             });
             document.querySelectorAll('#langMenu button').forEach(b => {
-                if (b.querySelector('.lang-name').textContent === t.label ||
-                    b.querySelector('.lang-name').textContent === t.label) {
+                const nameEl = b.querySelector('.lang-name');
+                if (nameEl && nameEl.textContent === t.label) {
                     b.classList.add('active-lang');
                 }
             });
 
             // ခေါင်းစဉ်ပြောင်းမယ်
-            document.getElementById('currentLangLabel').textContent = t.label;
+            const labelEl = document.getElementById('currentLangLabel');
+            if (labelEl) labelEl.textContent = t.label;
 
             // ---- စာသားအကုန်ပြောင်းမယ် ----
-            document.getElementById('tabLogin').textContent = t.tabLogin;
-            document.getElementById('tabRegister').textContent = t.tabRegister;
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+            if (tabLogin) tabLogin.textContent = t.tabLogin;
+            if (tabRegister) tabRegister.textContent = t.tabRegister;
 
-            document.getElementById('labelLoginPhone').innerHTML =
-                `<i class="fas fa-phone"></i> ${t.labelLoginPhone}`;
-            document.getElementById('labelLoginPass').innerHTML =
-                `<i class="fas fa-lock"></i> ${t.labelLoginPass}`;
-            document.getElementById('labelRememberMe').textContent = t.labelRememberMe;
-            document.querySelector('#btnLogin span').textContent = t.btnLogin;
+            const labelLoginPhone = document.getElementById('labelLoginPhone');
+            const labelLoginPass = document.getElementById('labelLoginPass');
+            const labelRememberMe = document.getElementById('labelRememberMe');
+            const btnLoginSpan = document.querySelector('#btnLogin span');
+            if (labelLoginPhone) labelLoginPhone.innerHTML = `<i class="fas fa-phone"></i> ${t.labelLoginPhone}`;
+            if (labelLoginPass) labelLoginPass.innerHTML = `<i class="fas fa-lock"></i> ${t.labelLoginPass}`;
+            if (labelRememberMe) labelRememberMe.textContent = t.labelRememberMe;
+            if (btnLoginSpan) btnLoginSpan.textContent = t.btnLogin;
 
-            document.getElementById('labelRegPhone').innerHTML =
-                `<i class="fas fa-phone"></i> ${t.labelRegPhone}`;
-            document.getElementById('labelRegName').innerHTML =
-                `<i class="fas fa-user"></i> ${t.labelRegName}`;
-            document.getElementById('labelRegPass').innerHTML =
-                `<i class="fas fa-lock"></i> ${t.labelRegPass}`;
-            document.getElementById('hintPhone').innerHTML =
-                `<i class="fas fa-info-circle"></i> ${t.hintPhone}`;
-            document.getElementById('hintPass').innerHTML =
-                `<i class="fas fa-info-circle"></i> ${t.hintPass}`;
-            document.querySelector('#btnRegister span').textContent = t.btnRegister;
+            const labelRegPhone = document.getElementById('labelRegPhone');
+            const labelRegName = document.getElementById('labelRegName');
+            const labelRegPass = document.getElementById('labelRegPass');
+            const hintPhone = document.getElementById('hintPhone');
+            const hintPass = document.getElementById('hintPass');
+            const btnRegisterSpan = document.querySelector('#btnRegister span');
+            if (labelRegPhone) labelRegPhone.innerHTML = `<i class="fas fa-phone"></i> ${t.labelRegPhone}`;
+            if (labelRegName) labelRegName.innerHTML = `<i class="fas fa-user"></i> ${t.labelRegName}`;
+            if (labelRegPass) labelRegPass.innerHTML = `<i class="fas fa-lock"></i> ${t.labelRegPass}`;
+            if (hintPhone) hintPhone.innerHTML = `<i class="fas fa-info-circle"></i> ${t.hintPhone}`;
+            if (hintPass) hintPass.innerHTML = `<i class="fas fa-info-circle"></i> ${t.hintPass}`;
+            if (btnRegisterSpan) btnRegisterSpan.textContent = t.btnRegister;
 
-            document.getElementById('footerText').innerHTML =
-                `<i class="fas fa-shield-alt"></i> <span>${t.footer}</span><span class="footer-brand">${t.copyright}</span>`;
-            document.getElementById('videoTitle').innerHTML =
-                `<i class="fas fa-play-circle"></i> ${t.videoTitle}`;
-            document.querySelector('#videoFooter span').textContent = t.videoFooter;
+            const footerText = document.getElementById('footerText');
+            if (footerText) {
+                footerText.innerHTML =
+                    `<i class="fas fa-shield-alt"></i> <span>${t.footer}</span><span class="footer-brand">${t.copyright}</span>`;
+            }
 
-            document.getElementById('loginPhone').placeholder = '09xxxxxxxxx';
-            document.getElementById('loginPass').placeholder = '••••••••';
-            document.getElementById('regPhone').placeholder = '09xxxxxxxxx';
-            document.getElementById('regName').placeholder = t.namePlaceholder;
-            document.getElementById('regPass').placeholder = t.passPlaceholder;
+            const videoTitle = document.getElementById('videoTitle');
+            const videoFooterSpan = document.querySelector('#videoFooter span');
+            if (videoTitle) videoTitle.innerHTML = `<i class="fas fa-play-circle"></i> ${t.videoTitle}`;
+            if (videoFooterSpan) videoFooterSpan.textContent = t.videoFooter;
+
+            const loginPhone = document.getElementById('loginPhone');
+            const loginPass = document.getElementById('loginPass');
+            const regPhone = document.getElementById('regPhone');
+            const regName = document.getElementById('regName');
+            const regPass = document.getElementById('regPass');
+            if (loginPhone) loginPhone.placeholder = '09xxxxxxxxx';
+            if (loginPass) loginPass.placeholder = '••••••••';
+            if (regPhone) regPhone.placeholder = '09xxxxxxxxx';
+            if (regName) regName.placeholder = t.namePlaceholder;
+            if (regPass) regPass.placeholder = t.passPlaceholder;
 
             document.querySelectorAll('.message').forEach(msg => {
                 msg.classList.remove('show', 'success', 'error');
@@ -933,16 +964,20 @@
         }
 
         function showForm(type) {
-            document.getElementById('loginForm').classList.remove('active');
-            document.getElementById('registerForm').classList.remove('active');
-            document.querySelectorAll('.tab button').forEach(btn => btn.classList.remove('active'));
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabButtons = document.querySelectorAll('.tab button');
+
+            if (loginForm) loginForm.classList.remove('active');
+            if (registerForm) registerForm.classList.remove('active');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
 
             if (type === 'login') {
-                document.getElementById('loginForm').classList.add('active');
-                document.querySelector('.tab button:first-child').classList.add('active');
+                if (loginForm) loginForm.classList.add('active');
+                if (tabButtons[0]) tabButtons[0].classList.add('active');
             } else {
-                document.getElementById('registerForm').classList.add('active');
-                document.querySelector('.tab button:last-child').classList.add('active');
+                if (registerForm) registerForm.classList.add('active');
+                if (tabButtons[1]) tabButtons[1].classList.add('active');
             }
 
             document.querySelectorAll('.message').forEach(msg => {
@@ -953,8 +988,10 @@
 
         function showMessage(elementId, text, type) {
             const el = document.getElementById(elementId);
-            el.textContent = text;
-            el.className = 'message show ' + type;
+            if (el) {
+                el.textContent = text;
+                el.className = 'message show ' + type;
+            }
         }
 
         // ============================================================
@@ -963,20 +1000,28 @@
         function openVideo() {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('introVideo');
-            modal.classList.add('show');
-            video.currentTime = 0;
-            video.play().catch(err => console.log('Auto-play blocked:', err));
+            if (modal) modal.classList.add('show');
+            if (video) {
+                video.currentTime = 0;
+                video.play().catch(err => console.log('Auto-play blocked:', err));
+            }
         }
 
         function closeVideo() {
             const modal = document.getElementById('videoModal');
             const video = document.getElementById('introVideo');
-            video.pause();
-            modal.classList.remove('show');
+            if (video) video.pause();
+            if (modal) modal.classList.remove('show');
         }
 
-        document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === this) closeVideo();
+        // Close video modal when clicking overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('videoModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) closeVideo();
+                });
+            }
         });
 
         // ============================================================
@@ -994,7 +1039,7 @@
             }
 
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('users')
                     .select('id, name, password')
                     .eq('phone', phone)
@@ -1042,7 +1087,7 @@
             }
 
             try {
-                const { data, error } = await supabase
+                const { data, error } = await supabaseClient
                     .from('users')
                     .insert([{ phone: phone, name: name, password: password }]);
 
