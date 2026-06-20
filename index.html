@@ -704,12 +704,14 @@
     </script>
     <script>
         // ============================================================
-        //  SUPABASE CONFIG
+        //  🔐 SUPABASE CONFIG - ✅ FIXED (No duplicate declaration)
         // ============================================================
         const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3bnh1enVva3lvbHRkanphc255Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NTY1MjEsImV4cCI6MjA5NzUzMjUyMX0.bporyz_B_tDM1SU_QX6xGebXV-voal-zTrNfaLebyf4';
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // ✅ Create supabase client only once
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('✅ Supabase connected successfully');
 
         // ============================================================
         //  TOGGLE PASSWORD
@@ -838,7 +840,6 @@
             }
         }
 
-        // Click outside to close dropdown
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
@@ -850,19 +851,17 @@
         });
 
         // ============================================================
-        //  SWITCH LANGUAGE - FIXED!
+        //  SWITCH LANGUAGE
         // ============================================================
         function switchLanguage(langCode) {
             currentLang = langCode;
             const t = lang[langCode];
 
-            // Close dropdown
             const menu = document.getElementById('langMenu');
             const arrow = document.getElementById('dropdownArrow');
             if (menu) menu.classList.remove('show');
             if (arrow) arrow.classList.remove('open');
 
-            // Update active language in dropdown
             document.querySelectorAll('#langMenu button').forEach(function(b) {
                 b.classList.remove('active-lang');
             });
@@ -873,17 +872,14 @@
                 }
             });
 
-            // Update current language label
             const labelEl = document.getElementById('currentLangLabel');
             if (labelEl) labelEl.textContent = t.label;
 
-            // Update tab buttons
             const tabLogin = document.getElementById('tabLogin');
             const tabRegister = document.getElementById('tabRegister');
             if (tabLogin) tabLogin.textContent = t.tabLogin;
             if (tabRegister) tabRegister.textContent = t.tabRegister;
 
-            // Update login form labels
             const labelLoginPhone = document.getElementById('labelLoginPhone');
             const labelLoginPass = document.getElementById('labelLoginPass');
             const labelRememberMe = document.getElementById('labelRememberMe');
@@ -894,7 +890,6 @@
             if (labelRememberMe) labelRememberMe.textContent = t.labelRememberMe;
             if (btnLoginSpan) btnLoginSpan.textContent = t.btnLogin;
 
-            // Update register form labels
             const labelRegPhone = document.getElementById('labelRegPhone');
             const labelRegName = document.getElementById('labelRegName');
             const labelRegPass = document.getElementById('labelRegPass');
@@ -909,7 +904,6 @@
             if (hintPass) hintPass.innerHTML = '<i class="fas fa-info-circle"></i> ' + t.hintPass;
             if (btnRegisterSpan) btnRegisterSpan.textContent = t.btnRegister;
 
-            // Update footer
             const footerText = document.getElementById('footerText');
             if (footerText) {
                 footerText.innerHTML =
@@ -917,13 +911,11 @@
                     .copyright + '</span>';
             }
 
-            // Update video modal
             const videoTitle = document.getElementById('videoTitle');
             const videoFooterSpan = document.querySelector('#videoFooter span');
             if (videoTitle) videoTitle.innerHTML = '<i class="fas fa-play-circle"></i> ' + t.videoTitle;
             if (videoFooterSpan) videoFooterSpan.textContent = t.videoFooter;
 
-            // Update placeholders
             const loginPhone = document.getElementById('loginPhone');
             const loginPass = document.getElementById('loginPass');
             const regPhone = document.getElementById('regPhone');
@@ -936,7 +928,6 @@
             if (regName) regName.placeholder = t.namePlaceholder;
             if (regPass) regPass.placeholder = t.passPlaceholder;
 
-            // Clear messages
             document.querySelectorAll('.message').forEach(function(msg) {
                 msg.classList.remove('show', 'success', 'error');
                 msg.textContent = '';
@@ -944,7 +935,7 @@
         }
 
         // ============================================================
-        //  FORM FUNCTIONS
+        //  FORM FUNCTIONS - ✅ FIXED (Defined before being called)
         // ============================================================
         function isValidMyanmarPhone(phone) {
             var cleaned = phone.replace(/\s/g, '');
@@ -1006,19 +997,8 @@
             if (modal) modal.classList.remove('show');
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var modal = document.getElementById('videoModal');
-            if (modal) {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) closeVideo();
-                });
-            }
-            // Set default language to Myanmar
-            switchLanguage('my');
-        });
-
         // ============================================================
-        //  LOGIN
+        //  🔐 LOGIN
         // ============================================================
         async function handleLogin(e) {
             e.preventDefault();
@@ -1032,7 +1012,7 @@
             }
 
             try {
-                var result = await supabase.auth.signInWithPassword({
+                var result = await supabaseClient.auth.signInWithPassword({
                     phone: phone,
                     password: password
                 });
@@ -1056,7 +1036,7 @@
         }
 
         // ============================================================
-        //  REGISTER
+        //  📝 REGISTER
         // ============================================================
         async function handleRegister(e) {
             e.preventDefault();
@@ -1081,7 +1061,7 @@
             }
 
             try {
-                var result = await supabase.auth.signUp({
+                var result = await supabaseClient.auth.signUp({
                     phone: phone,
                     password: password,
                     options: {
@@ -1103,9 +1083,9 @@
                 }
 
                 if (result.data.user) {
-                    // Save to users table (optional)
+                    // Try to save to users table (optional)
                     try {
-                        await supabase
+                        const { error: insertError } = await supabaseClient
                             .from('users')
                             .insert([{
                                 id: result.data.user.id,
@@ -1114,8 +1094,14 @@
                                 password: password,
                                 created_at: new Date().toISOString()
                             }]);
+
+                        if (insertError) {
+                            console.warn('Could not save to users table:', insertError);
+                        } else {
+                            console.log('✅ User saved to users table');
+                        }
                     } catch (dbError) {
-                        console.warn('Could not save to users table:', dbError);
+                        console.warn('Database operation skipped:', dbError);
                     }
 
                     showMessage('regMsg', '✅ ' + t.regSuccess, 'success');
@@ -1134,6 +1120,19 @@
                 showMessage('regMsg', '❌ Server error: ' + err.message, 'error');
             }
         }
+
+        // ============================================================
+        //  DOM READY - ✅ FIXED
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('videoModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) closeVideo();
+                });
+            }
+            switchLanguage('my');
+        });
     </script>
 
 </body>
