@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ATH DIGITAL HUB - Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -575,471 +576,480 @@
 </head>
 <body>
 
-<div class="container">
-    <!-- ===== GLOBAL LANGUAGE DROPDOWN (Top Right) ===== -->
-    <div class="lang-dropdown">
-        <button class="dropdown-btn" onclick="toggleDropdown(event)">
-            <i class="fas fa-globe"></i>
-            <span class="lang-label" id="currentLangLabel">မြန်မာ</span>
-            <span class="arrow" id="dropdownArrow">▼</span>
-        </button>
-        <div class="dropdown-menu" id="langMenu">
-            <button onclick="switchLanguage('my', this)" class="active-lang">
-                <span class="flag">🇲🇲</span>
-                <span class="lang-name">မြန်မာ</span>
-                <span class="check"><i class="fas fa-check"></i></span>
+    <div class="container">
+        <!-- ===== GLOBAL LANGUAGE DROPDOWN (Top Right) ===== -->
+        <div class="lang-dropdown">
+            <button class="dropdown-btn" onclick="toggleDropdown(event)">
+                <i class="fas fa-globe"></i>
+                <span class="lang-label" id="currentLangLabel">မြန်မာ</span>
+                <span class="arrow" id="dropdownArrow">▼</span>
             </button>
-            <button onclick="switchLanguage('en', this)">
-                <span class="flag">🇬🇧</span>
-                <span class="lang-name">English</span>
-                <span class="check"><i class="fas fa-check"></i></span>
-            </button>
-            <button onclick="switchLanguage('zh', this)">
-                <span class="flag">🇨🇳</span>
-                <span class="lang-name">中文</span>
-                <span class="check"><i class="fas fa-check"></i></span>
-            </button>
+            <div class="dropdown-menu" id="langMenu">
+                <button onclick="switchLanguage('my', this)" class="active-lang">
+                    <span class="flag">🇲🇲</span>
+                    <span class="lang-name">မြန်မာ</span>
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </button>
+                <button onclick="switchLanguage('en', this)">
+                    <span class="flag">🇬🇧</span>
+                    <span class="lang-name">English</span>
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </button>
+                <button onclick="switchLanguage('zh', this)">
+                    <span class="flag">🇨🇳</span>
+                    <span class="lang-name">中文</span>
+                    <span class="check"><i class="fas fa-check"></i></span>
+                </button>
+            </div>
         </div>
-    </div>
 
-    <!-- ===== BRAND HEADER ===== -->
-    <div class="brand">
-        <div class="logo">
-            <h1>ATH DIGITAL HUB</h1>
+        <!-- ===== BRAND HEADER ===== -->
+        <div class="brand">
+            <div class="logo">
+                <h1>ATH DIGITAL HUB</h1>
+            </div>
+            <div class="tagline">သင့်ယုံကြည်ရာ ဒစ်ဂျစ်တယ်မိတ်ဖက်</div>
         </div>
-        <div class="tagline">သင့်ယုံကြည်ရာ ဒစ်ဂျစ်တယ်မိတ်ဖက်</div>
-    </div>
 
-    <!-- ===== TAB ===== -->
-    <div class="tab">
-        <button class="active" onclick="showForm('login')">
-            <i class="fas fa-sign-in-alt"></i> <span id="tabLogin">ဝင်မည်</span>
-        </button>
-        <button onclick="showForm('register')">
-            <i class="fas fa-user-plus"></i> <span id="tabRegister">မှတ်ပုံတင်မည်</span>
-        </button>
-    </div>
-
-    <!-- Login Form -->
-    <div id="loginForm" class="form active">
-        <form onsubmit="handleLogin(event)">
-            <div class="input-group">
-                <label id="labelLoginPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-phone-alt"></i>
-                    <input type="tel" id="loginPhone" placeholder="09xxxxxxxxx" required>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label id="labelLoginPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-key"></i>
-                    <input type="password" id="loginPass" placeholder="••••••••" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword('loginPass', this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- ===== REMEMBER ME CHECKBOX ===== -->
-            <div class="remember-me">
-                <input type="checkbox" id="rememberMe">
-                <label for="rememberMe" id="labelRememberMe">မှတ်ထားမည်</label>
-            </div>
-
-            <button type="submit" class="btn-submit" id="btnLogin">
-                <i class="fas fa-arrow-right"></i> <span>ဝင်မည်</span>
+        <!-- ===== TAB ===== -->
+        <div class="tab">
+            <button class="active" onclick="showForm('login')">
+                <i class="fas fa-sign-in-alt"></i> <span id="tabLogin">ဝင်မည်</span>
             </button>
-        </form>
-        <div id="loginMsg" class="message"></div>
-    </div>
-
-    <!-- Register Form -->
-    <div id="registerForm" class="form">
-        <form onsubmit="handleRegister(event)">
-            <div class="input-group">
-                <label id="labelRegPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-phone-alt"></i>
-                    <input type="tel" id="regPhone" placeholder="09xxxxxxxxx" required>
-                </div>
-                <div class="hint" id="hintPhone"><i class="fas fa-info-circle"></i> 09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး</div>
-            </div>
-
-            <div class="input-group">
-                <label id="labelRegName"><i class="fas fa-user"></i> နာမည်</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-user-circle"></i>
-                    <input type="text" id="regName" placeholder="သင့်နာမည်" required>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label id="labelRegPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-key"></i>
-                    <input type="password" id="regPass" placeholder="အနည်းဆုံး ၆ လုံး" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword('regPass', this)">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-                <div class="hint" id="hintPass"><i class="fas fa-info-circle"></i> အနည်းဆုံး ၆ လုံးထည့်ပါ</div>
-            </div>
-
-            <button type="submit" class="btn-submit" id="btnRegister">
-                <i class="fas fa-user-plus"></i> <span>မှတ်ပုံတင်မည်</span>
-            </button>
-        </form>
-        <div id="regMsg" class="message"></div>
-    </div>
-
-    <!-- ===== FOOTER ===== -->
-    <div class="footer" id="footerText">
-        <i class="fas fa-shield-alt"></i> <span>သင့်ဒေတာကို လုံခြုံစွာ သိမ်းဆည်းထားပါသည်</span>
-        <span class="footer-brand">Copyright © 2026 AUNG THU HTWE. All Rights Reserved.</span>
-    </div>
-</div>
-
-<!-- ===== VIDEO MODAL ===== -->
-<div id="videoModal" class="video-overlay">
-    <div class="video-box">
-        <div class="video-header">
-            <h3 id="videoTitle"><i class="fas fa-play-circle"></i> ကြိုဆိုပါတယ်!</h3>
-            <button class="close-btn" onclick="closeVideo()">
-                <i class="fas fa-times"></i>
+            <button onclick="showForm('register')">
+                <i class="fas fa-user-plus"></i> <span id="tabRegister">မှတ်ပုံတင်မည်</span>
             </button>
         </div>
 
-        <video id="introVideo" controls autoplay>
-            <source src="https://files.catbox.moe/1qrqhv.mp4" type="video/mp4">
-            သင့် Browser က Video မထောက်ပံ့ပါ
-        </video>
+        <!-- Login Form -->
+        <div id="loginForm" class="form active">
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label id="labelLoginPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone-alt"></i>
+                        <input type="tel" id="loginPhone" placeholder="09xxxxxxxxx" required>
+                    </div>
+                </div>
 
-        <div class="video-footer" id="videoFooter">
-            <i class="fas fa-check-circle"></i> <span>အကောင့်ဝင်ခြင်း အောင်မြင်ပါပြီ။ ခံစားလိုက်ပါ။</span>
+                <div class="input-group">
+                    <label id="labelLoginPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="loginPass" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('loginPass', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ===== REMEMBER ME CHECKBOX ===== -->
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe" id="labelRememberMe">မှတ်ထားမည်</label>
+                </div>
+
+                <button type="submit" class="btn-submit" id="btnLogin">
+                    <i class="fas fa-arrow-right"></i> <span>ဝင်မည်</span>
+                </button>
+            </form>
+            <div id="loginMsg" class="message"></div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="form">
+            <form onsubmit="handleRegister(event)">
+                <div class="input-group">
+                    <label id="labelRegPhone"><i class="fas fa-phone"></i> ဖုန်းနံပါတ်</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone-alt"></i>
+                        <input type="tel" id="regPhone" placeholder="09xxxxxxxxx" required>
+                    </div>
+                    <div class="hint" id="hintPhone"><i class="fas fa-info-circle"></i> 09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး</div>
+                </div>
+
+                <div class="input-group">
+                    <label id="labelRegName"><i class="fas fa-user"></i> နာမည်</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-circle"></i>
+                        <input type="text" id="regName" placeholder="သင့်နာမည်" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label id="labelRegPass"><i class="fas fa-lock"></i> လျှို့ဝှက်နံပါတ်</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="regPass" placeholder="အနည်းဆုံး ၆ လုံး" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('regPass', this)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="hint" id="hintPass"><i class="fas fa-info-circle"></i> အနည်းဆုံး ၆ လုံးထည့်ပါ</div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="btnRegister">
+                    <i class="fas fa-user-plus"></i> <span>မှတ်ပုံတင်မည်</span>
+                </button>
+            </form>
+            <div id="regMsg" class="message"></div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer" id="footerText">
+            <i class="fas fa-shield-alt"></i> <span>သင့်ဒေတာကို လုံခြုံစွာ သိမ်းဆည်းထားပါသည်</span>
+            <span class="footer-brand">Copyright © 2026 AUNG THU HTWE. All Rights Reserved.</span>
         </div>
     </div>
-</div>
 
-<script>
-    // ============================================================
-    //  SUPABASE CONFIG
-    // ============================================================
-    const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_SQLVLvSCAWTNzw-oB4PXKQ_JtZ92xiQ';
+    <!-- ===== VIDEO MODAL ===== -->
+    <div id="videoModal" class="video-overlay">
+        <div class="video-box">
+            <div class="video-header">
+                <h3 id="videoTitle"><i class="fas fa-play-circle"></i> ကြိုဆိုပါတယ်!</h3>
+                <button class="close-btn" onclick="closeVideo()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
 
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            <video id="introVideo" controls autoplay>
+                <source src="https://files.catbox.moe/1qrqhv.mp4" type="video/mp4">
+                သင့် Browser က Video မထောက်ပံ့ပါ
+            </video>
 
-    // ============================================================
-    //  TOGGLE PASSWORD
-    // ============================================================
-    function togglePassword(inputId, btn) {
-        const input = document.getElementById(inputId);
-        const icon = btn.querySelector('i');
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.className = 'fas fa-eye-slash';
-        } else {
-            input.type = 'password';
-            icon.className = 'fas fa-eye';
-        }
-    }
+            <div class="video-footer" id="videoFooter">
+                <i class="fas fa-check-circle"></i> <span>အကောင့်ဝင်ခြင်း အောင်မြင်ပါပြီ။ ခံစားလိုက်ပါ။</span>
+            </div>
+        </div>
+    </div>
 
-    // ============================================================
-    //  LANGUAGE DATA
-    // ============================================================
-    const lang = {
-        my: {
-            label: "မြန်မာ",
-            tabLogin: "ဝင်မည်",
-            tabRegister: "မှတ်ပုံတင်မည်",
-            labelLoginPhone: "ဖုန်းနံပါတ်",
-            labelLoginPass: "လျှို့ဝှက်နံပါတ်",
-            labelRememberMe: "မှတ်ထားမည်",
-            btnLogin: "ဝင်မည်",
-            labelRegPhone: "ဖုန်းနံပါတ်",
-            labelRegName: "နာမည်",
-            labelRegPass: "လျှို့ဝှက်နံပါတ်",
-            hintPhone: "09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး",
-            hintPass: "အနည်းဆုံး ၆ လုံးထည့်ပါ",
-            btnRegister: "မှတ်ပုံတင်မည်",
-            footer: "သင့်ဒေတာကို လုံခြုံစွာ သိမ်းဆည်းထားပါသည်",
-            copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
-            videoTitle: "ကြိုဆိုပါတယ်!",
-            videoFooter: "အကောင့်ဝင်ခြင်း အောင်မြင်ပါပြီ။ ခံစားလိုက်ပါ။",
-            loginSuccess: "အောင်မြင်ပါတယ်",
-            loginError: "ဖုန်းနံပါတ် သို့မဟုတ် လျှို့ဝှက်နံပါတ် မှားနေတယ်",
-            phoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09xxxxxxxxx ပုံစံထည့်ပါ",
-            regSuccess: "အကောင့် အောင်မြင်စွာ ဖွင့်ပြီးပါပြီ",
-            regPhoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09 နဲ့စပြီး ၁၁ လုံးထည့်ပါ",
-            regPassError: "လျှို့ဝှက်နံပါတ် အနည်းဆုံး ၆ လုံးထည့်ပါ",
-            regNameError: "နာမည် အနည်းဆုံး ၂ လုံးထည့်ပါ",
-            namePlaceholder: "သင့်နာမည်",
-            passPlaceholder: "အနည်းဆုံး ၆ လုံး"
-        },
-        en: {
-            label: "English",
-            tabLogin: "Login",
-            tabRegister: "Register",
-            labelLoginPhone: "Phone Number",
-            labelLoginPass: "Password",
-            labelRememberMe: "Remember Me",
-            btnLogin: "Login",
-            labelRegPhone: "Phone Number",
-            labelRegName: "Name",
-            labelRegPass: "Password",
-            hintPhone: "Start with 09 and total 11 digits",
-            hintPass: "Minimum 6 characters",
-            btnRegister: "Register",
-            footer: "Your data is stored securely",
-            copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
-            videoTitle: "Welcome!",
-            videoFooter: "Login successful. Enjoy!",
-            loginSuccess: "Login successful",
-            loginError: "Invalid phone or password",
-            phoneError: "Invalid phone. Use 09xxxxxxxxx format",
-            regSuccess: "Account created successfully",
-            regPhoneError: "Invalid phone. Start with 09 and 11 digits",
-            regPassError: "Password must be at least 6 characters",
-            regNameError: "Name must be at least 2 characters",
-            namePlaceholder: "Your name",
-            passPlaceholder: "Min 6 chars"
-        },
-        zh: {
-            label: "中文",
-            tabLogin: "登录",
-            tabRegister: "注册",
-            labelLoginPhone: "手机号码",
-            labelLoginPass: "密码",
-            labelRememberMe: "记住我",
-            btnLogin: "登录",
-            labelRegPhone: "手机号码",
-            labelRegName: "姓名",
-            labelRegPass: "密码",
-            hintPhone: "以09开头，共11位数字",
-            hintPass: "至少6个字符",
-            btnRegister: "注册",
-            footer: "您的数据已安全存储",
-            copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
-            videoTitle: "欢迎！",
-            videoFooter: "登录成功。请欣赏！",
-            loginSuccess: "登录成功",
-            loginError: "手机号或密码错误",
-            phoneError: "手机号格式错误。请使用 09xxxxxxxxx 格式",
-            regSuccess: "账户创建成功",
-            regPhoneError: "手机号格式错误。以09开头，共11位",
-            regPassError: "密码至少6个字符",
-            regNameError: "姓名至少2个字符",
-            namePlaceholder: "您的姓名",
-            passPlaceholder: "至少6个字符"
-        }
-    };
+    <script>
+        // ============================================================
+        //  SUPABASE CONFIG
+        // ============================================================
+        const SUPABASE_URL = 'https://parjmzzxfuwbxzejnmhd.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_SQLVLvSCAWTNzw-oB4PXKQ_JtZ92xiQ';
 
-    let currentLang = 'my';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // ============================================================
-    //  DROPDOWN TOGGLE
-    // ============================================================
-    function toggleDropdown(event) {
-        event.stopPropagation();
-        const menu = document.getElementById('langMenu');
-        const arrow = document.getElementById('dropdownArrow');
-        menu.classList.toggle('show');
-        arrow.classList.toggle('open');
-    }
+        // ============================================================
+        //  TOGGLE PASSWORD
+        // ============================================================
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
 
-    document.addEventListener('click', function() {
-        const menu = document.getElementById('langMenu');
-        const arrow = document.getElementById('dropdownArrow');
-        menu.classList.remove('show');
-        arrow.classList.remove('open');
-    });
-
-    // ============================================================
-    //  SWITCH LANGUAGE
-    // ============================================================
-    function switchLanguage(langCode, btn) {
-        currentLang = langCode;
-        const t = lang[langCode];
-
-        document.getElementById('currentLangLabel').textContent = t.label;
-
-        document.querySelectorAll('#langMenu button').forEach(b => b.classList.remove('active-lang'));
-        if (btn) btn.classList.add('active-lang');
-
-        document.getElementById('langMenu').classList.remove('show');
-        document.getElementById('dropdownArrow').classList.remove('open');
-
-        document.getElementById('tabLogin').textContent = t.tabLogin;
-        document.getElementById('tabRegister').textContent = t.tabRegister;
-
-        document.getElementById('labelLoginPhone').innerHTML = `<i class="fas fa-phone"></i> ${t.labelLoginPhone}`;
-        document.getElementById('labelLoginPass').innerHTML = `<i class="fas fa-lock"></i> ${t.labelLoginPass}`;
-        document.getElementById('labelRememberMe').textContent = t.labelRememberMe;
-        document.querySelector('#btnLogin span').textContent = t.btnLogin;
-
-        document.getElementById('labelRegPhone').innerHTML = `<i class="fas fa-phone"></i> ${t.labelRegPhone}`;
-        document.getElementById('labelRegName').innerHTML = `<i class="fas fa-user"></i> ${t.labelRegName}`;
-        document.getElementById('labelRegPass').innerHTML = `<i class="fas fa-lock"></i> ${t.labelRegPass}`;
-        document.getElementById('hintPhone').innerHTML = `<i class="fas fa-info-circle"></i> ${t.hintPhone}`;
-        document.getElementById('hintPass').innerHTML = `<i class="fas fa-info-circle"></i> ${t.hintPass}`;
-        document.querySelector('#btnRegister span').textContent = t.btnRegister;
-
-        document.getElementById('footerText').innerHTML = `<i class="fas fa-shield-alt"></i> <span>${t.footer}</span><span class="footer-brand">${t.copyright}</span>`;
-        document.getElementById('videoTitle').innerHTML = `<i class="fas fa-play-circle"></i> ${t.videoTitle}`;
-        document.querySelector('#videoFooter span').textContent = t.videoFooter;
-
-        document.getElementById('loginPhone').placeholder = '09xxxxxxxxx';
-        document.getElementById('loginPass').placeholder = '••••••••';
-        document.getElementById('regPhone').placeholder = '09xxxxxxxxx';
-        document.getElementById('regName').placeholder = t.namePlaceholder;
-        document.getElementById('regPass').placeholder = t.passPlaceholder;
-
-        document.querySelectorAll('.message').forEach(msg => {
-            msg.classList.remove('show', 'success', 'error');
-            msg.textContent = '';
-        });
-    }
-
-    // ============================================================
-    //  FORM FUNCTIONS
-    // ============================================================
-    function isValidMyanmarPhone(phone) {
-        const cleaned = phone.replace(/\s/g, '');
-        return /^09\d{9}$/.test(cleaned);
-    }
-
-    function showForm(type) {
-        document.getElementById('loginForm').classList.remove('active');
-        document.getElementById('registerForm').classList.remove('active');
-        document.querySelectorAll('.tab button').forEach(btn => btn.classList.remove('active'));
-
-        if (type === 'login') {
-            document.getElementById('loginForm').classList.add('active');
-            document.querySelector('.tab button:first-child').classList.add('active');
-        } else {
-            document.getElementById('registerForm').classList.add('active');
-            document.querySelector('.tab button:last-child').classList.add('active');
-        }
-
-        document.querySelectorAll('.message').forEach(msg => {
-            msg.classList.remove('show', 'success', 'error');
-            msg.textContent = '';
-        });
-    }
-
-    function showMessage(elementId, text, type) {
-        const el = document.getElementById(elementId);
-        el.textContent = text;
-        el.className = 'message show ' + type;
-    }
-
-    // ============================================================
-    //  VIDEO FUNCTIONS
-    // ============================================================
-    function openVideo() {
-        const modal = document.getElementById('videoModal');
-        const video = document.getElementById('introVideo');
-        modal.classList.add('show');
-        video.currentTime = 0;
-        video.play().catch(err => console.log('Auto-play blocked:', err));
-    }
-
-    function closeVideo() {
-        const modal = document.getElementById('videoModal');
-        const video = document.getElementById('introVideo');
-        video.pause();
-        modal.classList.remove('show');
-    }
-
-    document.getElementById('videoModal').addEventListener('click', function(e) {
-        if (e.target === this) closeVideo();
-    });
-
-    // ============================================================
-    //  🔐 LOGIN (Supabase)
-    // ============================================================
-    async function handleLogin(e) {
-        e.preventDefault();
-        const t = lang[currentLang];
-        const phone = document.getElementById('loginPhone').value.trim();
-        const password = document.getElementById('loginPass').value;
-
-        if (!isValidMyanmarPhone(phone)) {
-            showMessage('loginMsg', '❌ ' + t.phoneError, 'error');
-            return;
-        }
-
-        try {
-            const { data, error } = await supabase
-                .from('users')
-                .select('id, name, password')
-                .eq('phone', phone)
-                .single();
-
-            if (error || !data) {
-                showMessage('loginMsg', '❌ ' + t.loginError, 'error');
-                return;
-            }
-
-            if (data.password === password) {
-                showMessage('loginMsg', '✅ ' + t.loginSuccess, 'success');
-                setTimeout(openVideo, 800);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
             } else {
-                showMessage('loginMsg', '❌ ' + t.loginError, 'error');
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
             }
-        } catch (err) {
-            showMessage('loginMsg', '❌ Server error', 'error');
-        }
-    }
-
-    // ============================================================
-    //  📝 REGISTER (Supabase)
-    // ============================================================
-    async function handleRegister(e) {
-        e.preventDefault();
-        const t = lang[currentLang];
-        const phone = document.getElementById('regPhone').value.trim();
-        const name = document.getElementById('regName').value.trim();
-        const password = document.getElementById('regPass').value;
-
-        if (!isValidMyanmarPhone(phone)) {
-            showMessage('regMsg', '❌ ' + t.regPhoneError, 'error');
-            return;
         }
 
-        if (password.length < 6) {
-            showMessage('regMsg', '❌ ' + t.regPassError, 'error');
-            return;
+        // ============================================================
+        //  LANGUAGE DATA
+        // ============================================================
+        const lang = {
+            my: {
+                label: "မြန်မာ",
+                tabLogin: "ဝင်မည်",
+                tabRegister: "မှတ်ပုံတင်မည်",
+                labelLoginPhone: "ဖုန်းနံပါတ်",
+                labelLoginPass: "လျှို့ဝှက်နံပါတ်",
+                labelRememberMe: "မှတ်ထားမည်",
+                btnLogin: "ဝင်မည်",
+                labelRegPhone: "ဖုန်းနံပါတ်",
+                labelRegName: "နာမည်",
+                labelRegPass: "လျှို့ဝှက်နံပါတ်",
+                hintPhone: "09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး",
+                hintPass: "အနည်းဆုံး ၆ လုံးထည့်ပါ",
+                btnRegister: "မှတ်ပုံတင်မည်",
+                footer: "သင့်ဒေတာကို လုံခြုံစွာ သိမ်းဆည်းထားပါသည်",
+                copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
+                videoTitle: "ကြိုဆိုပါတယ်!",
+                videoFooter: "အကောင့်ဝင်ခြင်း အောင်မြင်ပါပြီ။ ခံစားလိုက်ပါ။",
+                loginSuccess: "အောင်မြင်ပါတယ်",
+                loginError: "ဖုန်းနံပါတ် သို့မဟုတ် လျှို့ဝှက်နံပါတ် မှားနေတယ်",
+                phoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09xxxxxxxxx ပုံစံထည့်ပါ",
+                regSuccess: "အကောင့် အောင်မြင်စွာ ဖွင့်ပြီးပါပြီ",
+                regPhoneError: "ဖုန်းနံပါတ် မှားနေတယ်။ 09 နဲ့စပြီး ၁၁ လုံးထည့်ပါ",
+                regPassError: "လျှို့ဝှက်နံပါတ် အနည်းဆုံး ၆ လုံးထည့်ပါ",
+                regNameError: "နာမည် အနည်းဆုံး ၂ လုံးထည့်ပါ",
+                namePlaceholder: "သင့်နာမည်",
+                passPlaceholder: "အနည်းဆုံး ၆ လုံး"
+            },
+            en: {
+                label: "English",
+                tabLogin: "Login",
+                tabRegister: "Register",
+                labelLoginPhone: "Phone Number",
+                labelLoginPass: "Password",
+                labelRememberMe: "Remember Me",
+                btnLogin: "Login",
+                labelRegPhone: "Phone Number",
+                labelRegName: "Name",
+                labelRegPass: "Password",
+                hintPhone: "Start with 09 and total 11 digits",
+                hintPass: "Minimum 6 characters",
+                btnRegister: "Register",
+                footer: "Your data is stored securely",
+                copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
+                videoTitle: "Welcome!",
+                videoFooter: "Login successful. Enjoy!",
+                loginSuccess: "Login successful",
+                loginError: "Invalid phone or password",
+                phoneError: "Invalid phone. Use 09xxxxxxxxx format",
+                regSuccess: "Account created successfully",
+                regPhoneError: "Invalid phone. Start with 09 and 11 digits",
+                regPassError: "Password must be at least 6 characters",
+                regNameError: "Name must be at least 2 characters",
+                namePlaceholder: "Your name",
+                passPlaceholder: "Min 6 chars"
+            },
+            zh: {
+                label: "中文",
+                tabLogin: "登录",
+                tabRegister: "注册",
+                labelLoginPhone: "手机号码",
+                labelLoginPass: "密码",
+                labelRememberMe: "记住我",
+                btnLogin: "登录",
+                labelRegPhone: "手机号码",
+                labelRegName: "姓名",
+                labelRegPass: "密码",
+                hintPhone: "以09开头，共11位数字",
+                hintPass: "至少6个字符",
+                btnRegister: "注册",
+                footer: "您的数据已安全存储",
+                copyright: "Copyright © 2026 AUNG THU HTWE. All Rights Reserved.",
+                videoTitle: "欢迎！",
+                videoFooter: "登录成功。请欣赏！",
+                loginSuccess: "登录成功",
+                loginError: "手机号或密码错误",
+                phoneError: "手机号格式错误。请使用 09xxxxxxxxx 格式",
+                regSuccess: "账户创建成功",
+                regPhoneError: "手机号格式错误。以09开头，共11位",
+                regPassError: "密码至少6个字符",
+                regNameError: "姓名至少2个字符",
+                namePlaceholder: "您的姓名",
+                passPlaceholder: "至少6个字符"
+            }
+        };
+
+        let currentLang = 'my';
+
+        // ============================================================
+        //  DROPDOWN TOGGLE
+        // ============================================================
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('langMenu');
+            const arrow = document.getElementById('dropdownArrow');
+            menu.classList.toggle('show');
+            arrow.classList.toggle('open');
         }
 
-        if (name.length < 2) {
-            showMessage('regMsg', '❌ ' + t.regNameError, 'error');
-            return;
+        document.addEventListener('click', function() {
+            const menu = document.getElementById('langMenu');
+            const arrow = document.getElementById('dropdownArrow');
+            menu.classList.remove('show');
+            arrow.classList.remove('open');
+        });
+
+        // ============================================================
+        //  SWITCH LANGUAGE
+        // ============================================================
+        function switchLanguage(langCode, btn) {
+            currentLang = langCode;
+            const t = lang[langCode];
+
+            document.getElementById('currentLangLabel').textContent = t.label;
+
+            document.querySelectorAll('#langMenu button').forEach(b => b.classList.remove('active-lang'));
+            if (btn) btn.classList.add('active-lang');
+
+            document.getElementById('langMenu').classList.remove('show');
+            document.getElementById('dropdownArrow').classList.remove('open');
+
+            document.getElementById('tabLogin').textContent = t.tabLogin;
+            document.getElementById('tabRegister').textContent = t.tabRegister;
+
+            document.getElementById('labelLoginPhone').innerHTML =
+            `<i class="fas fa-phone"></i> ${t.labelLoginPhone}`;
+            document.getElementById('labelLoginPass').innerHTML =
+            `<i class="fas fa-lock"></i> ${t.labelLoginPass}`;
+            document.getElementById('labelRememberMe').textContent = t.labelRememberMe;
+            document.querySelector('#btnLogin span').textContent = t.btnLogin;
+
+            document.getElementById('labelRegPhone').innerHTML =
+            `<i class="fas fa-phone"></i> ${t.labelRegPhone}`;
+            document.getElementById('labelRegName').innerHTML =
+            `<i class="fas fa-user"></i> ${t.labelRegName}`;
+            document.getElementById('labelRegPass').innerHTML =
+            `<i class="fas fa-lock"></i> ${t.labelRegPass}`;
+            document.getElementById('hintPhone').innerHTML =
+            `<i class="fas fa-info-circle"></i> ${t.hintPhone}`;
+            document.getElementById('hintPass').innerHTML =
+            `<i class="fas fa-info-circle"></i> ${t.hintPass}`;
+            document.querySelector('#btnRegister span').textContent = t.btnRegister;
+
+            document.getElementById('footerText').innerHTML =
+                `<i class="fas fa-shield-alt"></i> <span>${t.footer}</span><span class="footer-brand">${t.copyright}</span>`;
+            document.getElementById('videoTitle').innerHTML =
+            `<i class="fas fa-play-circle"></i> ${t.videoTitle}`;
+            document.querySelector('#videoFooter span').textContent = t.videoFooter;
+
+            document.getElementById('loginPhone').placeholder = '09xxxxxxxxx';
+            document.getElementById('loginPass').placeholder = '••••••••';
+            document.getElementById('regPhone').placeholder = '09xxxxxxxxx';
+            document.getElementById('regName').placeholder = t.namePlaceholder;
+            document.getElementById('regPass').placeholder = t.passPlaceholder;
+
+            document.querySelectorAll('.message').forEach(msg => {
+                msg.classList.remove('show', 'success', 'error');
+                msg.textContent = '';
+            });
         }
 
-        try {
-            const { data, error } = await supabase
-                .from('users')
-                .insert([{ phone: phone, name: name, password: password }]);
+        // ============================================================
+        //  FORM FUNCTIONS
+        // ============================================================
+        function isValidMyanmarPhone(phone) {
+            const cleaned = phone.replace(/\s/g, '');
+            return /^09\d{9}$/.test(cleaned);
+        }
 
-            if (error) {
-                if (error.code === '23505') {
-                    showMessage('regMsg', '❌ ဖုန်းနံပါတ် ရှိပြီးသားပါ', 'error');
-                } else {
-                    showMessage('regMsg', '❌ ' + error.message, 'error');
-                }
+        function showForm(type) {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('registerForm').classList.remove('active');
+            document.querySelectorAll('.tab button').forEach(btn => btn.classList.remove('active'));
+
+            if (type === 'login') {
+                document.getElementById('loginForm').classList.add('active');
+                document.querySelector('.tab button:first-child').classList.add('active');
+            } else {
+                document.getElementById('registerForm').classList.add('active');
+                document.querySelector('.tab button:last-child').classList.add('active');
+            }
+
+            document.querySelectorAll('.message').forEach(msg => {
+                msg.classList.remove('show', 'success', 'error');
+                msg.textContent = '';
+            });
+        }
+
+        function showMessage(elementId, text, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = text;
+            el.className = 'message show ' + type;
+        }
+
+        // ============================================================
+        //  VIDEO FUNCTIONS
+        // ============================================================
+        function openVideo() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('introVideo');
+            modal.classList.add('show');
+            video.currentTime = 0;
+            video.play().catch(err => console.log('Auto-play blocked:', err));
+        }
+
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('introVideo');
+            video.pause();
+            modal.classList.remove('show');
+        }
+
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) closeVideo();
+        });
+
+        // ============================================================
+        //  🔐 LOGIN (Supabase)
+        // ============================================================
+        async function handleLogin(e) {
+            e.preventDefault();
+            const t = lang[currentLang];
+            const phone = document.getElementById('loginPhone').value.trim();
+            const password = document.getElementById('loginPass').value;
+
+            if (!isValidMyanmarPhone(phone)) {
+                showMessage('loginMsg', '❌ ' + t.phoneError, 'error');
                 return;
             }
 
-            showMessage('regMsg', '✅ ' + t.regSuccess, 'success');
-        } catch (err) {
-            showMessage('regMsg', '❌ Server error', 'error');
+            try {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('id, name, password')
+                    .eq('phone', phone)
+                    .single();
+
+                if (error || !data) {
+                    showMessage('loginMsg', '❌ ' + t.loginError, 'error');
+                    return;
+                }
+
+                if (data.password === password) {
+                    showMessage('loginMsg', '✅ ' + t.loginSuccess, 'success');
+                    setTimeout(openVideo, 800);
+                } else {
+                    showMessage('loginMsg', '❌ ' + t.loginError, 'error');
+                }
+            } catch (err) {
+                showMessage('loginMsg', '❌ Server error', 'error');
+            }
         }
-    }
-</script>
+
+        // ============================================================
+        //  📝 REGISTER (Supabase)
+        // ============================================================
+        async function handleRegister(e) {
+            e.preventDefault();
+            const t = lang[currentLang];
+            const phone = document.getElementById('regPhone').value.trim();
+            const name = document.getElementById('regName').value.trim();
+            const password = document.getElementById('regPass').value;
+
+            if (!isValidMyanmarPhone(phone)) {
+                showMessage('regMsg', '❌ ' + t.regPhoneError, 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('regMsg', '❌ ' + t.regPassError, 'error');
+                return;
+            }
+
+            if (name.length < 2) {
+                showMessage('regMsg', '❌ ' + t.regNameError, 'error');
+                return;
+            }
+
+            try {
+                const { data, error } = await supabase
+                    .from('users')
+                    .insert([{ phone: phone, name: name, password: password }]);
+
+                if (error) {
+                    if (error.code === '23505') {
+                        showMessage('regMsg', '❌ ဖုန်းနံပါတ် ရှိပြီးသားပါ', 'error');
+                    } else {
+                        showMessage('regMsg', '❌ ' + error.message, 'error');
+                    }
+                    return;
+                }
+
+                showMessage('regMsg', '✅ ' + t.regSuccess, 'success');
+            } catch (err) {
+                showMessage('regMsg', '❌ Server error', 'error');
+            }
+        }
+    </script>
 
 </body>
 </html>
