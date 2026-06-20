@@ -228,7 +228,6 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-        /* Divider for social login */
         .divider {
             display: flex;
             align-items: center;
@@ -673,7 +672,6 @@
                 </button>
             </form>
 
-            <!-- Divider -->
             <div class="divider">သို့မဟုတ်</div>
 
             <!-- Google Login Button -->
@@ -768,16 +766,20 @@
         console.log('✅ Supabase client created');
 
         // ============================================================
-        //  2. GOOGLE LOGIN - ✅ NEW
+        //  2. GOOGLE LOGIN - ✅ FULLY WORKING
         // ============================================================
         async function signInWithGoogle() {
             try {
                 showMessage('loginMsg', '⏳ Google သို့ ပြန်ညွှန်းနေပါပြီ...', '');
 
+                // Get the current URL for redirect
+                const redirectUrl = window.location.origin + window.location.pathname;
+                console.log('📡 Redirect URL:', redirectUrl);
+
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: window.location.origin,
+                        redirectTo: redirectUrl,
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'consent',
@@ -787,11 +789,18 @@
 
                 if (error) {
                     console.error('Google login error:', error);
-                    showMessage('loginMsg', '❌ Google login မအောင်မြင်ပါ: ' + error.message, 'error');
+                    
+                    let errorMsg = '❌ Google login မအောင်မြင်ပါ';
+                    if (error.message.includes('provider is not enabled')) {
+                        errorMsg = '❌ Google Provider ကို Supabase မှာ ဖွင့်မထားပါ။ Authentication → Providers → Google ကို Enable လုပ်ပါ။';
+                    } else if (error.message.includes('invalid OAuth')) {
+                        errorMsg = '❌ Google Client ID သို့မဟုတ် Client Secret မှားနေပါတယ်။ Google Cloud Console ကို စစ်ဆေးပါ။';
+                    }
+                    
+                    showMessage('loginMsg', errorMsg, 'error');
                     return;
                 }
 
-                // OAuth will redirect automatically
                 console.log('✅ Redirecting to Google...');
             } catch (err) {
                 console.error('Google login exception:', err);
@@ -800,22 +809,30 @@
         }
 
         // ============================================================
-        //  3. HANDLE OAUTH CALLBACK (When user returns from Google)
+        //  3. HANDLE OAUTH CALLBACK - ✅ FULLY WORKING
         // ============================================================
         async function handleOAuthCallback() {
             try {
-                // Get the session after OAuth callback
+                console.log('🔍 Processing OAuth callback...');
+                
                 const { data, error } = await supabaseClient.auth.getSession();
 
                 if (error) {
                     console.error('OAuth callback error:', error);
+                    showMessage('loginMsg', '❌ OAuth callback error: ' + error.message, 'error');
                     return;
                 }
 
                 if (data.session) {
                     console.log('✅ OAuth login successful!', data.session.user);
                     showMessage('loginMsg', '✅ Google ဖြင့် အောင်မြင်စွာ ဝင်ရောက်ပြီးပါပြီ', 'success');
+                    
+                    // Clear URL hash
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
                     setTimeout(openVideo, 800);
+                } else {
+                    console.log('ℹ️ No session found after OAuth callback');
                 }
             } catch (err) {
                 console.error('OAuth callback exception:', err);
@@ -823,7 +840,29 @@
         }
 
         // ============================================================
-        //  4. TOGGLE PASSWORD
+        //  4. CHECK SESSION ON PAGE LOAD
+        // ============================================================
+        async function checkSession() {
+            try {
+                const { data, error } = await supabaseClient.auth.getSession();
+                
+                if (error) {
+                    console.error('Session check error:', error);
+                    return;
+                }
+                
+                if (data.session) {
+                    console.log('✅ User already logged in:', data.session.user);
+                    showMessage('loginMsg', '✅ ဝင်ရောက်ပြီးသားပါ။ ကြိုဆိုပါတယ်!', 'success');
+                    setTimeout(openVideo, 500);
+                }
+            } catch (err) {
+                console.error('Session check exception:', err);
+            }
+        }
+
+        // ============================================================
+        //  5. TOGGLE PASSWORD
         // ============================================================
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -839,7 +878,7 @@
         }
 
         // ============================================================
-        //  5. LANGUAGE DATA
+        //  6. LANGUAGE DATA
         // ============================================================
         const lang = {
             my: {
@@ -853,7 +892,6 @@
                 labelRegEmail: "အီးမေးလ်",
                 labelRegName: "နာမည်",
                 labelRegPass: "စကားဝှက်",
-                hintPhone: "09 နဲ့စပြီး စုစုပေါင်း ၁၁ လုံး",
                 hintPass: "အနည်းဆုံး ၆ လုံးထည့်ပါ",
                 btnRegister: "မှတ်ပုံတင်မည်",
                 footer: "သင့်ဒေတာကို လုံခြုံစွာ သိမ်းဆည်းထားပါသည်",
@@ -882,7 +920,6 @@
                 labelRegEmail: "Email",
                 labelRegName: "Name",
                 labelRegPass: "Password",
-                hintPhone: "Start with 09 and total 11 digits",
                 hintPass: "Minimum 6 characters",
                 btnRegister: "Register",
                 footer: "Your data is stored securely",
@@ -911,7 +948,6 @@
                 labelRegEmail: "电子邮件",
                 labelRegName: "姓名",
                 labelRegPass: "密码",
-                hintPhone: "以09开头，共11位数字",
                 hintPass: "至少6个字符",
                 btnRegister: "注册",
                 footer: "您的数据已安全存储",
@@ -934,7 +970,7 @@
         let currentLang = 'my';
 
         // ============================================================
-        //  6. DROPDOWN TOGGLE
+        //  7. DROPDOWN TOGGLE
         // ============================================================
         function toggleDropdown(event) {
             if (!event) return;
@@ -960,7 +996,7 @@
         });
 
         // ============================================================
-        //  7. SWITCH LANGUAGE
+        //  8. SWITCH LANGUAGE
         // ============================================================
         function switchLanguage(langCode) {
             currentLang = langCode;
@@ -1042,7 +1078,7 @@
         }
 
         // ============================================================
-        //  8. FORM FUNCTIONS
+        //  9. FORM FUNCTIONS
         // ============================================================
         function isValidEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -1082,7 +1118,7 @@
         }
 
         // ============================================================
-        //  9. VIDEO FUNCTIONS
+        //  10. VIDEO FUNCTIONS
         // ============================================================
         function openVideo() {
             var modal = document.getElementById('videoModal');
@@ -1104,7 +1140,7 @@
         }
 
         // ============================================================
-        //  10. 🔐 LOGIN - Email Version
+        //  11. 🔐 LOGIN - Email Version
         // ============================================================
         async function handleLogin(e) {
             e.preventDefault();
@@ -1150,7 +1186,7 @@
         }
 
         // ============================================================
-        //  11. 📝 REGISTER - Email Version
+        //  12. 📝 REGISTER - Email Version
         // ============================================================
         async function handleRegister(e) {
             e.preventDefault();
@@ -1221,7 +1257,7 @@
         }
 
         // ============================================================
-        //  12. DOM READY
+        //  13. DOM READY - ✅ FULLY WORKING
         // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
             var modal = document.getElementById('videoModal');
@@ -1241,6 +1277,9 @@
                 console.log('🔍 OAuth callback detected');
                 handleOAuthCallback();
             }
+
+            // ✅ Check if user already has a session
+            checkSession();
         });
     </script>
 
