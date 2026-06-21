@@ -1,133 +1,559 @@
-```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="my">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <title>ATH DIGITAL HUB</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-body{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#0f172a,#1e293b);
-    color:white;
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 16px;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.container{
-    width:90%;
-    max-width:500px;
-    text-align:center;
-    background:rgba(255,255,255,0.05);
-    padding:40px;
-    border-radius:20px;
-    backdrop-filter:blur(10px);
-    box-shadow:0 10px 30px rgba(0,0,0,.3);
+/* Main Container */
+.container {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.logo{
-    font-size:32px;
-    font-weight:bold;
-    margin-bottom:10px;
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
 }
 
-.subtitle{
-    color:#cbd5e1;
-    margin-bottom:30px;
+.subtitle {
+    color: #cbd5e1;
+    margin-bottom: 25px;
+    font-size: 14px;
 }
 
-.btn-group{
-    display:flex;
-    gap:15px;
-    justify-content:center;
-    margin-top:25px;
+h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
 }
 
-.btn{
-    text-decoration:none;
-    padding:12px 25px;
-    border-radius:10px;
-    font-weight:bold;
-    transition:.3s;
+.desc {
+    color: #cbd5e1;
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.5;
 }
 
-.login{
-    background:#2563eb;
-    color:white;
+/* Button Group */
+.btn-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 22px;
+    flex-wrap: wrap;
 }
 
-.login:hover{
-    background:#1d4ed8;
+.btn {
+    text-decoration: none;
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.2s;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    -webkit-touch-callout: none;
 }
 
-.register{
-    background:#10b981;
-    color:white;
+.btn:active {
+    transform: scale(0.96);
 }
 
-.register:hover{
-    background:#059669;
+.login {
+    background: #2563eb;
+    color: white;
 }
 
-.footer{
-    margin-top:25px;
-    font-size:13px;
-    color:#94a3b8;
+.login:hover {
+    background: #1d4ed8;
+}
+
+.register {
+    background: #10b981;
+    color: white;
+}
+
+.register:hover {
+    background: #059669;
+}
+
+.footer {
+    margin-top: 28px;
+    font-size: 12px;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+}
+
+/* ===== LOGIN FORM ===== */
+.box {
+    width: 100%;
+    max-width: 380px;
+    padding: 28px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin: 0 auto;
+}
+
+.box h2 {
+    text-align: center;
+    margin-bottom: 18px;
+    font-size: 22px;
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    transition: 0.2s;
+    -webkit-appearance: none;
+}
+
+input::placeholder {
+    color: #94a3b8;
+}
+
+input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+}
+
+input[type="text"],
+input[type="password"] {
+    font-size: 16px; /* Prevent zoom on iOS */
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 4px;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+.btn-login {
+    background: #2563eb;
+}
+.btn-login:hover {
+    background: #1d4ed8;
+}
+
+.btn-register {
+    background: #10b981;
+}
+.btn-register:hover {
+    background: #059669;
+}
+
+.btn-logout {
+    background: #ef4444;
+}
+.btn-logout:hover {
+    background: #dc2626;
+}
+
+.btn-goto {
+    background: #2563eb;
+}
+.btn-goto:hover {
+    background: #1d4ed8;
+}
+
+.link {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.link a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.link a:active {
+    opacity: 0.7;
+}
+
+/* Profile */
+.info {
+    text-align: left;
+    margin: 12px 0;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    word-break: break-word;
+}
+
+.info p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+/* Utility */
+.hidden {
+    display: none;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 400px) {
+    .container {
+        padding: 20px 14px;
+    }
+    .logo {
+        font-size: 24px;
+    }
+    .btn {
+        padding: 12px 18px;
+        font-size: 14px;
+        min-width: 100px;
+    }
+    .box {
+        padding: 20px 14px;
+    }
+    input {
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+    button {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 45px 40px;
+    }
+    .logo {
+        font-size: 36px;
+    }
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-
-    <div class="logo">
-        ATH DIGITAL HUB
-    </div>
-
-    <div class="subtitle">
-        Secure • Fast • Reliable
-    </div>
-
+<!-- ============================================ -->
+<!-- PAGE: HOME -->
+<!-- ============================================ -->
+<div id="pageHome" class="container">
+    <div class="logo">ATH DIGITAL HUB</div>
+    <div class="subtitle">Secure • Fast • Reliable</div>
     <h2>Welcome</h2>
-
-    <p style="margin-top:15px;color:#cbd5e1;">
-        Login or create a new account to continue.
-    </p>
-
+    <p class="desc">Login or create a new account to continue.</p>
     <div class="btn-group">
-        <a href="login.html" class="btn login">
-            Login
-        </a>
-
-        <a href="register.html" class="btn register">
-            Register
-        </a>
+        <button class="btn login" onclick="showPage('pageLogin')">Login</button>
+        <button class="btn register" onclick="showPage('pageRegister')">Register</button>
     </div>
-
-    <div class="footer">
-        Copyright © 2026 AUNG THU HTWE
-    </div>
-
+    <div class="footer">Copyright © 2026 AUNG THU HTWE</div>
 </div>
 
-<script>
-// User login session check
-const user = localStorage.getItem("user");
+<!-- ============================================ -->
+<!-- PAGE: LOGIN -->
+<!-- ============================================ -->
+<div id="pageLogin" class="box hidden">
+    <h2>🔐 Login</h2>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+        <input type="text" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel">
+        <input type="password" id="loginPassword" placeholder="🔑 Password" required>
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+    <div class="link">
+        Don't have account? <a href="#" onclick="showPage('pageRegister')">Register</a>
+    </div>
+    <div class="link" style="margin-top:8px;">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
 
-if(user){
-    window.location.href = "profile.html";
+<!-- ============================================ -->
+<!-- PAGE: REGISTER -->
+<!-- ============================================ -->
+<div id="pageRegister" class="box hidden">
+    <h2>📝 Register</h2>
+    <form id="regForm" onsubmit="handleRegister(event)">
+        <input type="text" id="regName" placeholder="👤 Your Name" required>
+        <input type="text" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel">
+        <input type="password" id="regPassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
+        <button type="submit" class="btn-register">Create Account</button>
+    </form>
+    <div class="link">
+        Already have account? <a href="#" onclick="showPage('pageLogin')">Login</a>
+    </div>
+    <div class="link" style="margin-top:8px;">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: PROFILE -->
+<!-- ============================================ -->
+<div id="pageProfile" class="box hidden">
+    <h2>👤 Profile</h2>
+    <div id="profileBox"></div>
+    <button class="btn-logout" onclick="handleLogout()">🚪 Logout</button>
+    <div class="link" style="margin-top:12px;">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<script>
+// =============================================
+// PAGE NAVIGATION
+// =============================================
+function showPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.container, .box').forEach(el => {
+        el.classList.add('hidden');
+    });
+
+    // Show target page
+    const target = document.getElementById(pageId);
+    if (target) {
+        target.classList.remove('hidden');
+    }
+
+    // If showing profile, refresh data
+    if (pageId === 'pageProfile') {
+        renderProfile();
+    }
 }
+
+// =============================================
+// USER DATA (localStorage)
+// =============================================
+function getUsers() {
+    try {
+        return JSON.parse(localStorage.getItem('users')) || [];
+    } catch {
+        return [];
+    }
+}
+
+function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function getCurrentUser() {
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch {
+        return null;
+    }
+}
+
+function setCurrentUser(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+function clearCurrentUser() {
+    localStorage.removeItem('user');
+}
+
+function generateUserID(users) {
+    const count = users.length + 1;
+    return 'ATH' + String(count).padStart(6, '0');
+}
+
+// =============================================
+// REGISTER
+// =============================================
+function handleRegister(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('regName').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    const password = document.getElementById('regPassword').value.trim();
+
+    if (!name || !phone || !password) {
+        alert('Please fill all fields.');
+        return;
+    }
+
+    if (password.length < 4) {
+        alert('Password must be at least 4 characters.');
+        return;
+    }
+
+    // Phone validation (basic)
+    if (!phone.match(/^09\d{7,9}$/)) {
+        alert('Please enter a valid Myanmar phone number starting with 09 (7-9 digits).');
+        return;
+    }
+
+    let users = getUsers();
+
+    // Check duplicate
+    if (users.find(u => u.phone === phone)) {
+        alert('❌ This phone number is already registered!');
+        return;
+    }
+
+    const newUser = {
+        user_id: generateUserID(users),
+        name: name,
+        phone: phone,
+        password: password,
+        created_at: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    saveUsers(users);
+
+    alert('✅ Account Created!\nYour ID: ' + newUser.user_id + '\nPhone: ' + phone);
+
+    // Clear form
+    document.getElementById('regForm').reset();
+
+    // Go to login
+    showPage('pageLogin');
+}
+
+// =============================================
+// LOGIN
+// =============================================
+function handleLogin(e) {
+    e.preventDefault();
+
+    const phone = document.getElementById('loginPhone').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    if (!phone || !password) {
+        alert('Please enter phone and password.');
+        return;
+    }
+
+    const users = getUsers();
+    const user = users.find(u => u.phone === phone && u.password === password);
+
+    if (user) {
+        setCurrentUser(user);
+        alert('✅ Login Success! Welcome ' + user.name);
+        document.getElementById('loginForm').reset();
+        showPage('pageProfile');
+    } else {
+        alert('❌ Invalid phone or password.');
+    }
+}
+
+// =============================================
+// PROFILE
+// =============================================
+function renderProfile() {
+    const box = document.getElementById('profileBox');
+    const user = getCurrentUser();
+
+    if (!user) {
+        box.innerHTML = `
+            <p style="color:#94a3b8; margin-bottom:12px;">You are not logged in.</p>
+            <button class="btn-goto" onclick="showPage('pageLogin')">Go to Login</button>
+        `;
+        return;
+    }
+
+    box.innerHTML = `
+        <div class="info">
+            <p><b>🆔 User ID:</b> ${user.user_id}</p>
+            <p><b>👤 Name:</b> ${user.name}</p>
+            <p><b>📱 Phone:</b> ${user.phone}</p>
+            ${user.created_at ? `<p><b>📅 Joined:</b> ${new Date(user.created_at).toLocaleDateString()}</p>` : ''}
+        </div>
+    `;
+}
+
+// =============================================
+// LOGOUT
+// =============================================
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        clearCurrentUser();
+        alert('👋 Logged out successfully.');
+        showPage('pageHome');
+    }
+}
+
+// =============================================
+// AUTO-REDIRECT: If user is logged in, show profile
+// =============================================
+(function init() {
+    const user = getCurrentUser();
+    if (user) {
+        // User is logged in, show profile
+        showPage('pageProfile');
+    } else {
+        // Show home page
+        showPage('pageHome');
+    }
+})();
+
+// =============================================
+// KEYBOARD: Enter key support
+// =============================================
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        const active = document.activeElement;
+        if (active && active.closest('form')) {
+            // Let form handle it
+        }
+    }
+});
+
+// Console helper (for testing)
+console.log('📱 ATH DIGITAL HUB loaded successfully!');
+console.log('👥 Users:', getUsers());
 </script>
 
 </body>
 </html>
-```
