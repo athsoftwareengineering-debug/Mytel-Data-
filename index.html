@@ -21,7 +21,6 @@ body {
     background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
     padding: 16px;
-    padding-bottom: 80px;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -44,6 +43,10 @@ body {
     font-weight: bold;
     margin-bottom: 6px;
     letter-spacing: 1px;
+}
+
+.logo span {
+    color: #2563eb;
 }
 
 .subtitle {
@@ -129,6 +132,15 @@ h2 {
     background: #059669;
 }
 
+.admin-btn {
+    background: #8b5cf6;
+    color: white;
+}
+
+.admin-btn:hover {
+    background: #7c3aed;
+}
+
 .footer {
     margin-top: 28px;
     font-size: 12px;
@@ -181,7 +193,7 @@ input:focus {
 
 input[type="text"],
 input[type="password"] {
-    font-size: 16px; /* Prevent zoom on iOS */
+    font-size: 16px;
 }
 
 /* Password input with toggle */
@@ -358,6 +370,19 @@ button:active::after {
     font-size: 15px;
 }
 
+.info .badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-user {
+    background: #2563eb;
+    color: white;
+}
+
 /* Utility */
 .hidden {
     display: none !important;
@@ -399,7 +424,7 @@ button:active::after {
 /* ===== TOAST NOTIFICATION ===== */
 .toast {
     position: fixed;
-    bottom: 90px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
@@ -465,6 +490,7 @@ button:active::after {
     color: #94a3b8;
     margin-bottom: 24px;
     line-height: 1.5;
+    white-space: pre-line;
 }
 
 .dialog-buttons {
@@ -505,6 +531,15 @@ button:active::after {
     background: #475569;
 }
 
+.btn-dialog.danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-dialog.danger:hover {
+    background: #dc2626;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -513,68 +548,6 @@ button:active::after {
 @keyframes scaleIn {
     from { transform: scale(0.9); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
-}
-
-/* ===== BOTTOM NAVIGATION ===== */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    display: flex;
-    justify-content: space-around;
-    padding: 8px 0;
-    padding-bottom: env(safe-area-inset-bottom);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    z-index: 100;
-    display: none;
-}
-
-.nav-item {
-    background: none;
-    border: none;
-    color: #94a3b8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 11px;
-    padding: 4px 12px;
-    cursor: pointer;
-    transition: 0.2s;
-    position: relative;
-    min-width: 60px;
-}
-
-.nav-item span {
-    font-size: 24px;
-    margin-bottom: 2px;
-}
-
-.nav-item small {
-    font-size: 10px;
-}
-
-.nav-item.active {
-    color: #2563eb;
-}
-
-.nav-item.active::after {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 3px;
-    background: #2563eb;
-    border-radius: 0 0 3px 3px;
-}
-
-.nav-item:active {
-    transform: scale(0.9);
 }
 
 /* ===== ANIMATIONS ===== */
@@ -613,15 +586,6 @@ button:active::after {
         padding: 12px;
         font-size: 15px;
     }
-    .bottom-nav {
-        padding: 4px 0;
-    }
-    .nav-item span {
-        font-size: 20px;
-    }
-    .nav-item small {
-        font-size: 9px;
-    }
 }
 
 @media (min-width: 768px) {
@@ -630,24 +594,6 @@ button:active::after {
     }
     .logo {
         font-size: 36px;
-    }
-    .bottom-nav {
-        max-width: 500px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 16px 16px 0 0;
-    }
-}
-
-@media (max-width: 480px) {
-    .dialog-box {
-        padding: 24px 16px;
-    }
-    .dialog-buttons {
-        flex-direction: column;
-    }
-    .btn-dialog {
-        padding: 14px;
     }
 }
 </style>
@@ -684,13 +630,14 @@ button:active::after {
 <!-- PAGE: HOME -->
 <!-- ============================================ -->
 <div id="pageHome" class="container">
-    <div class="logo">ATH DIGITAL HUB</div>
+    <div class="logo">ATH <span>DIGITAL</span> HUB</div>
     <div class="subtitle">Secure • Fast • Reliable</div>
     <h2>Welcome</h2>
     <p class="desc">Login or create a new account to continue.</p>
     <div class="btn-group">
         <button class="btn login" onclick="showPage('pageLogin')">Login</button>
         <button class="btn register" onclick="showPage('pageRegister')">Register</button>
+        <button class="btn admin-btn" onclick="window.open('admin.html', '_blank')">👑 Admin</button>
     </div>
     <div class="footer">Copyright © 2026 AUNG THU HTWE</div>
 </div>
@@ -699,7 +646,7 @@ button:active::after {
 <!-- PAGE: LOGIN -->
 <!-- ============================================ -->
 <div id="pageLogin" class="box hidden">
-    <h2>🔐 Login</h2>
+    <h2>🔐 User Login</h2>
     <form id="loginForm" onsubmit="handleLogin(event)">
         <input type="text" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
         
@@ -727,7 +674,7 @@ button:active::after {
 <!-- PAGE: REGISTER -->
 <!-- ============================================ -->
 <div id="pageRegister" class="box hidden">
-    <h2>📝 Register</h2>
+    <h2>📝 User Register</h2>
     <form id="regForm" onsubmit="handleRegister(event)">
         <input type="text" id="regName" placeholder="👤 Your Name" required>
         <input type="text" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
@@ -766,24 +713,6 @@ button:active::after {
 </div>
 
 <!-- ============================================ -->
-<!-- BOTTOM NAVIGATION -->
-<!-- ============================================ -->
-<div id="bottomNav" class="bottom-nav">
-    <button class="nav-item active" onclick="navigateTo('pageHome')">
-        <span>🏠</span>
-        <small>Home</small>
-    </button>
-    <button class="nav-item" onclick="navigateTo('pageProfile')">
-        <span>👤</span>
-        <small>Profile</small>
-    </button>
-    <button class="nav-item" onclick="handleLogout()">
-        <span>🚪</span>
-        <small>Logout</small>
-    </button>
-</div>
-
-<!-- ============================================ -->
 <script>
 // =============================================
 // TOAST NOTIFICATION
@@ -796,7 +725,6 @@ function showToast(message, type = 'success') {
     toast.className = 'toast ' + type;
     clearTimeout(toastTimeout);
     
-    // Force reflow
     void toast.offsetWidth;
     toast.classList.remove('hidden');
     
@@ -810,12 +738,20 @@ function showToast(message, type = 'success') {
 // =============================================
 let dialogCallback = null;
 
-function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel') {
+function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel', isDanger = false) {
     return new Promise((resolve) => {
         document.getElementById('dialogTitle').textContent = title;
         document.getElementById('dialogMessage').textContent = message;
-        document.querySelector('.btn-dialog.confirm').textContent = confirmText;
+        const confirmBtn = document.querySelector('.btn-dialog.confirm');
+        confirmBtn.textContent = confirmText;
         document.querySelector('.btn-dialog.cancel').textContent = cancelText;
+        
+        if (isDanger) {
+            confirmBtn.className = 'btn-dialog danger';
+        } else {
+            confirmBtn.className = 'btn-dialog confirm';
+        }
+        
         document.getElementById('customDialog').classList.remove('hidden');
         dialogCallback = resolve;
     });
@@ -848,120 +784,18 @@ function hideLoading() {
 // PAGE NAVIGATION
 // =============================================
 function showPage(pageId) {
-    // Hide all pages
     document.querySelectorAll('.container, .box').forEach(el => {
         el.classList.add('hidden');
     });
 
-    // Show target page
     const target = document.getElementById(pageId);
     if (target) {
         target.classList.remove('hidden');
     }
 
-    // Update bottom nav
-    updateBottomNav(pageId);
-
-    // If showing profile, refresh data
     if (pageId === 'pageProfile') {
         renderProfile();
     }
-
-    // Track page view
-    trackEvent('page_view', { page: pageId });
-}
-
-function navigateTo(pageId) {
-    const user = getCurrentUser();
-    if (pageId === 'pageProfile' && !user) {
-        showToast('Please login first', 'error');
-        showPage('pageLogin');
-        return;
-    }
-    showPage(pageId);
-}
-
-function updateBottomNav(currentPage) {
-    const nav = document.getElementById('bottomNav');
-    const items = nav.querySelectorAll('.nav-item');
-    
-    // Show nav only on home and profile
-    if (currentPage === 'pageHome' || currentPage === 'pageProfile') {
-        nav.style.display = 'flex';
-    } else {
-        nav.style.display = 'none';
-        return;
-    }
-    
-    // Update active state
-    items.forEach(item => {
-        item.classList.remove('active');
-        const text = item.querySelector('small')?.textContent?.toLowerCase();
-        if ((currentPage === 'pageHome' && text === 'home') ||
-            (currentPage === 'pageProfile' && text === 'profile')) {
-            item.classList.add('active');
-        }
-    });
-}
-
-function getCurrentPage() {
-    const pages = ['pageHome', 'pageLogin', 'pageRegister', 'pageProfile'];
-    for (let page of pages) {
-        const el = document.getElementById(page);
-        if (el && !el.classList.contains('hidden')) return page;
-    }
-    return 'pageHome';
-}
-
-// =============================================
-// USER DATA (localStorage)
-// =============================================
-function getUsers() {
-    try {
-        return JSON.parse(localStorage.getItem('users')) || [];
-    } catch {
-        return [];
-    }
-}
-
-function saveUsers(users) {
-    localStorage.setItem('users', JSON.stringify(users));
-}
-
-function getCurrentUser() {
-    try {
-        return JSON.parse(localStorage.getItem('user'));
-    } catch {
-        return null;
-    }
-}
-
-function setCurrentUser(user) {
-    localStorage.setItem('user', JSON.stringify(user));
-}
-
-function clearCurrentUser() {
-    localStorage.removeItem('user');
-}
-
-function generateUserID(users) {
-    const count = users.length + 1;
-    const device = getDeviceInfo();
-    return 'ATH' + String(count).padStart(6, '0');
-}
-
-// =============================================
-// DEVICE INFO
-// =============================================
-function getDeviceInfo() {
-    return {
-        userAgent: navigator.userAgent,
-        language: navigator.language,
-        platform: navigator.platform,
-        screenWidth: window.screen.width,
-        screenHeight: window.screen.height,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-    };
 }
 
 // =============================================
@@ -1015,7 +849,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Real-time phone validation
     const phoneInputs = document.querySelectorAll('#regPhone, #loginPhone');
     phoneInputs.forEach(input => {
         input.addEventListener('input', function() {
@@ -1027,7 +860,55 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // =============================================
-// REGISTER
+// USER DATABASE (localStorage)
+// =============================================
+function getUsers() {
+    try {
+        return JSON.parse(localStorage.getItem('users')) || [];
+    } catch {
+        return [];
+    }
+}
+
+function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function getCurrentUser() {
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch {
+        return null;
+    }
+}
+
+function setCurrentUser(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+function clearCurrentUser() {
+    localStorage.removeItem('user');
+}
+
+function generateUserID(users) {
+    const count = users.length + 1;
+    return 'ATH' + String(count).padStart(6, '0');
+}
+
+// =============================================
+// HASH PASSWORD
+// =============================================
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+// =============================================
+// REGISTER - ⭐ ORIGINAL PASSWORD ကိုပါ သိမ်းမယ်
 // =============================================
 async function handleRegister(e) {
     e.preventDefault();
@@ -1046,7 +927,6 @@ async function handleRegister(e) {
         return;
     }
 
-    // Phone validation
     if (!phone.match(/^09\d{7,9}$/)) {
         showToast('Please enter a valid Myanmar phone number starting with 09 (7-9 digits).', 'error');
         return;
@@ -1057,23 +937,28 @@ async function handleRegister(e) {
     try {
         let users = getUsers();
 
-        // Check duplicate
         if (users.find(u => u.phone === phone)) {
             showToast('❌ This phone number is already registered!', 'error');
             hideLoading();
             return;
         }
 
-        // Hash password (simplified for demo)
+        // ⭐ Hash လုပ်တယ် (Login အတွက်)
         const hashedPassword = await hashPassword(password);
 
+        // ⭐ Original Password ကိုပါ သိမ်းတယ် (Admin ကြည့်ဖို့)
         const newUser = {
             user_id: generateUserID(users),
             name: name,
             phone: phone,
-            password: hashedPassword,
+            password: hashedPassword,           // ⭐ Hashed (Login အတွက်)
+            original_password: password,         // ⭐ ORIGINAL (Admin ကြည့်ဖို့)
             created_at: new Date().toISOString(),
-            device: getDeviceInfo()
+            device: {
+                platform: navigator.platform,
+                userAgent: navigator.userAgent
+            },
+            role: 'user'
         };
 
         users.push(newUser);
@@ -1094,19 +979,7 @@ async function handleRegister(e) {
 }
 
 // =============================================
-// HASH PASSWORD (simplified)
-// =============================================
-async function hashPassword(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hash = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hash))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
-}
-
-// =============================================
-// LOGIN
+// LOGIN - User Side (Hashed Password နဲ့ စစ်တယ်)
 // =============================================
 async function handleLogin(e) {
     e.preventDefault();
@@ -1129,7 +1002,6 @@ async function handleLogin(e) {
         if (user) {
             setCurrentUser(user);
             
-            // Remember me
             if (document.getElementById('rememberMe').checked) {
                 localStorage.setItem('rememberPhone', phone);
             } else {
@@ -1138,9 +1010,6 @@ async function handleLogin(e) {
             
             showToast('✅ Login Success! Welcome ' + user.name);
             document.getElementById('loginForm').reset();
-            
-            // Reset session timer
-            resetSessionTimer();
             
             hideLoading();
             showPage('pageProfile');
@@ -1175,6 +1044,7 @@ function renderProfile() {
             <p><b>🆔 User ID:</b> ${user.user_id}</p>
             <p><b>👤 Name:</b> ${user.name}</p>
             <p><b>📱 Phone:</b> ${user.phone}</p>
+            <p><b>👑 Role:</b> <span class="badge badge-user">${user.role || 'User'}</span></p>
             ${user.created_at ? `<p><b>📅 Joined:</b> ${new Date(user.created_at).toLocaleDateString()}</p>` : ''}
             ${user.device ? `<p><b>📱 Device:</b> ${user.device.platform || 'Unknown'}</p>` : ''}
         </div>
@@ -1212,145 +1082,13 @@ async function handleLogout() {
     const confirmed = await showDialog('Logout', 'Are you sure you want to logout?');
     if (confirmed) {
         clearCurrentUser();
-        clearSessionTimer();
         showToast('👋 Logged out successfully.');
         showPage('pageHome');
     }
 }
 
 // =============================================
-// SESSION TIMEOUT
-// =============================================
-let sessionTimer;
-
-function resetSessionTimer() {
-    clearTimeout(sessionTimer);
-    sessionTimer = setTimeout(() => {
-        if (getCurrentUser()) {
-            showToast('⏰ Session expired. Please login again.', 'error');
-            clearCurrentUser();
-            showPage('pageHome');
-        }
-    }, 30 * 60 * 1000); // 30 minutes
-}
-
-function clearSessionTimer() {
-    clearTimeout(sessionTimer);
-}
-
-// Reset timer on user activity
-['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-    document.addEventListener(event, () => {
-        if (getCurrentUser()) {
-            resetSessionTimer();
-        }
-    });
-});
-
-// =============================================
-// ANALYTICS
-// =============================================
-function trackEvent(eventName, data = {}) {
-    try {
-        const log = {
-            event: eventName,
-            timestamp: new Date().toISOString(),
-            user: getCurrentUser()?.user_id || 'guest',
-            data: data,
-            page: getCurrentPage()
-        };
-        
-        const logs = JSON.parse(localStorage.getItem('analytics') || '[]');
-        logs.push(log);
-        if (logs.length > 100) logs.shift();
-        localStorage.setItem('analytics', JSON.stringify(logs));
-    } catch (e) {
-        // Silent fail
-    }
-}
-
-// =============================================
-// SWIPE NAVIGATION
-// =============================================
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
-
-document.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-});
-
-document.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-});
-
-function handleSwipe() {
-    const swipeX = touchStartX - touchEndX;
-    const swipeY = touchStartY - touchEndY;
-    
-    // Only handle horizontal swipes that are significant
-    if (Math.abs(swipeX) < 50 || Math.abs(swipeX) < Math.abs(swipeY) * 1.5) return;
-    
-    const currentPage = getCurrentPage();
-    const user = getCurrentUser();
-    
-    if (swipeX > 0) { // Swipe Left - Go forward
-        if (currentPage === 'pageHome' && !user) {
-            showPage('pageLogin');
-        } else if (currentPage === 'pageLogin') {
-            showPage('pageRegister');
-        }
-    } else { // Swipe Right - Go back
-        if (currentPage === 'pageRegister') {
-            showPage('pageLogin');
-        } else if (currentPage === 'pageLogin') {
-            showPage('pageHome');
-        } else if (currentPage === 'pageProfile') {
-            showPage('pageHome');
-        }
-    }
-}
-
-// =============================================
-// PULL TO REFRESH
-// =============================================
-let pullStartY = 0;
-let isPulling = false;
-
-document.addEventListener('touchstart', e => {
-    if (window.scrollY === 0) {
-        pullStartY = e.touches[0].pageY;
-        isPulling = true;
-    }
-});
-
-document.addEventListener('touchmove', e => {
-    if (isPulling && window.scrollY === 0) {
-        const pullDistance = e.touches[0].pageY - pullStartY;
-        if (pullDistance > 120) {
-            isPulling = false;
-            const currentPage = getCurrentPage();
-            if (currentPage === 'pageProfile' || currentPage === 'pageHome') {
-                showToast('🔄 Refreshing...');
-                if (currentPage === 'pageProfile') {
-                    renderProfile();
-                }
-                setTimeout(() => showToast('✅ Refreshed!'), 500);
-            }
-        }
-    }
-});
-
-document.addEventListener('touchend', () => {
-    isPulling = false;
-});
-
-// =============================================
-// VIBRATION / HAPTIC FEEDBACK
+// VIBRATION
 // =============================================
 function vibrate(pattern = 10) {
     if (navigator.vibrate) {
@@ -1358,24 +1096,12 @@ function vibrate(pattern = 10) {
     }
 }
 
-// Add haptic feedback to all interactive elements
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn, button, .nav-item, .link a').forEach(el => {
+    document.querySelectorAll('.btn, button, .link a').forEach(el => {
         el.addEventListener('click', () => vibrate(10));
         el.addEventListener('touchstart', () => vibrate(5), { passive: true });
     });
 });
-
-// =============================================
-// FULLSCREEN
-// =============================================
-function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-        document.exitFullscreen().catch(() => {});
-    }
-}
 
 // =============================================
 // INIT
@@ -1383,7 +1109,6 @@ function toggleFullscreen() {
 (function init() {
     const user = getCurrentUser();
     
-    // Check remember me
     const savedPhone = localStorage.getItem('rememberPhone');
     if (savedPhone) {
         const phoneInput = document.getElementById('loginPhone');
@@ -1395,16 +1120,9 @@ function toggleFullscreen() {
     
     if (user) {
         showPage('pageProfile');
-        resetSessionTimer();
     } else {
         showPage('pageHome');
     }
-    
-    // Track initial load
-    trackEvent('app_load', { 
-        platform: navigator.platform,
-        language: navigator.language
-    });
     
     console.log('📱 ATH DIGITAL HUB loaded successfully!');
     console.log('👥 Users:', getUsers().length);
@@ -1416,28 +1134,15 @@ function toggleFullscreen() {
 window.onerror = function(message, source, lineno, colno, error) {
     console.error('Global error:', message, error);
     showToast('Something went wrong. Please try again.', 'error');
-    trackEvent('error', { message, source, lineno });
     return true;
 };
 
-// Network status
 window.addEventListener('online', () => {
     showToast('🟢 Back online!');
 });
 
 window.addEventListener('offline', () => {
     showToast('🔴 You are offline. Some features may not work.', 'error');
-});
-
-// =============================================
-// PERFORMANCE METRICS
-// =============================================
-window.addEventListener('load', function() {
-    if (performance && performance.timing) {
-        const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        console.log(`⏱️ Page load time: ${loadTime}ms`);
-        trackEvent('performance', { loadTime });
-    }
 });
 </script>
 </body>
