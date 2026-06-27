@@ -913,13 +913,14 @@ body {
 .dialog-box p {
     color: #94a3b8;
     margin-bottom: 24px;
-    line-height: 1.6;
+    line-height: 1.8;
     font-size: 14px;
     white-space: pre-line;
-    max-height: 300px;
+    max-height: 350px;
     overflow-y: auto;
     text-align: left;
     padding: 0 10px;
+    font-family: 'Courier New', monospace;
 }
 
 .dialog-box p::-webkit-scrollbar {
@@ -934,6 +935,15 @@ body {
 .dialog-box p::-webkit-scrollbar-thumb {
     background: rgba(139, 92, 246, 0.3);
     border-radius: 4px;
+}
+
+.dialog-box .password-highlight {
+    color: #fbbf24;
+    font-weight: bold;
+    background: rgba(245, 158, 11, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
 }
 
 .dialog-buttons {
@@ -1433,7 +1443,7 @@ body {
 <!-- ============================================ -->
 <div id="customDialog" class="dialog-overlay hidden">
     <div class="dialog-box">
-        <div class="icon" id="dialogIcon">📌</div>
+        <div class="icon" id="dialogIcon">🔑</div>
         <h3 id="dialogTitle">Title</h3>
         <p id="dialogMessage">Message</p>
         <div class="dialog-buttons">
@@ -1529,7 +1539,6 @@ body {
         </div>
     </div>
     
-    <!-- Chart Container -->
     <div class="chart-container" id="chartContainer">
         <div id="chartPlaceholder" class="chart-placeholder">
             <i class="fas fa-chart-line"></i>
@@ -1837,15 +1846,15 @@ function showToast(message, type = 'success') {
 // =============================================
 let dialogCallback = null;
 
-function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel', isDanger = false, isInfo = false) {
+function showDialog(title, message, confirmText = 'Close', cancelText = '', isDanger = false, isInfo = false) {
     return new Promise((resolve) => {
-        document.getElementById('dialogIcon').textContent = isDanger ? '⚠️' : isInfo ? '📋' : '📌';
+        document.getElementById('dialogIcon').textContent = isDanger ? '⚠️' : isInfo ? '📋' : '🔑';
         document.getElementById('dialogTitle').textContent = title;
         document.getElementById('dialogMessage').textContent = message;
         const confirmBtn = document.getElementById('dialogConfirm');
         const cancelBtn = document.getElementById('dialogCancel');
         confirmBtn.textContent = confirmText;
-        cancelBtn.textContent = cancelText;
+        cancelBtn.textContent = cancelText || 'Cancel';
         
         if (isDanger) {
             confirmBtn.className = 'btn-dialog danger';
@@ -1853,6 +1862,12 @@ function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cance
             confirmBtn.className = 'btn-dialog info';
         } else {
             confirmBtn.className = 'btn-dialog confirm';
+        }
+        
+        if (cancelText === '') {
+            cancelBtn.style.display = 'none';
+        } else {
+            cancelBtn.style.display = 'block';
         }
         
         document.getElementById('customDialog').classList.remove('hidden');
@@ -2011,7 +2026,7 @@ async function viewActivityLogs() {
 }
 
 // =============================================
-// SHOW ALL PASSWORDS
+// SHOW ALL PASSWORDS - ⭐ အားလုံးရဲ့ Password ကို ပြပေးမယ်
 // =============================================
 async function showAllPasswords() {
     const users = getUsers();
@@ -2020,24 +2035,25 @@ async function showAllPasswords() {
         return;
     }
     
-    let pwList = '🔑 ALL USER PASSWORDS\n';
-    pwList += '═'.repeat(40) + '\n\n';
+    let pwList = '🔑 ALL USER PASSWORDS (EXACT)\n';
+    pwList += '═'.repeat(50) + '\n\n';
     
     users.forEach((user, index) => {
-        pwList += `#${index + 1}\n`;
+        pwList += `📌 User #${index + 1}\n`;
         pwList += `👤 Name: ${user.name}\n`;
         pwList += `📱 Phone: ${user.phone}\n`;
         pwList += `🆔 ID: ${user.user_id}\n`;
-        pwList += `🔑 Password: ${user.password || 'No password set'}\n`;
+        pwList += `🔑 PASSWORD: ${user.password || 'No password set'}\n`;
         pwList += `📅 Joined: ${new Date(user.created_at).toLocaleString()}\n`;
-        pwList += '─'.repeat(40) + '\n';
+        pwList += '─'.repeat(50) + '\n';
     });
     
-    await showDialog('All User Passwords', pwList, 'Close', '', false, true);
+    logActivity('VIEWED_ALL_PASSWORDS', { count: users.length });
+    await showDialog('🔑 All User Passwords (Exact)', pwList, 'Close', '', false, true);
 }
 
 // =============================================
-// VIEW SINGLE USER PASSWORD
+// VIEW SINGLE USER PASSWORD - ⭐ တစ်ယောက်ချင်းစီရဲ့ Password ကို ပြပေးမယ်
 // =============================================
 async function viewUserPassword(userId) {
     const users = getUsers();
@@ -2048,18 +2064,24 @@ async function viewUserPassword(userId) {
     }
     
     const pwInfo = `
-🔑 Password Information
+╔══════════════════════════════════╗
+║     🔑 PASSWORD INFORMATION      ║
+╚══════════════════════════════════╝
 
-👤 User: ${user.name}
+👤 User Name: ${user.name}
 📱 Phone: ${user.phone}
-🆔 ID: ${user.user_id}
-🔑 Password: ${user.password || 'No password set'}
+🆔 User ID: ${user.user_id}
+
+🔑 PASSWORD (Exact):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${user.password || 'No password set'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ${user.password ? '✅ Password is available' : '❌ No password found'}
     `;
     
     logActivity('VIEWED_PASSWORD', { userId: user.user_id, name: user.name });
-    await showDialog('User Password', pwInfo, 'Close', '', false, true);
+    await showDialog('🔑 User Password (Exact)', pwInfo, 'Close', '', false, true);
 }
 
 // =============================================
@@ -2523,11 +2545,6 @@ function showUserDetail(userId) {
         `).join('');
     }
     
-    // Show password (masked or full)
-    const passwordDisplay = user.password ? 
-        `<span class="user-detail-badge hashed">🔒 Hashed</span>` : 
-        `<span style="color:#64748b;">No password set</span>`;
-    
     container.innerHTML = `
         <div class="user-detail-header">
             <div class="user-detail-avatar">${initial}</div>
@@ -2553,12 +2570,9 @@ function showUserDetail(userId) {
                 <span class="value">${escapeHtml(user.phone)}</span>
             </div>
             <div class="user-detail-row">
-                <span class="label">Password</span>
+                <span class="label">Password (Exact)</span>
                 <span class="value password-value">
-                    ${hasPassword ? user.password.substring(0, 20) + '...' : 'No password set'}
-                    <button onclick="viewUserPassword('${escapeHtml(user.user_id)}')" class="btn-reveal-pw" style="margin-left:8px;">
-                        <i class="fas fa-eye"></i> Show Full
-                    </button>
+                    ${hasPassword ? user.password : 'No password set'}
                 </span>
             </div>
             <div class="user-detail-row">
