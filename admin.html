@@ -892,7 +892,7 @@ body {
     -webkit-backdrop-filter: blur(20px);
     padding: 32px 24px;
     border-radius: 20px;
-    max-width: 400px;
+    max-width: 420px;
     width: 90%;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -916,7 +916,7 @@ body {
     line-height: 1.8;
     font-size: 14px;
     white-space: pre-line;
-    max-height: 350px;
+    max-height: 400px;
     overflow-y: auto;
     text-align: left;
     padding: 0 10px;
@@ -1132,6 +1132,17 @@ body {
     border-radius: 4px;
 }
 
+.user-detail-row .value.original-password-value {
+    color: #34d399;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+    background: rgba(16, 185, 129, 0.15);
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
 .user-detail-badge {
     display: inline-block;
     padding: 2px 10px;
@@ -1153,6 +1164,11 @@ body {
 .user-detail-badge.hashed {
     background: rgba(245, 158, 11, 0.2);
     color: #fbbf24;
+}
+
+.user-detail-badge.original {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
 }
 
 /* Password Reveal Button */
@@ -2026,7 +2042,7 @@ async function viewActivityLogs() {
 }
 
 // =============================================
-// SHOW ALL PASSWORDS - ⭐ အားလုံးရဲ့ Password ကို ပြပေးမယ်
+// SHOW ALL PASSWORDS - ⭐ ORIGINAL PASSWORD အားလုံးကို ပြပေးမယ်
 // =============================================
 async function showAllPasswords() {
     const users = getUsers();
@@ -2035,25 +2051,26 @@ async function showAllPasswords() {
         return;
     }
     
-    let pwList = '🔑 ALL USER PASSWORDS (EXACT)\n';
-    pwList += '═'.repeat(50) + '\n\n';
+    let pwList = '🔑 ALL USER PASSWORDS (ORIGINAL + HASHED)\n';
+    pwList += '═'.repeat(65) + '\n\n';
     
     users.forEach((user, index) => {
         pwList += `📌 User #${index + 1}\n`;
         pwList += `👤 Name: ${user.name}\n`;
         pwList += `📱 Phone: ${user.phone}\n`;
         pwList += `🆔 ID: ${user.user_id}\n`;
-        pwList += `🔑 PASSWORD: ${user.password || 'No password set'}\n`;
+        pwList += `🔓 ORIGINAL PASSWORD: ${user.original_password || 'No original password'}\n`;
+        pwList += `🔒 HASHED PASSWORD: ${user.password || 'No hashed password'}\n`;
         pwList += `📅 Joined: ${new Date(user.created_at).toLocaleString()}\n`;
-        pwList += '─'.repeat(50) + '\n';
+        pwList += '─'.repeat(65) + '\n';
     });
     
     logActivity('VIEWED_ALL_PASSWORDS', { count: users.length });
-    await showDialog('🔑 All User Passwords (Exact)', pwList, 'Close', '', false, true);
+    await showDialog('🔑 All User Passwords (Original)', pwList, 'Close', '', false, true);
 }
 
 // =============================================
-// VIEW SINGLE USER PASSWORD - ⭐ တစ်ယောက်ချင်းစီရဲ့ Password ကို ပြပေးမယ်
+// VIEW SINGLE USER PASSWORD - ⭐ ORIGINAL PASSWORD ကို ပြပေးမယ်
 // =============================================
 async function viewUserPassword(userId) {
     const users = getUsers();
@@ -2064,24 +2081,27 @@ async function viewUserPassword(userId) {
     }
     
     const pwInfo = `
-╔══════════════════════════════════╗
-║     🔑 PASSWORD INFORMATION      ║
-╚══════════════════════════════════╝
+╔════════════════════════════════════════════════════════╗
+║           🔑 PASSWORD INFORMATION (ORIGINAL)           ║
+╚════════════════════════════════════════════════════════╝
 
 👤 User Name: ${user.name}
 📱 Phone: ${user.phone}
 🆔 User ID: ${user.user_id}
 
-🔑 PASSWORD (Exact):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${user.password || 'No password set'}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔓 ORIGINAL PASSWORD (Plain Text):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${user.original_password || 'No original password saved'}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-${user.password ? '✅ Password is available' : '❌ No password found'}
+🔒 HASHED PASSWORD (SHA-256):
+${user.password || 'No hashed password'}
+
+${user.original_password ? '✅ Original password is available' : '❌ No original password found'}
     `;
     
-    logActivity('VIEWED_PASSWORD', { userId: user.user_id, name: user.name });
-    await showDialog('🔑 User Password (Exact)', pwInfo, 'Close', '', false, true);
+    logActivity('VIEWED_ORIGINAL_PASSWORD', { userId: user.user_id, name: user.name });
+    await showDialog('🔑 User Password (Original)', pwInfo, 'Close', '', false, true);
 }
 
 // =============================================
@@ -2467,7 +2487,7 @@ function renderUserList(users) {
         const isToday = createdDate.toDateString() === new Date().toDateString();
         const initial = user.name.charAt(0).toUpperCase();
         const isSelected = selectedUsers.has(user.user_id);
-        const hasPassword = user.password && user.password.length > 0;
+        const hasOriginalPassword = user.original_password && user.original_password.length > 0;
         
         html += `
             <div class="user-item">
@@ -2478,6 +2498,7 @@ function renderUserList(users) {
                     <div class="name">
                         ${escapeHtml(user.name)}
                         ${isToday ? '<span class="badge-new">NEW</span>' : ''}
+                        ${hasOriginalPassword ? ' 🔓' : ''}
                     </div>
                     <div class="phone"><i class="fas fa-phone" style="font-size:10px;"></i> ${escapeHtml(user.phone)}</div>
                     <div class="meta">${escapeHtml(user.user_id)} • ${createdDate.toLocaleDateString()}</div>
@@ -2486,7 +2507,7 @@ function renderUserList(users) {
                     <button onclick="showUserDetail('${escapeHtml(user.user_id)}')" class="btn-icon view" title="View Details">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button onclick="viewUserPassword('${escapeHtml(user.user_id)}')" class="btn-icon password" title="View Password">
+                    <button onclick="viewUserPassword('${escapeHtml(user.user_id)}')" class="btn-icon password" title="View Original Password">
                         <i class="fas fa-key"></i>
                     </button>
                     <button onclick="editUser('${escapeHtml(user.user_id)}')" class="btn-icon edit" title="Edit">
@@ -2511,7 +2532,7 @@ function escapeHtml(text) {
 }
 
 // =============================================
-// USER DETAIL VIEW
+// USER DETAIL VIEW - ⭐ ORIGINAL PASSWORD ကို ပြပေးမယ်
 // =============================================
 function showUserDetail(userId) {
     const users = getUsers();
@@ -2526,7 +2547,7 @@ function showUserDetail(userId) {
     const container = document.getElementById('userDetailContent');
     const createdDate = new Date(user.created_at);
     const initial = user.name.charAt(0).toUpperCase();
-    const hasPassword = user.password && user.password.length > 0;
+    const hasOriginalPassword = user.original_password && user.original_password.length > 0;
     
     // Get user activity
     const userActivity = JSON.parse(localStorage.getItem('user_activity') || '{}');
@@ -2549,9 +2570,27 @@ function showUserDetail(userId) {
         <div class="user-detail-header">
             <div class="user-detail-avatar">${initial}</div>
             <div class="user-detail-info">
-                <div class="name">${escapeHtml(user.name)}</div>
+                <div class="name">${escapeHtml(user.name)} ${hasOriginalPassword ? '🔓' : ''}</div>
                 <div class="phone"><i class="fas fa-phone"></i> ${escapeHtml(user.phone)}</div>
                 <div class="id">🆔 ${escapeHtml(user.user_id)}</div>
+            </div>
+        </div>
+        
+        <div class="user-detail-section" style="border-color: rgba(16, 185, 129, 0.3);">
+            <h4 style="color: #34d399;"><i class="fas fa-key"></i> 🔓 ORIGINAL PASSWORD</h4>
+            <div class="user-detail-row" style="background: rgba(16, 185, 129, 0.05); border-radius: 8px; padding: 8px 0;">
+                <span class="label" style="color: #34d399;">Original Password (Plain Text)</span>
+                <span class="value original-password-value">
+                    ${hasOriginalPassword ? user.original_password : 'No original password saved'}
+                </span>
+            </div>
+            <div class="user-detail-row" style="margin-top: 4px;">
+                <span class="label" style="color: #94a3b8;">Status</span>
+                <span class="value">
+                    <span class="user-detail-badge ${hasOriginalPassword ? 'original' : 'inactive'}">
+                        ${hasOriginalPassword ? '✅ Available' : '❌ Not Available'}
+                    </span>
+                </span>
             </div>
         </div>
         
@@ -2570,9 +2609,9 @@ function showUserDetail(userId) {
                 <span class="value">${escapeHtml(user.phone)}</span>
             </div>
             <div class="user-detail-row">
-                <span class="label">Password (Exact)</span>
-                <span class="value password-value">
-                    ${hasPassword ? user.password : 'No password set'}
+                <span class="label">🔒 Hashed Password</span>
+                <span class="value" style="font-size:11px;word-break:break-all;max-width:70%;">
+                    ${user.password || 'No hashed password'}
                 </span>
             </div>
             <div class="user-detail-row">
@@ -2586,10 +2625,6 @@ function showUserDetail(userId) {
             <div class="user-detail-row">
                 <span class="label">Device</span>
                 <span class="value">${user.device?.platform || 'Unknown'}</span>
-            </div>
-            <div class="user-detail-row">
-                <span class="label">Status</span>
-                <span class="value"><span class="user-detail-badge active">Active</span></span>
             </div>
         </div>
         
@@ -3177,6 +3212,7 @@ function trackUserActivity(userId, action) {
     console.log('👑 Admins:', getAdmins().length);
     console.log('👥 Users:', getUsers().length);
     console.log('🔑 Default Admin: admin / admin123');
+    console.log('🔓 Original passwords are saved for all users!');
 })();
 
 // =============================================
