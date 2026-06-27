@@ -32,7 +32,7 @@ body {
 /* Glass Container */
 .glass-container {
     width: 100%;
-    max-width: 520px;
+    max-width: 560px;
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -419,6 +419,16 @@ body {
     background: rgba(239, 68, 68, 0.25);
 }
 
+.btn-action.info {
+    background: rgba(6, 182, 212, 0.15);
+    color: #22d3ee;
+    border-color: rgba(6, 182, 212, 0.2);
+}
+
+.btn-action.info:hover {
+    background: rgba(6, 182, 212, 0.25);
+}
+
 /* Search */
 .search-box {
     position: relative;
@@ -590,6 +600,15 @@ body {
 
 .btn-icon.delete:hover {
     background: rgba(239, 68, 68, 0.25);
+}
+
+.btn-icon.password {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+}
+
+.btn-icon.password:hover {
+    background: rgba(245, 158, 11, 0.25);
 }
 
 /* Badge New */
@@ -873,7 +892,7 @@ body {
     -webkit-backdrop-filter: blur(20px);
     padding: 32px 24px;
     border-radius: 20px;
-    max-width: 360px;
+    max-width: 400px;
     width: 90%;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -897,6 +916,24 @@ body {
     line-height: 1.6;
     font-size: 14px;
     white-space: pre-line;
+    max-height: 300px;
+    overflow-y: auto;
+    text-align: left;
+    padding: 0 10px;
+}
+
+.dialog-box p::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dialog-box p::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+
+.dialog-box p::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
 }
 
 .dialog-buttons {
@@ -945,6 +982,15 @@ body {
 
 .btn-dialog.danger:hover {
     box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+}
+
+.btn-dialog.info {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    color: white;
+}
+
+.btn-dialog.info:hover {
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
 }
 
 /* Utility */
@@ -1062,6 +1108,18 @@ body {
 .user-detail-row .value {
     color: #e2e8f0;
     font-weight: 500;
+    word-break: break-all;
+    max-width: 60%;
+    text-align: right;
+}
+
+.user-detail-row .value.password-value {
+    color: #fbbf24;
+    font-family: monospace;
+    font-size: 13px;
+    background: rgba(245, 158, 11, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
 }
 
 .user-detail-badge {
@@ -1080,6 +1138,33 @@ body {
 .user-detail-badge.inactive {
     background: rgba(239, 68, 68, 0.2);
     color: #f87171;
+}
+
+.user-detail-badge.hashed {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+/* Password Reveal Button */
+.btn-reveal-pw {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-reveal-pw:hover {
+    background: rgba(245, 158, 11, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn-reveal-pw i {
+    margin-right: 4px;
 }
 
 /* Activity Timeline */
@@ -1262,6 +1347,7 @@ body {
     
     .dialog-box {
         padding: 24px 16px;
+        max-width: 95%;
     }
     
     .dialog-buttons {
@@ -1306,11 +1392,22 @@ body {
         height: 80px;
         font-size: 32px;
     }
+    
+    .user-detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    
+    .user-detail-row .value {
+        max-width: 100%;
+        text-align: left;
+    }
 }
 
 @media (min-width: 768px) {
     .glass-container {
-        max-width: 560px;
+        max-width: 580px;
         padding: 40px 36px;
         border-radius: 40px;
     }
@@ -1445,7 +1542,8 @@ body {
         <button onclick="refreshAdminData()" class="btn-action primary"><i class="fas fa-rotate"></i> Refresh</button>
         <button onclick="showPage('pageAdminCreate')" class="btn-action success"><i class="fas fa-plus"></i> New Admin</button>
         <button onclick="showPage('pageAdminList')" class="btn-action"><i class="fas fa-users-gear"></i> Admins</button>
-        <button onclick="exportData()" class="btn-action warning"><i class="fas fa-download"></i> Export</button>
+        <button onclick="showAllPasswords()" class="btn-action warning"><i class="fas fa-key"></i> All PW</button>
+        <button onclick="exportData()" class="btn-action info"><i class="fas fa-download"></i> Export</button>
         <button onclick="showPage('pageSettings')" class="btn-action"><i class="fas fa-sliders"></i></button>
     </div>
     
@@ -1739,9 +1837,9 @@ function showToast(message, type = 'success') {
 // =============================================
 let dialogCallback = null;
 
-function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel', isDanger = false) {
+function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel', isDanger = false, isInfo = false) {
     return new Promise((resolve) => {
-        document.getElementById('dialogIcon').textContent = isDanger ? '⚠️' : '📌';
+        document.getElementById('dialogIcon').textContent = isDanger ? '⚠️' : isInfo ? '📋' : '📌';
         document.getElementById('dialogTitle').textContent = title;
         document.getElementById('dialogMessage').textContent = message;
         const confirmBtn = document.getElementById('dialogConfirm');
@@ -1751,6 +1849,8 @@ function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cance
         
         if (isDanger) {
             confirmBtn.className = 'btn-dialog danger';
+        } else if (isInfo) {
+            confirmBtn.className = 'btn-dialog info';
         } else {
             confirmBtn.className = 'btn-dialog confirm';
         }
@@ -1796,7 +1896,6 @@ function showPage(pageId) {
         target.classList.remove('hidden');
     }
 
-    // Update mobile nav
     document.querySelectorAll('.mobile-nav-item').forEach(item => {
         item.classList.remove('active');
         if (item.dataset.page === pageId) {
@@ -1908,7 +2007,59 @@ async function viewActivityLogs() {
         logText += '─'.repeat(30) + '\n';
     });
     
-    await showDialog('Activity Logs', logText, 'Close', '');
+    await showDialog('Activity Logs', logText, 'Close', '', false, true);
+}
+
+// =============================================
+// SHOW ALL PASSWORDS
+// =============================================
+async function showAllPasswords() {
+    const users = getUsers();
+    if (users.length === 0) {
+        await showDialog('User Passwords', 'No users registered yet.', 'Close', '');
+        return;
+    }
+    
+    let pwList = '🔑 ALL USER PASSWORDS\n';
+    pwList += '═'.repeat(40) + '\n\n';
+    
+    users.forEach((user, index) => {
+        pwList += `#${index + 1}\n`;
+        pwList += `👤 Name: ${user.name}\n`;
+        pwList += `📱 Phone: ${user.phone}\n`;
+        pwList += `🆔 ID: ${user.user_id}\n`;
+        pwList += `🔑 Password: ${user.password || 'No password set'}\n`;
+        pwList += `📅 Joined: ${new Date(user.created_at).toLocaleString()}\n`;
+        pwList += '─'.repeat(40) + '\n';
+    });
+    
+    await showDialog('All User Passwords', pwList, 'Close', '', false, true);
+}
+
+// =============================================
+// VIEW SINGLE USER PASSWORD
+// =============================================
+async function viewUserPassword(userId) {
+    const users = getUsers();
+    const user = users.find(u => u.user_id === userId);
+    if (!user) {
+        showToast('User not found.', 'error');
+        return;
+    }
+    
+    const pwInfo = `
+🔑 Password Information
+
+👤 User: ${user.name}
+📱 Phone: ${user.phone}
+🆔 ID: ${user.user_id}
+🔑 Password: ${user.password || 'No password set'}
+
+${user.password ? '✅ Password is available' : '❌ No password found'}
+    `;
+    
+    logActivity('VIEWED_PASSWORD', { userId: user.user_id, name: user.name });
+    await showDialog('User Password', pwInfo, 'Close', '', false, true);
 }
 
 // =============================================
@@ -2294,6 +2445,7 @@ function renderUserList(users) {
         const isToday = createdDate.toDateString() === new Date().toDateString();
         const initial = user.name.charAt(0).toUpperCase();
         const isSelected = selectedUsers.has(user.user_id);
+        const hasPassword = user.password && user.password.length > 0;
         
         html += `
             <div class="user-item">
@@ -2311,6 +2463,9 @@ function renderUserList(users) {
                 <div class="user-actions">
                     <button onclick="showUserDetail('${escapeHtml(user.user_id)}')" class="btn-icon view" title="View Details">
                         <i class="fas fa-eye"></i>
+                    </button>
+                    <button onclick="viewUserPassword('${escapeHtml(user.user_id)}')" class="btn-icon password" title="View Password">
+                        <i class="fas fa-key"></i>
                     </button>
                     <button onclick="editUser('${escapeHtml(user.user_id)}')" class="btn-icon edit" title="Edit">
                         <i class="fas fa-edit"></i>
@@ -2344,14 +2499,14 @@ function showUserDetail(userId) {
         return;
     }
     
-    // Log activity
     logActivity('VIEWED_USER', { userId: user.user_id, name: user.name });
     
     const container = document.getElementById('userDetailContent');
     const createdDate = new Date(user.created_at);
     const initial = user.name.charAt(0).toUpperCase();
+    const hasPassword = user.password && user.password.length > 0;
     
-    // Get user activity from localStorage
+    // Get user activity
     const userActivity = JSON.parse(localStorage.getItem('user_activity') || '{}');
     const activities = userActivity[user.user_id] || [];
     const recentActivities = activities.slice(-5).reverse();
@@ -2367,6 +2522,11 @@ function showUserDetail(userId) {
             </div>
         `).join('');
     }
+    
+    // Show password (masked or full)
+    const passwordDisplay = user.password ? 
+        `<span class="user-detail-badge hashed">🔒 Hashed</span>` : 
+        `<span style="color:#64748b;">No password set</span>`;
     
     container.innerHTML = `
         <div class="user-detail-header">
@@ -2393,6 +2553,15 @@ function showUserDetail(userId) {
                 <span class="value">${escapeHtml(user.phone)}</span>
             </div>
             <div class="user-detail-row">
+                <span class="label">Password</span>
+                <span class="value password-value">
+                    ${hasPassword ? user.password.substring(0, 20) + '...' : 'No password set'}
+                    <button onclick="viewUserPassword('${escapeHtml(user.user_id)}')" class="btn-reveal-pw" style="margin-left:8px;">
+                        <i class="fas fa-eye"></i> Show Full
+                    </button>
+                </span>
+            </div>
+            <div class="user-detail-row">
                 <span class="label">Role</span>
                 <span class="value"><span class="user-detail-badge active">${user.role || 'User'}</span></span>
             </div>
@@ -2417,7 +2586,10 @@ function showUserDetail(userId) {
             </div>
         </div>
         
-        <div style="display:flex;gap:8px;margin-top:12px;">
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+            <button onclick="viewUserPassword('${escapeHtml(user.user_id)}')" class="btn-action warning" style="flex:1;justify-content:center;padding:12px;background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">
+                <i class="fas fa-key"></i> View Password
+            </button>
             <button onclick="editUser('${escapeHtml(user.user_id)}')" class="btn-action edit" style="flex:1;justify-content:center;padding:12px;background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2);">
                 <i class="fas fa-edit"></i> Edit User
             </button>
@@ -2585,7 +2757,6 @@ async function editUser(userId) {
         logActivity('USER_EDITED', { userId: user.user_id, newName: user.name });
         showToast('✅ User updated successfully.');
         refreshAdminData();
-        // If on user detail page, refresh it
         if (!document.getElementById('pageUserDetail').classList.contains('hidden')) {
             showUserDetail(userId);
         }
@@ -2925,6 +3096,11 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         document.getElementById('userSearch')?.focus();
     }
+    // Ctrl + P = Show all passwords
+    if (e.ctrlKey && e.key === 'p') {
+        e.preventDefault();
+        showAllPasswords();
+    }
 });
 
 // =============================================
@@ -2962,7 +3138,6 @@ function trackUserActivity(userId, action) {
         action: action,
         timestamp: new Date().toISOString()
     });
-    // Keep only last 50 activities per user
     if (activity[userId].length > 50) {
         activity[userId] = activity[userId].slice(-50);
     }
