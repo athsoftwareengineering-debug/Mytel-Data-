@@ -3,14 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<title>ATH DIGITAL HUB - Admin Panel</title>
+<title>ATH DIGITAL HUB - Admin Panel Pro</title>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
@@ -18,504 +21,699 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: white;
-    padding: 16px;
+    background: linear-gradient(135deg, #0c0e1a 0%, #1a1d2e 50%, #0f0e1a 100%);
+    color: #e2e8f0;
+    padding: 20px;
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Main Container */
-.container {
+/* Glass Morphism Container */
+.glass-container {
     width: 100%;
-    max-width: 480px;
+    max-width: 520px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 32px;
+    padding: 32px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    animation: fadeSlide 0.5s ease;
+}
+
+/* Logo */
+.logo-container {
     text-align: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 30px 20px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    animation: fadeSlide 0.4s ease;
+    margin-bottom: 28px;
 }
 
-.logo {
+.logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    border-radius: 16px;
     font-size: 28px;
-    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+}
+
+.logo-text {
+    font-size: 26px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.logo-sub {
+    font-size: 13px;
+    color: #94a3b8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+/* ===== LOGIN PAGE ===== */
+.login-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.login-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #f1f5f9;
     margin-bottom: 6px;
-    letter-spacing: 1px;
 }
 
-.logo span {
-    color: #8b5cf6;
-}
-
-.subtitle {
-    color: #cbd5e1;
-    margin-bottom: 25px;
+.login-header p {
+    color: #94a3b8;
     font-size: 14px;
 }
 
-h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
+/* Form */
+.form-group {
+    margin-bottom: 16px;
 }
 
-.desc {
-    color: #cbd5e1;
-    margin-top: 12px;
-    font-size: 15px;
-    line-height: 1.5;
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-bottom: 6px;
 }
 
-/* Button Group */
-.btn-group {
+.input-wrapper {
+    position: relative;
     display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-top: 22px;
-    flex-wrap: wrap;
-}
-
-.btn {
-    text-decoration: none;
-    padding: 14px 30px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 16px;
-    transition: 0.2s;
-    flex: 1;
-    min-width: 120px;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    -webkit-touch-callout: none;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn:active {
-    transform: scale(0.96);
-}
-
-.btn::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-    transform: scale(0);
-    transition: transform 0.3s;
-}
-
-.btn:active::after {
-    transform: scale(3);
-    opacity: 0;
-}
-
-.login {
-    background: #2563eb;
-    color: white;
-}
-
-.login:hover {
-    background: #1d4ed8;
-}
-
-.register {
-    background: #10b981;
-    color: white;
-}
-
-.register:hover {
-    background: #059669;
-}
-
-.admin-btn {
-    background: #8b5cf6;
-    color: white;
-}
-
-.admin-btn:hover {
-    background: #7c3aed;
-}
-
-.footer {
-    margin-top: 28px;
-    font-size: 12px;
-    color: #94a3b8;
-    letter-spacing: 0.5px;
-}
-
-/* ===== LOGIN FORM ===== */
-.box {
-    width: 100%;
-    max-width: 400px;
-    padding: 28px 20px;
+    align-items: center;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    margin: 0 auto;
-    animation: fadeSlide 0.4s ease;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.3s ease;
 }
 
-.box h2 {
-    text-align: center;
-    margin-bottom: 18px;
-    font-size: 22px;
-}
-
-input {
-    width: 100%;
-    padding: 14px 16px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 10px;
-    outline: none;
-    font-size: 16px;
+.input-wrapper:focus-within {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
     background: rgba(255, 255, 255, 0.08);
-    color: white;
-    transition: 0.2s;
-    -webkit-appearance: none;
 }
 
-input::placeholder {
-    color: #94a3b8;
-}
-
-input:focus {
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5);
-}
-
-input[type="text"],
-input[type="password"] {
+.input-wrapper .icon {
+    padding: 0 14px 0 16px;
+    color: #64748b;
     font-size: 16px;
 }
 
-/* Password input with toggle */
-.password-wrapper {
-    position: relative;
+.input-wrapper input {
+    flex: 1;
+    padding: 14px 14px 14px 0;
+    border: none;
+    background: transparent;
+    color: #f1f5f9;
+    font-size: 15px;
+    outline: none;
 }
 
-.password-wrapper input {
-    padding-right: 48px;
+.input-wrapper input::placeholder {
+    color: #475569;
 }
 
-.password-toggle {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
+.input-wrapper .toggle-btn {
+    padding: 0 14px;
     background: none;
     border: none;
-    color: #94a3b8;
-    font-size: 20px;
+    color: #64748b;
+    font-size: 16px;
     cursor: pointer;
-    padding: 4px;
     width: auto;
-    border-radius: 50%;
+    margin: 0;
+    transition: 0.2s;
 }
 
-.password-toggle:active {
-    transform: translateY(-50%) scale(0.9);
+.input-wrapper .toggle-btn:hover {
+    color: #94a3b8;
 }
 
 /* Remember Me */
-.remember-me {
-    text-align: left;
-    margin: 8px 0;
+.remember-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px 0 20px;
+}
+
+.remember-row label {
     display: flex;
     align-items: center;
     gap: 8px;
+    color: #94a3b8;
+    font-size: 13px;
+    cursor: pointer;
 }
 
-.remember-me input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin: 0;
-    cursor: pointer;
+.remember-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
     accent-color: #8b5cf6;
-}
-
-.remember-me label {
-    color: #cbd5e1;
-    font-size: 14px;
     cursor: pointer;
 }
 
-button {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
+.remember-row a {
+    color: #8b5cf6;
+    text-decoration: none;
+    font-size: 13px;
     transition: 0.2s;
-    margin-top: 4px;
+}
+
+.remember-row a:hover {
+    color: #a78bfa;
+}
+
+/* Login Button */
+.btn-primary {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
 
-button:active {
-    transform: scale(0.97);
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(139, 92, 246, 0.3);
 }
 
-button::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-    transform: scale(0);
-    transition: transform 0.3s;
+.btn-primary:active {
+    transform: translateY(0);
 }
 
-button:active::after {
-    transform: scale(3);
-    opacity: 0;
+.btn-primary i {
+    margin-right: 8px;
 }
 
-.btn-login {
-    background: #2563eb;
-}
-.btn-login:hover {
-    background: #1d4ed8;
-}
-
-.btn-register {
-    background: #10b981;
-}
-.btn-register:hover {
-    background: #059669;
-}
-
-.btn-logout {
-    background: #ef4444;
-}
-.btn-logout:hover {
-    background: #dc2626;
-}
-
-.btn-goto {
-    background: #2563eb;
-}
-.btn-goto:hover {
-    background: #1d4ed8;
-}
-
-.btn-share {
-    background: #8b5cf6;
-    margin-top: 8px;
-}
-.btn-share:hover {
-    background: #7c3aed;
-}
-
-.btn-admin {
-    background: #8b5cf6;
-}
-.btn-admin:hover {
-    background: #7c3aed;
-}
-
-.btn-danger {
-    background: #ef4444;
-}
-.btn-danger:hover {
-    background: #dc2626;
-}
-
-.btn-warning {
-    background: #f59e0b;
-}
-.btn-warning:hover {
-    background: #d97706;
-}
-
-.btn-success {
-    background: #10b981;
-}
-.btn-success:hover {
-    background: #059669;
-}
-
-.btn-info {
-    background: #06b6d4;
-}
-.btn-info:hover {
-    background: #0891b2;
-}
-
-.link {
+/* Back Link */
+.back-link {
     text-align: center;
-    margin-top: 16px;
-    font-size: 14px;
+    margin-top: 18px;
 }
 
-.link a {
-    color: #38bdf8;
+.back-link a {
+    color: #64748b;
     text-decoration: none;
+    font-size: 13px;
+    transition: 0.2s;
 }
 
-.link a:active {
-    opacity: 0.7;
+.back-link a:hover {
+    color: #94a3b8;
 }
 
-/* Profile */
-.info {
-    text-align: left;
-    margin: 12px 0;
-    padding: 14px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    word-break: break-word;
+/* ===== DASHBOARD ===== */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.info p {
-    margin: 6px 0;
-    font-size: 15px;
+.dashboard-header h2 {
+    font-size: 20px;
+    font-weight: 600;
 }
 
-.info .badge {
-    display: inline-block;
-    padding: 2px 12px;
+.admin-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(139, 92, 246, 0.15);
+    padding: 6px 14px 6px 10px;
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
+    border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
-.badge-user {
-    background: #2563eb;
-    color: white;
+.admin-badge img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
 }
 
-.badge-admin {
-    background: #8b5cf6;
-    color: white;
+.admin-badge span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #e2e8f0;
 }
 
-.badge-super {
-    background: #ef4444;
-    color: white;
+.admin-badge .role {
+    font-size: 10px;
+    color: #8b5cf6;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-/* Admin Dashboard */
-.admin-stats {
+/* Stats Grid */
+.stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 12px 0;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 14px;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
     text-align: center;
+    transition: all 0.3s ease;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 .stat-card:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(139, 92, 246, 0.2);
 }
 
 .stat-card .number {
-    font-size: 24px;
-    font-weight: bold;
-    color: #38bdf8;
+    font-size: 26px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
 }
 
 .stat-card .label {
-    font-size: 12px;
+    font-size: 11px;
     color: #94a3b8;
     margin-top: 4px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.user-list {
-    max-height: 300px;
-    overflow-y: auto;
-    margin: 12px 0;
-    border-radius: 12px;
+/* Action Buttons */
+.action-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-action {
+    flex: 1;
+    min-width: 60px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-action i {
+    font-size: 14px;
+}
+
+.btn-action.primary {
+    background: rgba(139, 92, 246, 0.15);
+    color: #a78bfa;
+    border-color: rgba(139, 92, 246, 0.2);
+}
+
+.btn-action.primary:hover {
+    background: rgba(139, 92, 246, 0.25);
+}
+
+.btn-action.success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.btn-action.success:hover {
+    background: rgba(16, 185, 129, 0.25);
+}
+
+.btn-action.warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+.btn-action.warning:hover {
+    background: rgba(245, 158, 11, 0.25);
+}
+
+.btn-action.danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.btn-action.danger:hover {
+    background: rgba(239, 68, 68, 0.25);
+}
+
+/* Search */
+.search-box {
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 16px 12px 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    color: #f1f5f9;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-box input:focus {
+    border-color: rgba(139, 92, 246, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.search-box input::placeholder {
+    color: #475569;
+}
+
+.search-box i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #475569;
+}
+
+/* Section Title */
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.section-title h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #94a3b8;
+}
+
+.section-title span {
+    font-size: 12px;
+    color: #475569;
+}
+
+/* User List */
+.user-list {
+    max-height: 280px;
+    overflow-y: auto;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .user-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 14px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: 0.2s;
+}
+
+.user-item:hover {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .user-item:last-child {
     border-bottom: none;
 }
 
-.user-item .user-info {
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(109, 40, 217, 0.2));
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: #a78bfa;
+    flex-shrink: 0;
 }
 
-.user-item .user-name {
-    font-weight: bold;
+.user-info {
+    flex: 1;
+    margin-left: 12px;
 }
 
-.user-item .user-phone {
-    color: #94a3b8;
+.user-info .name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.user-info .phone {
     font-size: 12px;
+    color: #94a3b8;
 }
 
-.user-item .user-actions {
+.user-info .meta {
+    font-size: 10px;
+    color: #475569;
+}
+
+.user-actions {
     display: flex;
     gap: 6px;
 }
 
-.user-item .user-actions button {
-    padding: 4px 10px;
-    font-size: 12px;
-    width: auto;
-    margin: 0;
-    border-radius: 6px;
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
 }
 
-.btn-sm {
-    padding: 4px 10px;
-    font-size: 12px;
-    width: auto;
-    margin: 0;
-    border-radius: 6px;
+.btn-icon:hover {
+    transform: scale(1.05);
 }
 
-/* Utility */
+.btn-icon.view {
+    background: rgba(37, 99, 235, 0.15);
+    color: #60a5fa;
+}
+
+.btn-icon.view:hover {
+    background: rgba(37, 99, 235, 0.25);
+}
+
+.btn-icon.delete {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+}
+
+.btn-icon.delete:hover {
+    background: rgba(239, 68, 68, 0.25);
+}
+
+/* New User Badge */
+.badge-new {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+
+/* Logout Button */
+.btn-logout {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.1);
+}
+
+.btn-logout:hover {
+    background: rgba(239, 68, 68, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-logout i {
+    margin-right: 8px;
+}
+
+/* ===== ADMIN LIST ===== */
+.admin-list {
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.admin-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.admin-item:last-child {
+    border-bottom: none;
+}
+
+.admin-info .admin-name {
+    font-weight: 500;
+}
+
+.admin-info .admin-username {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.admin-badge-role {
+    font-size: 10px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.admin-badge-role.super {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+}
+
+.admin-badge-role.admin {
+    background: rgba(139, 92, 246, 0.15);
+    color: #a78bfa;
+}
+
+.admin-item .admin-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* ===== UTILITY ===== */
 .hidden {
     display: none !important;
-}
-
-.mt-10 {
-    margin-top: 10px;
 }
 
 .text-center {
     text-align: center;
 }
 
+.mt-10 {
+    margin-top: 10px;
+}
+
 .mb-10 {
     margin-bottom: 10px;
 }
 
-/* ===== LOADING SPINNER ===== */
+/* ===== SCROLLBAR ===== */
+.user-list::-webkit-scrollbar,
+.admin-list::-webkit-scrollbar {
+    width: 3px;
+}
+
+.user-list::-webkit-scrollbar-track,
+.admin-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+
+.user-list::-webkit-scrollbar-thumb,
+.admin-list::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+}
+
+/* ===== TOAST ===== */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 15, 30, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #e2e8f0;
+    padding: 14px 24px;
+    border-radius: 14px;
+    z-index: 1000;
+    animation: slideUp 0.4s ease;
+    max-width: 90%;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.toast.success {
+    border-left: 3px solid #34d399;
+}
+
+.toast.error {
+    border-left: 3px solid #f87171;
+}
+
+/* ===== LOADING ===== */
 .loading-spinner {
     position: fixed;
     top: 0;
@@ -523,7 +721,8 @@ button:active::after {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -531,52 +730,15 @@ button:active::after {
 }
 
 .spinner {
-    border: 4px solid rgba(255, 255, 255, 0.1);
-    border-top: 4px solid #8b5cf6;
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(139, 92, 246, 0.1);
+    border-top: 3px solid #8b5cf6;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
     animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* ===== TOAST NOTIFICATION ===== */
-.toast {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 14px 24px;
-    border-radius: 12px;
-    z-index: 1000;
-    animation: slideUp 0.3s ease;
-    max-width: 90%;
-    text-align: center;
-    font-size: 14px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-}
-
-.toast.success {
-    border-left: 4px solid #10b981;
-}
-
-.toast.error {
-    border-left: 4px solid #ef4444;
-}
-
-@keyframes slideUp {
-    from { transform: translateX(-50%) translateY(20px); opacity: 0; }
-    to { transform: translateX(-50%) translateY(0); opacity: 1; }
-}
-
-/* ===== CUSTOM DIALOG ===== */
+/* ===== DIALOG ===== */
 .dialog-overlay {
     position: fixed;
     top: 0;
@@ -584,8 +746,8 @@ button:active::after {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -594,25 +756,34 @@ button:active::after {
 }
 
 .dialog-box {
-    background: #1e293b;
-    padding: 30px 24px;
-    border-radius: 16px;
-    max-width: 340px;
+    background: rgba(30, 30, 50, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 32px 24px;
+    border-radius: 20px;
+    max-width: 360px;
     width: 90%;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
     animation: scaleIn 0.3s ease;
+}
+
+.dialog-box .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
 }
 
 .dialog-box h3 {
     font-size: 20px;
-    margin-bottom: 10px;
-    color: white;
+    margin-bottom: 8px;
+    color: #f1f5f9;
 }
 
 .dialog-box p {
     color: #94a3b8;
     margin-bottom: 24px;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-size: 14px;
     white-space: pre-line;
 }
 
@@ -624,10 +795,10 @@ button:active::after {
 .btn-dialog {
     flex: 1;
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
-    font-weight: bold;
-    font-size: 15px;
+    font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
     transition: 0.2s;
 }
@@ -637,30 +808,37 @@ button:active::after {
 }
 
 .btn-dialog.confirm {
-    background: #8b5cf6;
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
     color: white;
 }
 
 .btn-dialog.confirm:hover {
-    background: #7c3aed;
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
 }
 
 .btn-dialog.cancel {
-    background: #334155;
-    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .btn-dialog.cancel:hover {
-    background: #475569;
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .btn-dialog.danger {
-    background: #ef4444;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
 }
 
 .btn-dialog.danger:hover {
-    background: #dc2626;
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
@@ -673,185 +851,86 @@ button:active::after {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* ===== SCROLLBAR ===== */
-.user-list::-webkit-scrollbar {
-    width: 4px;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-.user-list::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-}
-
-.user-list::-webkit-scrollbar-thumb {
-    background: #8b5cf6;
-    border-radius: 4px;
-}
-
-.admin-list::-webkit-scrollbar {
-    width: 4px;
-}
-
-.admin-list::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
-}
-
-.admin-list::-webkit-scrollbar-thumb {
-    background: #8b5cf6;
-    border-radius: 4px;
-}
-
-/* Admin List */
-.admin-list {
-    margin: 12px 0;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.admin-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 14px;
-}
-
-.admin-item:last-child {
-    border-bottom: none;
-}
-
-.admin-item .admin-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.admin-item .admin-name {
-    font-weight: bold;
-}
-
-.admin-item .admin-username {
-    color: #94a3b8;
-    font-size: 12px;
-}
-
-.admin-item .admin-badge {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    background: rgba(139, 92, 246, 0.2);
-    color: #8b5cf6;
-}
-
-.admin-item .admin-badge.super {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-}
-
-/* Search Box */
-.search-box {
-    position: relative;
-    margin: 12px 0;
-}
-
-.search-box input {
-    padding: 10px 16px 10px 40px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    border: none;
-    color: white;
-    width: 100%;
-    font-size: 14px;
-}
-
-.search-box input::placeholder {
-    color: #94a3b8;
-}
-
-.search-box .search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 18px;
-}
-
-/* Animation */
-@keyframes fadeSlide {
-    from { 
-        opacity: 0; 
-        transform: translateY(20px);
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0);
-    }
+@keyframes slideUp {
+    from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 400px) {
-    .container {
-        padding: 20px 14px;
+@media (max-width: 480px) {
+    .glass-container {
+        padding: 20px 16px;
+        border-radius: 24px;
     }
-    .logo {
-        font-size: 24px;
-    }
-    .btn {
-        padding: 12px 18px;
-        font-size: 14px;
-        min-width: 100px;
-    }
-    .box {
-        padding: 20px 14px;
-    }
-    input {
-        padding: 12px 14px;
-        font-size: 15px;
-    }
-    button {
-        padding: 12px;
-        font-size: 15px;
-    }
-    .admin-stats {
-        grid-template-columns: 1fr 1fr;
+    
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
         gap: 8px;
     }
+    
+    .stat-card {
+        padding: 12px 8px;
+    }
+    
     .stat-card .number {
         font-size: 20px;
     }
-    .user-item {
-        flex-wrap: wrap;
+    
+    .stat-card .label {
+        font-size: 9px;
+    }
+    
+    .logo-text {
+        font-size: 22px;
+    }
+    
+    .action-bar {
         gap: 6px;
     }
-    .user-item .user-actions {
-        width: 100%;
-        justify-content: flex-end;
+    
+    .btn-action {
+        font-size: 10px;
+        padding: 8px 10px;
+        min-width: 40px;
+    }
+    
+    .btn-action i {
+        font-size: 12px;
+    }
+    
+    .user-item {
+        padding: 10px 12px;
+    }
+    
+    .user-info .name {
+        font-size: 13px;
+    }
+    
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    .dialog-box {
+        padding: 24px 16px;
+    }
+    
+    .dialog-buttons {
+        flex-direction: column;
     }
 }
 
 @media (min-width: 768px) {
-    .container {
-        padding: 45px 40px;
-    }
-    .logo {
-        font-size: 36px;
-    }
-}
-
-@media (max-width: 480px) {
-    .dialog-box {
-        padding: 24px 16px;
-    }
-    .dialog-buttons {
-        flex-direction: column;
-    }
-    .btn-dialog {
-        padding: 14px;
+    .glass-container {
+        max-width: 560px;
+        padding: 40px 36px;
+        border-radius: 40px;
     }
 }
 </style>
@@ -875,6 +954,7 @@ button:active::after {
 <!-- ============================================ -->
 <div id="customDialog" class="dialog-overlay hidden">
     <div class="dialog-box">
+        <div class="icon" id="dialogIcon">⚠️</div>
         <h3 id="dialogTitle">Title</h3>
         <p id="dialogMessage">Message</p>
         <div class="dialog-buttons">
@@ -887,37 +967,77 @@ button:active::after {
 <!-- ============================================ -->
 <!-- PAGE: ADMIN LOGIN -->
 <!-- ============================================ -->
-<div id="pageAdminLogin" class="box">
-    <div class="logo" style="font-size:24px;margin-bottom:20px;">ATH <span>DIGITAL</span> HUB</div>
-    <h2>👑 Admin Login</h2>
-    <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
-        <input type="text" id="adminUsername" placeholder="👤 Username" required autofocus>
-        <div class="password-wrapper">
-            <input type="password" id="adminPassword" placeholder="🔑 Password" required>
-            <button type="button" class="password-toggle" onclick="togglePassword('adminPassword')">👁️</button>
-        </div>
-        <div class="remember-me">
-            <input type="checkbox" id="rememberAdmin">
-            <label for="rememberAdmin">Remember Me</label>
-        </div>
-        <button type="submit" class="btn-admin">Login as Admin</button>
-    </form>
-    <div class="link">
-        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+<div id="pageAdminLogin" class="glass-container">
+    <div class="logo-container">
+        <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
+        <div class="logo-text">ATH Digital Hub</div>
+        <div class="logo-sub">Admin Panel</div>
     </div>
-    <div class="footer" style="margin-top:20px;">Copyright © 2026 AUNG THU HTWE</div>
+    
+    <div class="login-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to manage your dashboard</p>
+    </div>
+    
+    <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+        <div class="form-group">
+            <label><i class="fas fa-user" style="margin-right:6px;"></i> Username</label>
+            <div class="input-wrapper">
+                <span class="icon"><i class="fas fa-user"></i></span>
+                <input type="text" id="adminUsername" placeholder="Enter your username" required autofocus>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label><i class="fas fa-lock" style="margin-right:6px;"></i> Password</label>
+            <div class="input-wrapper">
+                <span class="icon"><i class="fas fa-lock"></i></span>
+                <input type="password" id="adminPassword" placeholder="Enter your password" required>
+                <button type="button" class="toggle-btn" onclick="togglePassword('adminPassword')">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="remember-row">
+            <label>
+                <input type="checkbox" id="rememberAdmin">
+                Remember me
+            </label>
+            <a href="#">Forgot password?</a>
+        </div>
+        
+        <button type="submit" class="btn-primary">
+            <i class="fas fa-arrow-right-to-bracket"></i> Sign In
+        </button>
+    </form>
+    
+    <div class="back-link">
+        <a href="#" onclick="showPage('pageHome')"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:#475569;">
+        Copyright © 2026 AUNG THU HTWE
+    </div>
 </div>
 
 <!-- ============================================ -->
 <!-- PAGE: ADMIN DASHBOARD -->
 <!-- ============================================ -->
-<div id="pageAdminDashboard" class="box hidden">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <h2 style="margin:0;">👑 Dashboard</h2>
-        <span id="adminName" style="color:#cbd5e1;font-size:14px;"></span>
+<div id="pageAdminDashboard" class="glass-container hidden">
+    <div class="dashboard-header">
+        <h2><i class="fas fa-chart-simple" style="color:#8b5cf6;margin-right:8px;"></i>Dashboard</h2>
+        <div class="admin-badge">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#6d28d9);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:600;">
+                <span id="adminInitial">A</span>
+            </div>
+            <div>
+                <span id="adminNameDisplay">Admin</span>
+                <div class="role" id="adminRoleDisplay">Super Admin</div>
+            </div>
+        </div>
     </div>
     
-    <div class="admin-stats">
+    <div class="stats-grid">
         <div class="stat-card" onclick="filterUsers('all')">
             <div class="number" id="totalUsers">0</div>
             <div class="label">Total Users</div>
@@ -928,112 +1048,200 @@ button:active::after {
         </div>
         <div class="stat-card" onclick="showPage('pageAdminList')">
             <div class="number" id="totalAdmins">0</div>
-            <div class="label">Total Admins</div>
+            <div class="label">Admins</div>
         </div>
     </div>
     
-    <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">
-        <button onclick="refreshAdminData()" class="btn-sm" style="background:#2563eb;flex:1;">🔄 Refresh</button>
-        <button onclick="showPage('pageAdminCreate')" class="btn-sm" style="background:#10b981;flex:1;">➕ New Admin</button>
-        <button onclick="showPage('pageAdminList')" class="btn-sm" style="background:#8b5cf6;flex:1;">👑 Admins</button>
-        <button onclick="exportData()" class="btn-sm" style="background:#f59e0b;flex:1;">📤 Export</button>
-        <button onclick="showPage('pageSettings')" class="btn-sm" style="background:#06b6d4;flex:1;">⚙️ Settings</button>
+    <div class="action-bar">
+        <button onclick="refreshAdminData()" class="btn-action primary"><i class="fas fa-rotate"></i> Refresh</button>
+        <button onclick="showPage('pageAdminCreate')" class="btn-action success"><i class="fas fa-plus"></i> New Admin</button>
+        <button onclick="showPage('pageAdminList')" class="btn-action"><i class="fas fa-users-gear"></i> Admins</button>
+        <button onclick="exportData()" class="btn-action warning"><i class="fas fa-download"></i> Export</button>
+        <button onclick="showPage('pageSettings')" class="btn-action"><i class="fas fa-sliders"></i></button>
     </div>
     
     <div class="search-box">
-        <span class="search-icon">🔍</span>
+        <i class="fas fa-search"></i>
         <input type="text" id="userSearch" placeholder="Search users by name or phone..." oninput="filterUserList(this.value)">
     </div>
     
-    <h4 style="text-align:left;color:#94a3b8;font-size:14px;margin:8px 0;">📋 All Users</h4>
+    <div class="section-title">
+        <h4><i class="fas fa-users" style="margin-right:6px;"></i> All Users</h4>
+        <span id="userCountDisplay">0 users</span>
+    </div>
+    
     <div class="user-list" id="adminUserList">
-        <div style="text-align:center;padding:30px 0;color:#94a3b8;">
-            <p>Loading users...</p>
+        <div style="text-align:center;padding:40px 0;color:#475569;">
+            <i class="fas fa-spinner fa-spin" style="font-size:24px;"></i>
+            <p style="margin-top:12px;">Loading users...</p>
         </div>
     </div>
     
-    <button class="btn-logout" onclick="handleAdminLogout()" style="margin-top:12px;">🚪 Logout</button>
-    <div class="link" style="margin-top:8px;">
-        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    <button class="btn-logout" onclick="handleAdminLogout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+    
+    <div class="back-link" style="margin-top:12px;">
+        <a href="#" onclick="showPage('pageHome')"><i class="fas fa-arrow-left"></i> Back to Home</a>
     </div>
 </div>
 
 <!-- ============================================ -->
 <!-- PAGE: CREATE ADMIN -->
 <!-- ============================================ -->
-<div id="pageAdminCreate" class="box hidden">
-    <h2>➕ Create Admin</h2>
+<div id="pageAdminCreate" class="glass-container hidden">
+    <div class="dashboard-header">
+        <h2><i class="fas fa-user-plus" style="color:#10b981;margin-right:8px;"></i>New Admin</h2>
+        <button onclick="showPage('pageAdminDashboard')" class="btn-action" style="flex:0;padding:8px 16px;">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+    
     <form id="adminCreateForm" onsubmit="handleCreateAdmin(event)">
-        <input type="text" id="adminCreateName" placeholder="👤 Admin Name" required>
-        <input type="text" id="adminCreateUsername" placeholder="👤 Username" required>
-        <div class="password-wrapper">
-            <input type="password" id="adminCreatePassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
-            <button type="button" class="password-toggle" onclick="togglePassword('adminCreatePassword')">👁️</button>
+        <div class="form-group">
+            <label><i class="fas fa-user" style="margin-right:6px;"></i> Full Name</label>
+            <div class="input-wrapper">
+                <span class="icon"><i class="fas fa-user"></i></span>
+                <input type="text" id="adminCreateName" placeholder="Enter admin name" required>
+            </div>
         </div>
-        <div style="text-align:left;margin:8px 0;">
-            <input type="checkbox" id="adminCreateSuper" style="width:auto;margin-right:8px;">
-            <label for="adminCreateSuper" style="color:#cbd5e1;">👑 Super Admin</label>
+        
+        <div class="form-group">
+            <label><i class="fas fa-at" style="margin-right:6px;"></i> Username</label>
+            <div class="input-wrapper">
+                <span class="icon"><i class="fas fa-at"></i></span>
+                <input type="text" id="adminCreateUsername" placeholder="Choose a username" required>
+            </div>
         </div>
-        <button type="submit" class="btn-admin">Create Admin</button>
+        
+        <div class="form-group">
+            <label><i class="fas fa-lock" style="margin-right:6px;"></i> Password</label>
+            <div class="input-wrapper">
+                <span class="icon"><i class="fas fa-lock"></i></span>
+                <input type="password" id="adminCreatePassword" placeholder="Min 4 characters" required minlength="4">
+                <button type="button" class="toggle-btn" onclick="togglePassword('adminCreatePassword')">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:10px;margin:12px 0 18px;padding:12px 16px;background:rgba(139,92,246,0.05);border-radius:12px;border:1px solid rgba(139,92,246,0.1);">
+            <input type="checkbox" id="adminCreateSuper" style="width:18px;height:18px;accent-color:#8b5cf6;cursor:pointer;">
+            <label for="adminCreateSuper" style="cursor:pointer;font-size:14px;">
+                <i class="fas fa-crown" style="color:#fbbf24;"></i> 
+                <span style="font-weight:500;">Super Admin</span>
+                <span style="color:#94a3b8;font-size:12px;display:block;margin-top:2px;">Full access to all features</span>
+            </label>
+        </div>
+        
+        <button type="submit" class="btn-primary" style="background:linear-gradient(135deg,#10b981,#059669);">
+            <i class="fas fa-plus"></i> Create Admin
+        </button>
     </form>
-    <div class="link">
-        <a href="#" onclick="showPage('pageAdminDashboard')">← Back to Dashboard</a>
+    
+    <div class="back-link">
+        <a href="#" onclick="showPage('pageAdminDashboard')"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
 </div>
 
 <!-- ============================================ -->
 <!-- PAGE: ADMIN LIST -->
 <!-- ============================================ -->
-<div id="pageAdminList" class="box hidden">
-    <h2>👑 Admin List</h2>
+<div id="pageAdminList" class="glass-container hidden">
+    <div class="dashboard-header">
+        <h2><i class="fas fa-users-gear" style="color:#8b5cf6;margin-right:8px;"></i>Admins</h2>
+        <button onclick="showPage('pageAdminDashboard')" class="btn-action" style="flex:0;padding:8px 16px;">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+    
     <div class="admin-list" id="adminListContainer">
-        <div style="text-align:center;padding:30px 0;color:#94a3b8;">
-            <p>Loading admins...</p>
+        <div style="text-align:center;padding:40px 0;color:#475569;">
+            <i class="fas fa-spinner fa-spin" style="font-size:24px;"></i>
+            <p style="margin-top:12px;">Loading admins...</p>
         </div>
     </div>
-    <button class="btn-goto" onclick="showPage('pageAdminDashboard')" style="margin-top:12px;">← Back to Dashboard</button>
+    
+    <div class="back-link" style="margin-top:12px;">
+        <a href="#" onclick="showPage('pageAdminDashboard')"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
 </div>
 
 <!-- ============================================ -->
 <!-- PAGE: SETTINGS -->
 <!-- ============================================ -->
-<div id="pageSettings" class="box hidden">
-    <h2>⚙️ Settings</h2>
-    
-    <div style="text-align:left;margin:12px 0;padding:14px;background:rgba(255,255,255,0.05);border-radius:12px;">
-        <h4 style="color:#94a3b8;margin-bottom:8px;">Data Management</h4>
-        <button onclick="clearAllData()" class="btn-sm" style="background:#ef4444;width:100%;margin-top:8px;">🗑️ Clear All Data</button>
-        <button onclick="exportData()" class="btn-sm" style="background:#10b981;width:100%;margin-top:8px;">📤 Export All Data</button>
-        <button onclick="document.getElementById('importFile').click()" class="btn-sm" style="background:#8b5cf6;width:100%;margin-top:8px;">📥 Import Data</button>
-        <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+<div id="pageSettings" class="glass-container hidden">
+    <div class="dashboard-header">
+        <h2><i class="fas fa-sliders" style="color:#06b6d4;margin-right:8px;"></i>Settings</h2>
+        <button onclick="showPage('pageAdminDashboard')" class="btn-action" style="flex:0;padding:8px 16px;">
+            <i class="fas fa-xmark"></i>
+        </button>
     </div>
     
-    <div style="text-align:left;margin:12px 0;padding:14px;background:rgba(255,255,255,0.05);border-radius:12px;">
-        <h4 style="color:#94a3b8;margin-bottom:8px;">Security</h4>
-        <button onclick="changeAdminPassword()" class="btn-sm" style="background:#f59e0b;width:100%;margin-top:8px;">🔑 Change Password</button>
-        <button onclick="sessionTimeout()" class="btn-sm" style="background:#06b6d4;width:100%;margin-top:8px;">⏱️ Session Timeout Settings</button>
+    <div style="display:grid;gap:12px;">
+        <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#94a3b8;font-size:14px;margin-bottom:10px;"><i class="fas fa-database"></i> Data Management</h4>
+            <div style="display:grid;gap:8px;">
+                <button onclick="exportData()" class="btn-action success" style="width:100%;justify-content:center;padding:12px;">
+                    <i class="fas fa-download"></i> Export All Data
+                </button>
+                <button onclick="document.getElementById('importFile').click()" class="btn-action primary" style="width:100%;justify-content:center;padding:12px;">
+                    <i class="fas fa-upload"></i> Import Data
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+                <button onclick="clearAllData()" class="btn-action danger" style="width:100%;justify-content:center;padding:12px;">
+                    <i class="fas fa-trash"></i> Clear All Data
+                </button>
+            </div>
+        </div>
+        
+        <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#94a3b8;font-size:14px;margin-bottom:10px;"><i class="fas fa-shield-halved"></i> Security</h4>
+            <div style="display:grid;gap:8px;">
+                <button onclick="changeAdminPassword()" class="btn-action warning" style="width:100%;justify-content:center;padding:12px;">
+                    <i class="fas fa-key"></i> Change Password
+                </button>
+                <button onclick="sessionTimeout()" class="btn-action" style="width:100%;justify-content:center;padding:12px;">
+                    <i class="fas fa-clock"></i> Session Timeout
+                </button>
+            </div>
+        </div>
+        
+        <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#94a3b8;font-size:14px;margin-bottom:10px;"><i class="fas fa-palette"></i> Appearance</h4>
+            <button onclick="toggleDarkMode()" class="btn-action primary" style="width:100%;justify-content:center;padding:12px;">
+                <i class="fas fa-moon"></i> Toggle Dark/Light Mode
+            </button>
+        </div>
     </div>
     
-    <div style="text-align:left;margin:12px 0;padding:14px;background:rgba(255,255,255,0.05);border-radius:12px;">
-        <h4 style="color:#94a3b8;margin-bottom:8px;">Appearance</h4>
-        <button onclick="toggleDarkMode()" class="btn-sm" style="background:#2563eb;width:100%;margin-top:8px;">🌓 Toggle Dark/Light Mode</button>
+    <div class="back-link" style="margin-top:16px;">
+        <a href="#" onclick="showPage('pageAdminDashboard')"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
-    
-    <button class="btn-goto" onclick="showPage('pageAdminDashboard')" style="margin-top:12px;">← Back to Dashboard</button>
 </div>
 
 <!-- ============================================ -->
 <!-- PAGE: HOME (for back button) -->
 <!-- ============================================ -->
-<div id="pageHome" class="container hidden">
-    <div class="logo">ATH <span>DIGITAL</span> HUB</div>
-    <div class="subtitle">Secure • Fast • Reliable</div>
-    <h2>Welcome</h2>
-    <p class="desc">Admin panel is ready.</p>
-    <div class="btn-group">
-        <button class="btn admin-btn" onclick="showPage('pageAdminLogin')">👑 Admin Login</button>
+<div id="pageHome" class="glass-container hidden">
+    <div class="logo-container">
+        <div class="logo-icon"><i class="fas fa-shield-halved"></i></div>
+        <div class="logo-text">ATH Digital Hub</div>
+        <div class="logo-sub">Secure • Fast • Reliable</div>
     </div>
-    <div class="footer">Copyright © 2026 AUNG THU HTWE</div>
+    
+    <div style="text-align:center;margin:20px 0;">
+        <h2 style="font-size:20px;font-weight:600;">Welcome</h2>
+        <p style="color:#94a3b8;font-size:14px;margin-top:6px;">Admin panel is ready.</p>
+    </div>
+    
+    <button class="btn-primary" onclick="showPage('pageAdminLogin')" style="margin-top:8px;">
+        <i class="fas fa-arrow-right-to-bracket"></i> Admin Login
+    </button>
+    
+    <div style="text-align:center;margin-top:20px;font-size:11px;color:#475569;">
+        Copyright © 2026 AUNG THU HTWE
+    </div>
 </div>
 
 <!-- ============================================ -->
@@ -1064,6 +1272,7 @@ let dialogCallback = null;
 
 function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel', isDanger = false) {
     return new Promise((resolve) => {
+        document.getElementById('dialogIcon').textContent = isDanger ? '⚠️' : '📌';
         document.getElementById('dialogTitle').textContent = title;
         document.getElementById('dialogMessage').textContent = message;
         const confirmBtn = document.getElementById('dialogConfirm');
@@ -1109,7 +1318,7 @@ function hideLoading() {
 // PAGE NAVIGATION
 // =============================================
 function showPage(pageId) {
-    document.querySelectorAll('.container, .box').forEach(el => {
+    document.querySelectorAll('.glass-container').forEach(el => {
         el.classList.add('hidden');
     });
 
@@ -1131,13 +1340,13 @@ function showPage(pageId) {
 // =============================================
 function togglePassword(id) {
     const input = document.getElementById(id);
-    const btn = input.parentElement.querySelector('.password-toggle');
+    const icon = input.parentElement.querySelector('.toggle-btn i');
     if (input.type === 'password') {
         input.type = 'text';
-        btn.textContent = '🙈';
+        icon.className = 'fas fa-eye-slash';
     } else {
         input.type = 'password';
-        btn.textContent = '👁️';
+        icon.className = 'fas fa-eye';
     }
 }
 
@@ -1340,18 +1549,20 @@ function refreshAdminData() {
         return;
     }
     
-    document.getElementById('adminName').textContent = '👑 ' + admin.name + (admin.is_super ? ' (Super)' : '');
+    document.getElementById('adminInitial').textContent = admin.name.charAt(0).toUpperCase();
+    document.getElementById('adminNameDisplay').textContent = admin.name;
+    document.getElementById('adminRoleDisplay').textContent = admin.is_super ? 'Super Admin' : 'Admin';
     
     const users = getUsers();
     const admins = getAdmins();
     
-    // Today's users
     const today = new Date().toDateString();
     const todayUsers = users.filter(u => new Date(u.created_at).toDateString() === today);
     
     document.getElementById('totalUsers').textContent = users.length;
     document.getElementById('todayUsers').textContent = todayUsers.length;
     document.getElementById('totalAdmins').textContent = admins.length;
+    document.getElementById('userCountDisplay').textContent = users.length + ' users';
     
     renderUserList(users);
 }
@@ -1370,7 +1581,8 @@ function renderUserList(users) {
     
     if (filteredUsers.length === 0) {
         container.innerHTML = `
-            <div style="text-align:center;padding:30px 0;color:#94a3b8;">
+            <div style="text-align:center;padding:40px 20px;color:#475569;">
+                <i class="fas fa-users-slash" style="font-size:32px;margin-bottom:12px;display:block;"></i>
                 <p>${users.length === 0 ? 'No users registered yet.' : 'No users found matching "' + searchTerm + '"'}</p>
             </div>
         `;
@@ -1381,17 +1593,28 @@ function renderUserList(users) {
     filteredUsers.slice().reverse().forEach((user) => {
         const createdDate = new Date(user.created_at);
         const isToday = createdDate.toDateString() === new Date().toDateString();
+        const initial = user.name.charAt(0).toUpperCase();
         
         html += `
             <div class="user-item">
-                <div class="user-info">
-                    <span class="user-name">${escapeHtml(user.name)} ${isToday ? '🆕' : ''}</span>
-                    <span class="user-phone">📱 ${escapeHtml(user.phone)}</span>
-                    <span style="font-size:10px;color:#64748b;">${escapeHtml(user.user_id)} • ${createdDate.toLocaleDateString()}</span>
+                <div style="display:flex;align-items:center;flex:1;">
+                    <div class="user-avatar">${initial}</div>
+                    <div class="user-info">
+                        <div class="name">
+                            ${escapeHtml(user.name)}
+                            ${isToday ? '<span class="badge-new">NEW</span>' : ''}
+                        </div>
+                        <div class="phone"><i class="fas fa-phone" style="font-size:10px;"></i> ${escapeHtml(user.phone)}</div>
+                        <div class="meta">${escapeHtml(user.user_id)} • ${createdDate.toLocaleDateString()}</div>
+                    </div>
                 </div>
                 <div class="user-actions">
-                    <button onclick="viewUser('${escapeHtml(user.user_id)}')" class="btn-sm" style="background:#2563eb;">View</button>
-                    <button onclick="deleteUser('${escapeHtml(user.user_id)}')" class="btn-sm" style="background:#ef4444;">Delete</button>
+                    <button onclick="viewUser('${escapeHtml(user.user_id)}')" class="btn-icon view" title="View">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button onclick="deleteUser('${escapeHtml(user.user_id)}')" class="btn-icon delete" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
         `;
@@ -1434,7 +1657,8 @@ function renderAdminList() {
     
     if (admins.length === 0) {
         container.innerHTML = `
-            <div style="text-align:center;padding:30px 0;color:#94a3b8;">
+            <div style="text-align:center;padding:40px 20px;color:#475569;">
+                <i class="fas fa-user-slash" style="font-size:32px;margin-bottom:12px;display:block;"></i>
                 <p>No admins found.</p>
             </div>
         `;
@@ -1445,22 +1669,31 @@ function renderAdminList() {
     admins.forEach((admin) => {
         const isCurrent = currentAdmin && currentAdmin.admin_id === admin.admin_id;
         const isSuper = admin.is_super;
+        const initial = admin.name.charAt(0).toUpperCase();
         
         html += `
-            <div class="admin-item" style="${isCurrent ? 'background:rgba(139,92,246,0.1);' : ''}">
-                <div class="admin-info">
-                    <span class="admin-name">
-                        ${escapeHtml(admin.name)}
-                        ${isSuper ? ' 👑' : ''}
-                        ${isCurrent ? ' (You)' : ''}
-                    </span>
-                    <span class="admin-username">👤 ${escapeHtml(admin.username)}</span>
-                    <span style="font-size:10px;color:#64748b;">${escapeHtml(admin.admin_id)}</span>
+            <div class="admin-item" style="${isCurrent ? 'background:rgba(139,92,246,0.05);' : ''}">
+                <div style="display:flex;align-items:center;flex:1;">
+                    <div class="user-avatar" style="background:${isSuper ? 'linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.2));' : ''}">
+                        ${initial}
+                    </div>
+                    <div class="admin-info" style="margin-left:12px;">
+                        <div class="admin-name">
+                            ${escapeHtml(admin.name)}
+                            ${isCurrent ? ' <span style="font-size:10px;color:#8b5cf6;">(You)</span>' : ''}
+                        </div>
+                        <div class="admin-username"><i class="fas fa-at" style="font-size:10px;"></i> ${escapeHtml(admin.username)}</div>
+                        <span style="font-size:10px;color:#475569;">${escapeHtml(admin.admin_id)}</span>
+                    </div>
                 </div>
                 <div style="display:flex;gap:6px;align-items:center;">
-                    <span class="admin-badge ${isSuper ? 'super' : ''}">${isSuper ? 'Super Admin' : 'Admin'}</span>
+                    <span class="admin-badge-role ${isSuper ? 'super' : 'admin'}">
+                        ${isSuper ? '👑 Super' : 'Admin'}
+                    </span>
                     ${!isCurrent && currentAdmin && currentAdmin.is_super ? 
-                        `<button onclick="deleteAdmin('${escapeHtml(admin.admin_id)}')" class="btn-sm" style="background:#ef4444;">Delete</button>` : 
+                        `<button onclick="deleteAdmin('${escapeHtml(admin.admin_id)}')" class="btn-icon delete" title="Delete Admin">
+                            <i class="fas fa-trash"></i>
+                        </button>` : 
                         ''}
                 </div>
             </div>
@@ -1642,36 +1875,68 @@ function sessionTimeout() {
 // =============================================
 function toggleDarkMode() {
     const body = document.body;
-    const isDark = body.style.background !== 'linear-gradient(135deg, #f8fafc, #e2e8f0)';
+    const isDark = body.style.background !== 'linear-gradient(135deg, #f1f5f9, #e2e8f0)';
     
     if (isDark) {
-        body.style.background = 'linear-gradient(135deg, #f8fafc, #e2e8f0)';
+        body.style.background = 'linear-gradient(135deg, #f1f5f9, #e2e8f0)';
         body.style.color = '#0f172a';
-        document.querySelectorAll('.box, .container').forEach(el => {
-            el.style.background = 'rgba(255, 255, 255, 0.8)';
+        document.querySelectorAll('.glass-container').forEach(el => {
+            el.style.background = 'rgba(255, 255, 255, 0.7)';
+            el.style.border = '1px solid rgba(255, 255, 255, 0.3)';
             el.style.color = '#0f172a';
         });
-        document.querySelectorAll('input').forEach(el => {
-            el.style.background = 'rgba(0, 0, 0, 0.05)';
+        document.querySelectorAll('.input-wrapper').forEach(el => {
+            el.style.background = 'rgba(0, 0, 0, 0.03)';
+            el.style.border = '1px solid rgba(0, 0, 0, 0.06)';
+        });
+        document.querySelectorAll('.input-wrapper input').forEach(el => {
             el.style.color = '#0f172a';
         });
-        document.querySelectorAll('.stat-card, .info, .user-item, .admin-item').forEach(el => {
-            el.style.background = 'rgba(0, 0, 0, 0.05)';
+        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p').forEach(el => {
+            el.style.color = '#0f172a';
+        });
+        document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p').forEach(el => {
+            el.style.color = '#475569';
+        });
+        document.querySelectorAll('.logo-text').forEach(el => {
+            el.style.background = 'linear-gradient(135deg, #7c3aed, #6d28d9)';
+            el.style.webkitBackgroundClip = 'text';
+            el.style.webkitTextFillColor = 'transparent';
+        });
+        document.querySelectorAll('.search-box input').forEach(el => {
+            el.style.background = 'rgba(0, 0, 0, 0.03)';
+            el.style.color = '#0f172a';
         });
         showToast('🌞 Light mode activated');
     } else {
-        body.style.background = 'linear-gradient(135deg, #0f172a, #1e293b)';
-        body.style.color = 'white';
-        document.querySelectorAll('.box, .container').forEach(el => {
+        body.style.background = 'linear-gradient(135deg, #0c0e1a 0%, #1a1d2e 50%, #0f0e1a 100%)';
+        body.style.color = '#e2e8f0';
+        document.querySelectorAll('.glass-container').forEach(el => {
+            el.style.background = 'rgba(255, 255, 255, 0.03)';
+            el.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+            el.style.color = '#e2e8f0';
+        });
+        document.querySelectorAll('.input-wrapper').forEach(el => {
             el.style.background = 'rgba(255, 255, 255, 0.05)';
-            el.style.color = 'white';
+            el.style.border = '1px solid rgba(255, 255, 255, 0.06)';
         });
-        document.querySelectorAll('input').forEach(el => {
-            el.style.background = 'rgba(255, 255, 255, 0.08)';
-            el.style.color = 'white';
+        document.querySelectorAll('.input-wrapper input').forEach(el => {
+            el.style.color = '#f1f5f9';
         });
-        document.querySelectorAll('.stat-card, .info, .user-item, .admin-item').forEach(el => {
-            el.style.background = 'rgba(255, 255, 255, 0.08)';
+        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p').forEach(el => {
+            el.style.color = '';
+        });
+        document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p').forEach(el => {
+            el.style.color = '';
+        });
+        document.querySelectorAll('.logo-text').forEach(el => {
+            el.style.background = '';
+            el.style.webkitBackgroundClip = '';
+            el.style.webkitTextFillColor = '';
+        });
+        document.querySelectorAll('.search-box input').forEach(el => {
+            el.style.background = '';
+            el.style.color = '';
         });
         showToast('🌙 Dark mode activated');
     }
@@ -1687,12 +1952,11 @@ function vibrate(pattern = 10) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn, button, .link a').forEach(el => {
+    document.querySelectorAll('.btn-primary, .btn-action, .btn-logout, .btn-dialog, .btn-icon, .back-link a').forEach(el => {
         el.addEventListener('click', () => vibrate(10));
         el.addEventListener('touchstart', () => vibrate(5), { passive: true });
     });
     
-    // Remember admin username
     const savedUsername = localStorage.getItem('rememberAdminUsername');
     if (savedUsername) {
         document.getElementById('adminUsername').value = savedUsername;
@@ -1740,7 +2004,7 @@ function resetSessionTimer() {
         showPage('pageAdminLogin');
     }
     
-    console.log('👑 ATH DIGITAL HUB Admin Panel loaded!');
+    console.log('👑 ATH DIGITAL HUB Admin Panel Pro loaded!');
     console.log('👑 Admins:', getAdmins().length);
     console.log('👥 Users:', getUsers().length);
     console.log('🔑 Default Admin: admin / admin123');
@@ -1761,16 +2025,6 @@ window.addEventListener('online', () => {
 
 window.addEventListener('offline', () => {
     showToast('🔴 You are offline. Some features may not work.', 'error');
-});
-
-// Keyboard shortcut: Enter to login
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        const active = document.activeElement;
-        if (active && active.closest('form')) {
-            // Let form handle it
-        }
-    }
 });
 </script>
 </body>
