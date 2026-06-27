@@ -2,42 +2,77 @@
 <html lang="my">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ATH DIGITAL HUB</title>
 
 <style>
+/* ===== RESET & BASE ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 body {
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     display: flex;
     justify-content: center;
     align-items: center;
     background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
-    padding: 16px;
-    padding-bottom: 80px;
+    padding: 12px;
+    padding-bottom: calc(70px + var(--safe-bottom));
     -webkit-tap-highlight-color: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    position: relative;
 }
 
-/* Main Container */
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 10px;
+}
+
+/* ===== MAIN CONTAINER ===== */
 .container {
     width: 100%;
     max-width: 420px;
     text-align: center;
     background: rgba(255, 255, 255, 0.05);
-    padding: 30px 20px 20px;
+    padding: 20px 16px 20px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: fadeSlide 0.4s ease;
     position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    min-height: 400px;
 }
 
 /* ===== TOP BAR ===== */
@@ -45,44 +80,51 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    gap: 8px;
 }
 
-/* Menu Button (Left) */
 .menu-btn {
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
     color: white;
-    font-size: 24px;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 10px;
+    padding: 10px 12px;
     transition: 0.3s;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
 }
 
-.menu-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
+.menu-btn:active {
+    transform: scale(0.92);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .menu-btn span {
     display: block;
-    width: 28px;
-    height: 3px;
+    width: 24px;
+    height: 2.5px;
     background: white;
     border-radius: 3px;
     transition: 0.3s;
 }
 
-/* Live Tab (Right) */
+.menu-btn span:nth-child(2) {
+    width: 18px;
+}
+
 .live-tab {
     background: rgba(239, 68, 68, 0.15);
     color: #f87171;
-    padding: 6px 16px;
+    padding: 8px 14px;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     border: 1px solid rgba(239, 68, 68, 0.2);
     cursor: pointer;
@@ -90,31 +132,35 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
+    min-height: 44px;
+    white-space: nowrap;
 }
 
-.live-tab:hover {
+.live-tab:active {
+    transform: scale(0.95);
     background: rgba(239, 68, 68, 0.25);
 }
 
 .live-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     background: #ef4444;
     border-radius: 50%;
     animation: pulse 1.5s infinite;
+    flex-shrink: 0;
 }
 
 @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
+    50% { opacity: 0.4; transform: scale(0.8); }
 }
 
 /* ===== LOGO ===== */
 .logo {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 6px;
-    letter-spacing: 1px;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
 }
 
 .logo span {
@@ -122,100 +168,80 @@ body {
 }
 
 .subtitle {
-    color: #cbd5e1;
-    margin-bottom: 25px;
-    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
 }
 
 h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
+    font-size: 20px;
+    margin-bottom: 6px;
 }
 
 .desc {
-    color: #cbd5e1;
-    margin-top: 12px;
-    font-size: 15px;
-    line-height: 1.5;
+    color: #94a3b8;
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
-/* ===== BUTTON GROUP ===== */
+/* ===== BUTTONS ===== */
 .btn-group {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
-    margin-top: 22px;
+    margin-top: 18px;
     flex-wrap: wrap;
 }
 
 .btn {
     text-decoration: none;
-    padding: 14px 30px;
+    padding: 14px 24px;
     border-radius: 12px;
-    font-weight: bold;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 15px;
     transition: 0.2s;
     flex: 1;
-    min-width: 120px;
+    min-width: 100px;
     text-align: center;
     border: none;
     cursor: pointer;
     -webkit-touch-callout: none;
     position: relative;
     overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .btn:active {
-    transform: scale(0.96);
-}
-
-.btn::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-    transform: scale(0);
-    transition: transform 0.3s;
-}
-
-.btn:active::after {
-    transform: scale(3);
-    opacity: 0;
+    transform: scale(0.95);
 }
 
 .login {
     background: #2563eb;
     color: white;
 }
-
-.login:hover {
-    background: #1d4ed8;
-}
+.login:active { background: #1d4ed8; }
 
 .register {
     background: #10b981;
     color: white;
 }
-
-.register:hover {
-    background: #059669;
-}
+.register:active { background: #059669; }
 
 .footer {
-    margin-top: 28px;
-    font-size: 12px;
-    color: #94a3b8;
-    letter-spacing: 0.5px;
+    margin-top: 24px;
+    font-size: 11px;
+    color: #475569;
+    letter-spacing: 0.3px;
 }
 
 /* ===== FORM ===== */
 .box {
     width: 100%;
-    max-width: 380px;
-    padding: 28px 20px;
+    max-width: 100%;
+    padding: 20px 16px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     backdrop-filter: blur(10px);
@@ -223,18 +249,19 @@ h2 {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     margin: 0 auto;
     animation: fadeSlide 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .box h2 {
     text-align: center;
-    margin-bottom: 18px;
-    font-size: 22px;
+    margin-bottom: 14px;
+    font-size: 20px;
 }
 
 input {
     width: 100%;
     padding: 14px 16px;
-    margin: 8px 0;
+    margin: 6px 0;
     border: none;
     border-radius: 10px;
     outline: none;
@@ -243,19 +270,21 @@ input {
     color: white;
     transition: 0.2s;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 input::placeholder {
-    color: #94a3b8;
+    color: #64748b;
 }
 
 input:focus {
     background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4);
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="tel"] {
     font-size: 16px;
 }
 
@@ -275,24 +304,29 @@ input[type="password"] {
     background: none;
     border: none;
     color: #94a3b8;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
-    padding: 4px;
+    padding: 8px;
     width: auto;
     border-radius: 50%;
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .password-toggle:active {
-    transform: translateY(-50%) scale(0.9);
+    color: white;
 }
 
 .password-strength {
-    margin-top: -4px;
+    margin-top: -2px;
     margin-bottom: 8px;
 }
 
 .strength-bar {
-    height: 4px;
+    height: 3px;
     border-radius: 4px;
     background: #ef4444;
     width: 0%;
@@ -301,14 +335,14 @@ input[type="password"] {
 
 .strength-text {
     color: #94a3b8;
-    font-size: 12px;
+    font-size: 11px;
     display: block;
     margin-top: 4px;
 }
 
 .remember-me {
     text-align: left;
-    margin: 8px 0;
+    margin: 6px 0 12px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -320,11 +354,12 @@ input[type="password"] {
     margin: 0;
     cursor: pointer;
     accent-color: #2563eb;
+    flex-shrink: 0;
 }
 
 .remember-me label {
-    color: #cbd5e1;
-    font-size: 14px;
+    color: #94a3b8;
+    font-size: 13px;
     cursor: pointer;
 }
 
@@ -334,91 +369,69 @@ button {
     border: none;
     border-radius: 10px;
     color: white;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 16px;
     cursor: pointer;
     transition: 0.2s;
     margin-top: 4px;
     position: relative;
     overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    min-height: 50px;
 }
 
 button:active {
     transform: scale(0.97);
 }
 
-button::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-    transform: scale(0);
-    transition: transform 0.3s;
-}
-
-button:active::after {
-    transform: scale(3);
-    opacity: 0;
-}
-
 .btn-login {
     background: #2563eb;
 }
-.btn-login:hover {
-    background: #1d4ed8;
-}
+.btn-login:active { background: #1d4ed8; }
 
 .btn-register {
     background: #10b981;
 }
-.btn-register:hover {
-    background: #059669;
-}
+.btn-register:active { background: #059669; }
 
 .btn-logout {
     background: #ef4444;
 }
-.btn-logout:hover {
-    background: #dc2626;
-}
+.btn-logout:active { background: #dc2626; }
 
 .btn-goto {
     background: #2563eb;
 }
-.btn-goto:hover {
-    background: #1d4ed8;
-}
+.btn-goto:active { background: #1d4ed8; }
 
 .btn-share {
     background: #8b5cf6;
     margin-top: 8px;
 }
-.btn-share:hover {
-    background: #7c3aed;
-}
+.btn-share:active { background: #7c3aed; }
 
 .link {
     text-align: center;
-    margin-top: 16px;
-    font-size: 14px;
+    margin-top: 14px;
+    font-size: 13px;
 }
 
 .link a {
     color: #38bdf8;
     text-decoration: none;
+    padding: 8px 4px;
+    display: inline-block;
 }
 
 .link a:active {
-    opacity: 0.7;
+    opacity: 0.6;
 }
 
-/* Profile */
+/* ===== PROFILE ===== */
 .info {
     text-align: left;
-    margin: 12px 0;
+    margin: 10px 0;
     padding: 14px;
     background: rgba(255, 255, 255, 0.08);
     border-radius: 12px;
@@ -427,29 +440,24 @@ button:active::after {
 
 .info p {
     margin: 6px 0;
-    font-size: 15px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px;
 }
 
 .info .badge {
     display: inline-block;
-    padding: 2px 12px;
+    padding: 2px 10px;
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 .badge-user {
     background: #2563eb;
     color: white;
-}
-
-/* Utility */
-.hidden {
-    display: none !important;
-}
-
-.mt-10 {
-    margin-top: 10px;
 }
 
 /* ===== SIDEBAR ===== */
@@ -459,8 +467,9 @@ button:active::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 200;
     display: none;
     animation: fadeIn 0.3s ease;
@@ -475,15 +484,19 @@ button:active::after {
     top: 0;
     left: -280px;
     width: 280px;
+    max-width: 85%;
     height: 100%;
+    height: -webkit-fill-available;
     background: rgba(15, 23, 42, 0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-right: 1px solid rgba(255, 255, 255, 0.06);
     z-index: 201;
-    transition: left 0.3s ease;
-    padding: 20px;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px 16px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar.open {
@@ -494,13 +507,14 @@ button:active::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
 }
 
 .sidebar-header .logo-text {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
 }
 
@@ -512,32 +526,45 @@ button:active::after {
     background: none;
     border: none;
     color: #94a3b8;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
+    padding: 8px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-close:active {
+    color: white;
 }
 
 .sidebar-menu {
     list-style: none;
+    flex: 1;
+    overflow-y: auto;
 }
 
 .sidebar-menu .menu-item {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .sidebar-menu .menu-item a {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 16px;
+    padding: 12px 14px;
     border-radius: 12px;
     color: #94a3b8;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
     transition: 0.3s;
+    min-height: 48px;
 }
 
-.sidebar-menu .menu-item a:hover {
-    background: rgba(255, 255, 255, 0.05);
+.sidebar-menu .menu-item a:active {
+    background: rgba(255, 255, 255, 0.08);
     color: white;
 }
 
@@ -547,24 +574,22 @@ button:active::after {
 }
 
 .sidebar-menu .menu-item a i {
-    width: 22px;
+    width: 20px;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .sidebar-menu .menu-divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.06);
-    margin: 12px 0;
+    margin: 10px 0;
 }
 
 .sidebar-footer {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    padding-top: 16px;
+    flex-shrink: 0;
+    padding-top: 14px;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-top: 8px;
 }
 
 .sidebar-footer .user-info {
@@ -583,6 +608,7 @@ button:active::after {
     justify-content: center;
     font-weight: 600;
     font-size: 16px;
+    flex-shrink: 0;
 }
 
 .sidebar-footer .user-details .name {
@@ -607,9 +633,11 @@ button:active::after {
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     display: flex;
     justify-content: space-around;
-    padding: 8px 0;
-    padding-bottom: env(safe-area-inset-bottom);
+    padding: 6px 0;
+    padding-bottom: calc(6px + var(--safe-bottom));
     z-index: 100;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .nav-item {
@@ -619,22 +647,32 @@ button:active::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 10px;
-    padding: 4px 12px;
+    font-size: 9px;
+    padding: 4px 8px;
     cursor: pointer;
     transition: 0.2s;
     position: relative;
-    min-width: 50px;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
     text-decoration: none;
+    -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.nav-item:active {
+    transform: scale(0.9);
 }
 
 .nav-item i {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 2px;
 }
 
 .nav-item span {
-    font-size: 9px;
+    font-size: 8px;
+    line-height: 1.2;
 }
 
 .nav-item.active {
@@ -647,22 +685,18 @@ button:active::after {
     top: -1px;
     left: 50%;
     transform: translateX(-50%);
-    width: 20px;
-    height: 3px;
+    width: 16px;
+    height: 2.5px;
     background: #2563eb;
     border-radius: 0 0 3px 3px;
-}
-
-.nav-item:active {
-    transform: scale(0.9);
 }
 
 .nav-item .badge-dot {
     position: absolute;
     top: 2px;
-    right: 6px;
-    width: 8px;
-    height: 8px;
+    right: 4px;
+    width: 7px;
+    height: 7px;
     background: #ef4444;
     border-radius: 50%;
     border: 2px solid rgba(15, 23, 42, 0.95);
@@ -671,24 +705,26 @@ button:active::after {
 /* ===== TOAST ===== */
 .toast {
     position: fixed;
-    bottom: 80px;
+    bottom: calc(80px + var(--safe-bottom));
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
     color: white;
-    padding: 14px 24px;
+    padding: 12px 20px;
     border-radius: 12px;
     z-index: 1000;
     animation: slideUp 0.3s ease;
     max-width: 90%;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.toast.success { border-left: 4px solid #10b981; }
-.toast.error { border-left: 4px solid #ef4444; }
+.toast.success { border-left: 3px solid #10b981; }
+.toast.error { border-left: 3px solid #ef4444; }
 
 /* ===== LOADING ===== */
 .loading-spinner {
@@ -699,6 +735,7 @@ button:active::after {
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -706,11 +743,11 @@ button:active::after {
 }
 
 .spinner {
-    border: 4px solid rgba(255, 255, 255, 0.1);
-    border-top: 4px solid #2563eb;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top: 3px solid #2563eb;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     animation: spin 0.8s linear infinite;
 }
 
@@ -729,34 +766,37 @@ button:active::after {
     align-items: center;
     z-index: 9999;
     animation: fadeIn 0.3s ease;
+    padding: 20px;
 }
 
 .dialog-box {
     background: #1e293b;
-    padding: 30px 24px;
+    padding: 24px 20px;
     border-radius: 16px;
     max-width: 340px;
-    width: 90%;
+    width: 100%;
     text-align: center;
     animation: scaleIn 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .dialog-box h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
+    font-size: 18px;
+    margin-bottom: 8px;
     color: white;
 }
 
 .dialog-box p {
     color: #94a3b8;
-    margin-bottom: 24px;
-    line-height: 1.5;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 14px;
     white-space: pre-line;
 }
 
 .dialog-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .btn-dialog {
@@ -764,10 +804,11 @@ button:active::after {
     padding: 12px;
     border-radius: 10px;
     border: none;
-    font-weight: bold;
-    font-size: 15px;
+    font-weight: 600;
+    font-size: 14px;
     cursor: pointer;
     transition: 0.2s;
+    min-height: 44px;
 }
 
 .btn-dialog:active {
@@ -778,28 +819,19 @@ button:active::after {
     background: #2563eb;
     color: white;
 }
-
-.btn-dialog.confirm:hover {
-    background: #1d4ed8;
-}
+.btn-dialog.confirm:active { background: #1d4ed8; }
 
 .btn-dialog.cancel {
     background: #334155;
     color: white;
 }
-
-.btn-dialog.cancel:hover {
-    background: #475569;
-}
+.btn-dialog.cancel:active { background: #475569; }
 
 .btn-dialog.danger {
     background: #ef4444;
     color: white;
 }
-
-.btn-dialog.danger:hover {
-    background: #dc2626;
-}
+.btn-dialog.danger:active { background: #dc2626; }
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeSlide {
@@ -827,58 +859,105 @@ button:active::after {
     to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
+/* ===== UTILITY ===== */
+.hidden {
+    display: none !important;
+}
+.mt-10 { margin-top: 10px; }
+
 /* ===== RESPONSIVE ===== */
+
+/* Small phones (320px - 400px) */
 @media (max-width: 400px) {
-    .container {
-        padding: 20px 14px;
-    }
-    .logo {
-        font-size: 24px;
-    }
-    .btn {
-        padding: 12px 18px;
-        font-size: 14px;
-        min-width: 100px;
-    }
-    .box {
-        padding: 20px 14px;
-    }
-    input {
-        padding: 12px 14px;
-        font-size: 15px;
-    }
-    button {
-        padding: 12px;
-        font-size: 15px;
-    }
-    .sidebar {
-        width: 260px;
-        left: -260px;
-    }
-    .bottom-nav {
-        padding: 6px 0;
-    }
-    .nav-item {
-        min-width: 40px;
-        padding: 2px 8px;
-    }
-    .nav-item i {
-        font-size: 18px;
-    }
+    body { padding: 8px; padding-bottom: calc(65px + var(--safe-bottom)); }
+    .container { padding: 16px 12px; border-radius: 16px; }
+    .logo { font-size: 22px; }
+    .btn { padding: 12px 16px; font-size: 14px; min-width: 80px; }
+    .box { padding: 16px 12px; }
+    input { padding: 12px 14px; font-size: 15px; }
+    button { padding: 12px; font-size: 15px; min-height: 44px; }
+    .top-bar { margin-bottom: 12px; }
+    .menu-btn { padding: 8px 10px; min-width: 40px; min-height: 40px; }
+    .menu-btn span { width: 20px; height: 2px; }
+    .menu-btn span:nth-child(2) { width: 14px; }
+    .live-tab { font-size: 10px; padding: 6px 12px; min-height: 40px; }
+    .sidebar { width: 260px; }
+    .bottom-nav { padding: 4px 0; padding-bottom: calc(4px + var(--safe-bottom)); }
+    .nav-item { min-width: 36px; min-height: 36px; padding: 2px 6px; }
+    .nav-item i { font-size: 16px; }
+    .nav-item span { font-size: 7px; }
+    h2 { font-size: 18px; }
+    .desc { font-size: 13px; }
+    .info p { font-size: 13px; flex-direction: column; gap: 0; }
+    .dialog-box { padding: 20px 16px; }
+    .dialog-buttons { flex-direction: column; }
+    .btn-dialog { min-height: 40px; }
 }
 
-@media (min-width: 768px) {
-    .container {
-        padding: 45px 40px;
-    }
-    .logo {
-        font-size: 36px;
-    }
+/* Medium phones (401px - 480px) */
+@media (min-width: 401px) and (max-width: 480px) {
+    body { padding: 12px; padding-bottom: calc(70px + var(--safe-bottom)); }
+    .container { padding: 18px 14px; }
+    .logo { font-size: 24px; }
+    .btn { padding: 12px 20px; font-size: 15px; }
+    .bottom-nav { padding: 5px 0; padding-bottom: calc(5px + var(--safe-bottom)); }
+    .nav-item { min-width: 40px; min-height: 40px; }
+    .nav-item i { font-size: 17px; }
+    .sidebar { width: 270px; }
+}
+
+/* Tablets and larger phones (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+    .container { max-width: 440px; padding: 24px 20px; }
+    .bottom-nav { max-width: 460px; }
+}
+
+/* Desktop (768px and above) */
+@media (min-width: 769px) {
+    body { padding: 24px; padding-bottom: 90px; }
+    .container { max-width: 420px; padding: 30px 24px; border-radius: 24px; }
+    .logo { font-size: 28px; }
+    .bottom-nav { max-width: 500px; border-radius: 16px 16px 0 0; }
+    .sidebar { width: 280px; }
+}
+
+/* Landscape phones */
+@media (max-height: 600px) and (orientation: landscape) {
+    body { padding: 8px; padding-bottom: calc(60px + var(--safe-bottom)); }
+    .container { padding: 12px 16px; }
+    .logo { font-size: 20px; margin-bottom: 2px; }
+    .subtitle { font-size: 11px; margin-bottom: 10px; }
+    .desc { font-size: 12px; margin-top: 4px; }
+    h2 { font-size: 17px; }
+    .btn-group { margin-top: 10px; }
+    .btn { padding: 10px 16px; font-size: 13px; min-width: 80px; }
+    .box { padding: 12px; }
+    input { padding: 10px 12px; font-size: 14px; margin: 4px 0; }
+    button { padding: 10px; font-size: 14px; min-height: 40px; }
+    .top-bar { margin-bottom: 8px; }
+    .menu-btn { padding: 6px 8px; min-width: 36px; min-height: 36px; }
+    .menu-btn span { width: 18px; height: 2px; }
+    .live-tab { font-size: 9px; padding: 4px 10px; min-height: 36px; }
+    .bottom-nav { padding: 3px 0; padding-bottom: calc(3px + var(--safe-bottom)); }
+    .nav-item { min-width: 32px; min-height: 32px; padding: 2px 4px; }
+    .nav-item i { font-size: 14px; }
+    .nav-item span { font-size: 6px; }
+    .sidebar { padding: 12px; }
+    .sidebar-menu .menu-item a { padding: 8px 12px; font-size: 13px; min-height: 36px; }
+}
+
+/* Dark mode support for iOS */
+@media (prefers-color-scheme: dark) {
+    body { background: linear-gradient(135deg, #0f172a, #1e293b); }
+}
+
+/* Safe area for notched phones */
+@supports (padding: max(0px)) {
     .bottom-nav {
-        max-width: 500px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 16px 16px 0 0;
+        padding-bottom: max(6px, env(safe-area-inset-bottom));
+    }
+    body {
+        padding-bottom: max(70px, calc(70px + env(safe-area-inset-bottom)));
     }
 }
 </style>
@@ -896,7 +975,7 @@ button:active::after {
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="logo-text">ATH <span>HUB</span></div>
-        <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+        <button class="sidebar-close" onclick="closeSidebar()" aria-label="Close menu">✕</button>
     </div>
     
     <ul class="sidebar-menu">
@@ -997,7 +1076,7 @@ button:active::after {
 <div id="pageHome" class="container">
     <!-- Top Bar -->
     <div class="top-bar">
-        <button class="menu-btn" onclick="toggleSidebar()">
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">
             <span></span>
             <span></span>
             <span></span>
@@ -1023,8 +1102,8 @@ button:active::after {
 <!-- PAGE: LOGIN -->
 <!-- ============================================ -->
 <div id="pageLogin" class="box hidden">
-    <div class="top-bar" style="margin-bottom:16px;">
-        <button class="menu-btn" onclick="toggleSidebar()">
+    <div class="top-bar" style="margin-bottom:12px;">
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">
             <span></span>
             <span></span>
             <span></span>
@@ -1036,10 +1115,10 @@ button:active::after {
     </div>
     <h2>🔐 User Login</h2>
     <form id="loginForm" onsubmit="handleLogin(event)">
-        <input type="text" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
+        <input type="tel" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
         <div class="password-wrapper">
             <input type="password" id="loginPassword" placeholder="🔑 Password" required>
-            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁️</button>
+            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')" aria-label="Toggle password visibility">👁️</button>
         </div>
         <div class="remember-me">
             <input type="checkbox" id="rememberMe">
@@ -1050,7 +1129,7 @@ button:active::after {
     <div class="link">
         Don't have account? <a href="#" onclick="showPage('pageRegister')">Register</a>
     </div>
-    <div class="link" style="margin-top:8px;">
+    <div class="link" style="margin-top:6px;">
         <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
     </div>
 </div>
@@ -1059,8 +1138,8 @@ button:active::after {
 <!-- PAGE: REGISTER -->
 <!-- ============================================ -->
 <div id="pageRegister" class="box hidden">
-    <div class="top-bar" style="margin-bottom:16px;">
-        <button class="menu-btn" onclick="toggleSidebar()">
+    <div class="top-bar" style="margin-bottom:12px;">
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">
             <span></span>
             <span></span>
             <span></span>
@@ -1073,10 +1152,10 @@ button:active::after {
     <h2>📝 User Register</h2>
     <form id="regForm" onsubmit="handleRegister(event)">
         <input type="text" id="regName" placeholder="👤 Your Name" required>
-        <input type="text" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
+        <input type="tel" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
         <div class="password-wrapper">
             <input type="password" id="regPassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
-            <button type="button" class="password-toggle" onclick="togglePassword('regPassword')">👁️</button>
+            <button type="button" class="password-toggle" onclick="togglePassword('regPassword')" aria-label="Toggle password visibility">👁️</button>
         </div>
         <div class="password-strength">
             <div id="strengthBar" class="strength-bar"></div>
@@ -1087,7 +1166,7 @@ button:active::after {
     <div class="link">
         Already have account? <a href="#" onclick="showPage('pageLogin')">Login</a>
     </div>
-    <div class="link" style="margin-top:8px;">
+    <div class="link" style="margin-top:6px;">
         <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
     </div>
 </div>
@@ -1096,8 +1175,8 @@ button:active::after {
 <!-- PAGE: PROFILE -->
 <!-- ============================================ -->
 <div id="pageProfile" class="box hidden">
-    <div class="top-bar" style="margin-bottom:16px;">
-        <button class="menu-btn" onclick="toggleSidebar()">
+    <div class="top-bar" style="margin-bottom:12px;">
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">
             <span></span>
             <span></span>
             <span></span>
@@ -1111,7 +1190,7 @@ button:active::after {
     <div id="profileBox"></div>
     <button class="btn-share" onclick="shareProfile()">📤 Share Profile</button>
     <button class="btn-logout" onclick="handleLogout()">🚪 Logout</button>
-    <div class="link" style="margin-top:12px;">
+    <div class="link" style="margin-top:10px;">
         <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
     </div>
 </div>
@@ -1119,7 +1198,7 @@ button:active::after {
 <!-- ============================================ -->
 <!-- BOTTOM NAVIGATION -->
 <!-- ============================================ -->
-<nav class="bottom-nav">
+<nav class="bottom-nav" aria-label="Main navigation">
     <a href="#" class="nav-item active" onclick="showPage('pageHome')" data-page="pageHome">
         <i class="fas fa-home"></i>
         <span>Home</span>
@@ -1142,6 +1221,11 @@ button:active::after {
         <span class="badge-dot"></span>
     </a>
 </nav>
+
+<!-- ============================================ -->
+<!-- Font Awesome (CDN) -->
+<!-- ============================================ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <!-- ============================================ -->
 <script>
@@ -1464,12 +1548,12 @@ function renderProfile() {
     }
     box.innerHTML = `
         <div class="info">
-            <p><b>🆔 User ID:</b> ${user.user_id}</p>
-            <p><b>👤 Name:</b> ${user.name}</p>
-            <p><b>📱 Phone:</b> ${user.phone}</p>
-            <p><b>👑 Role:</b> <span class="badge badge-user">${user.role || 'User'}</span></p>
-            ${user.created_at ? `<p><b>📅 Joined:</b> ${new Date(user.created_at).toLocaleDateString()}</p>` : ''}
-            ${user.device ? `<p><b>📱 Device:</b> ${user.device.platform || 'Unknown'}</p>` : ''}
+            <p><span>🆔 User ID:</span> <span>${user.user_id}</span></p>
+            <p><span>👤 Name:</span> <span>${user.name}</span></p>
+            <p><span>📱 Phone:</span> <span>${user.phone}</span></p>
+            <p><span>👑 Role:</span> <span class="badge badge-user">${user.role || 'User'}</span></p>
+            ${user.created_at ? `<p><span>📅 Joined:</span> <span>${new Date(user.created_at).toLocaleDateString()}</span></p>` : ''}
+            ${user.device ? `<p><span>📱 Device:</span> <span>${user.device.platform || 'Unknown'}</span></p>` : ''}
         </div>
     `;
 }
@@ -1531,8 +1615,8 @@ function vibrate(pattern = 10) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn, button, .link a, .nav-item, .menu-btn, .live-tab').forEach(el => {
-        el.addEventListener('click', () => vibrate(10));
+    document.querySelectorAll('.btn, button, .link a, .nav-item, .menu-btn, .live-tab, .sidebar-menu a').forEach(el => {
+        el.addEventListener('click', () => vibrate(8));
         el.addEventListener('touchstart', () => vibrate(5), { passive: true });
     });
     const user = getCurrentUser();
