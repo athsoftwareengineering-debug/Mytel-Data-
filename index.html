@@ -21,6 +21,7 @@ body {
     background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
     padding: 16px;
+    padding-bottom: 80px;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -35,6 +36,7 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: fadeSlide 0.4s ease;
 }
 
 .logo {
@@ -84,10 +86,29 @@ h2 {
     border: none;
     cursor: pointer;
     -webkit-touch-callout: none;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn:active {
     transform: scale(0.96);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.3s;
+}
+
+.btn:active::after {
+    transform: scale(3);
+    opacity: 0;
 }
 
 .login {
@@ -126,6 +147,7 @@ h2 {
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     margin: 0 auto;
+    animation: fadeSlide 0.4s ease;
 }
 
 .box h2 {
@@ -162,6 +184,78 @@ input[type="password"] {
     font-size: 16px; /* Prevent zoom on iOS */
 }
 
+/* Password input with toggle */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 48px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    width: auto;
+    border-radius: 50%;
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+/* Password Strength */
+.password-strength {
+    margin-top: -4px;
+    margin-bottom: 8px;
+}
+
+.strength-bar {
+    height: 4px;
+    border-radius: 4px;
+    background: #ef4444;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.strength-text {
+    color: #94a3b8;
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+}
+
+/* Remember Me */
+.remember-me {
+    text-align: left;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+.remember-me label {
+    color: #cbd5e1;
+    font-size: 14px;
+    cursor: pointer;
+}
+
 button {
     width: 100%;
     padding: 14px;
@@ -173,10 +267,29 @@ button {
     cursor: pointer;
     transition: 0.2s;
     margin-top: 4px;
+    position: relative;
+    overflow: hidden;
 }
 
 button:active {
     transform: scale(0.97);
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.3s;
+}
+
+button:active::after {
+    transform: scale(3);
+    opacity: 0;
 }
 
 .btn-login {
@@ -205,6 +318,14 @@ button:active {
 }
 .btn-goto:hover {
     background: #1d4ed8;
+}
+
+.btn-share {
+    background: #8b5cf6;
+    margin-top: 8px;
+}
+.btn-share:hover {
+    background: #7c3aed;
 }
 
 .link {
@@ -239,11 +360,233 @@ button:active {
 
 /* Utility */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .mt-10 {
     margin-top: 10px;
+}
+
+/* ===== LOADING SPINNER ===== */
+.loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== TOAST NOTIFICATION ===== */
+.toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 12px;
+    z-index: 1000;
+    animation: slideUp 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.toast.success {
+    border-left: 4px solid #10b981;
+}
+
+.toast.error {
+    border-left: 4px solid #ef4444;
+}
+
+@keyframes slideUp {
+    from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* ===== CUSTOM DIALOG ===== */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.dialog-box {
+    background: #1e293b;
+    padding: 30px 24px;
+    border-radius: 16px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+    animation: scaleIn 0.3s ease;
+}
+
+.dialog-box h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.dialog-box p {
+    color: #94a3b8;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-dialog {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-dialog:active {
+    transform: scale(0.95);
+}
+
+.btn-dialog.confirm {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-dialog.confirm:hover {
+    background: #1d4ed8;
+}
+
+.btn-dialog.cancel {
+    background: #334155;
+    color: white;
+}
+
+.btn-dialog.cancel:hover {
+    background: #475569;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== BOTTOM NAVIGATION ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 100;
+    display: none;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    min-width: 60px;
+}
+
+.nav-item span {
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+.nav-item small {
+    font-size: 10px;
+}
+
+.nav-item.active {
+    color: #2563eb;
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: #2563eb;
+    border-radius: 0 0 3px 3px;
+}
+
+.nav-item:active {
+    transform: scale(0.9);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeSlide {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
 }
 
 /* ===== RESPONSIVE ===== */
@@ -270,6 +613,15 @@ button:active {
         padding: 12px;
         font-size: 15px;
     }
+    .bottom-nav {
+        padding: 4px 0;
+    }
+    .nav-item span {
+        font-size: 20px;
+    }
+    .nav-item small {
+        font-size: 9px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -279,10 +631,54 @@ button:active {
     .logo {
         font-size: 36px;
     }
+    .bottom-nav {
+        max-width: 500px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 16px 16px 0 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .dialog-box {
+        padding: 24px 16px;
+    }
+    .dialog-buttons {
+        flex-direction: column;
+    }
+    .btn-dialog {
+        padding: 14px;
+    }
 }
 </style>
 </head>
 <body>
+
+<!-- ============================================ -->
+<!-- LOADING SPINNER -->
+<!-- ============================================ -->
+<div id="loadingSpinner" class="loading-spinner hidden">
+    <div class="spinner"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- TOAST NOTIFICATION -->
+<!-- ============================================ -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- ============================================ -->
+<!-- CUSTOM DIALOG -->
+<!-- ============================================ -->
+<div id="customDialog" class="dialog-overlay hidden">
+    <div class="dialog-box">
+        <h3 id="dialogTitle">Title</h3>
+        <p id="dialogMessage">Message</p>
+        <div class="dialog-buttons">
+            <button onclick="closeDialog()" class="btn-dialog cancel">Cancel</button>
+            <button onclick="confirmDialog()" class="btn-dialog confirm">Confirm</button>
+        </div>
+    </div>
+</div>
 
 <!-- ============================================ -->
 <!-- PAGE: HOME -->
@@ -305,8 +701,18 @@ button:active {
 <div id="pageLogin" class="box hidden">
     <h2>🔐 Login</h2>
     <form id="loginForm" onsubmit="handleLogin(event)">
-        <input type="text" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel">
-        <input type="password" id="loginPassword" placeholder="🔑 Password" required>
+        <input type="text" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
+        
+        <div class="password-wrapper">
+            <input type="password" id="loginPassword" placeholder="🔑 Password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁️</button>
+        </div>
+        
+        <div class="remember-me">
+            <input type="checkbox" id="rememberMe">
+            <label for="rememberMe">Remember Me</label>
+        </div>
+        
         <button type="submit" class="btn-login">Login</button>
     </form>
     <div class="link">
@@ -324,8 +730,18 @@ button:active {
     <h2>📝 Register</h2>
     <form id="regForm" onsubmit="handleRegister(event)">
         <input type="text" id="regName" placeholder="👤 Your Name" required>
-        <input type="text" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel">
-        <input type="password" id="regPassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
+        <input type="text" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
+        
+        <div class="password-wrapper">
+            <input type="password" id="regPassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
+            <button type="button" class="password-toggle" onclick="togglePassword('regPassword')">👁️</button>
+        </div>
+        
+        <div class="password-strength">
+            <div id="strengthBar" class="strength-bar"></div>
+            <span id="strengthText" class="strength-text"></span>
+        </div>
+        
         <button type="submit" class="btn-register">Create Account</button>
     </form>
     <div class="link">
@@ -342,6 +758,7 @@ button:active {
 <div id="pageProfile" class="box hidden">
     <h2>👤 Profile</h2>
     <div id="profileBox"></div>
+    <button class="btn-share" onclick="shareProfile()">📤 Share Profile</button>
     <button class="btn-logout" onclick="handleLogout()">🚪 Logout</button>
     <div class="link" style="margin-top:12px;">
         <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
@@ -349,7 +766,84 @@ button:active {
 </div>
 
 <!-- ============================================ -->
+<!-- BOTTOM NAVIGATION -->
+<!-- ============================================ -->
+<div id="bottomNav" class="bottom-nav">
+    <button class="nav-item active" onclick="navigateTo('pageHome')">
+        <span>🏠</span>
+        <small>Home</small>
+    </button>
+    <button class="nav-item" onclick="navigateTo('pageProfile')">
+        <span>👤</span>
+        <small>Profile</small>
+    </button>
+    <button class="nav-item" onclick="handleLogout()">
+        <span>🚪</span>
+        <small>Logout</small>
+    </button>
+</div>
+
+<!-- ============================================ -->
 <script>
+// =============================================
+// TOAST NOTIFICATION
+// =============================================
+let toastTimeout;
+
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast ' + type;
+    clearTimeout(toastTimeout);
+    
+    // Force reflow
+    void toast.offsetWidth;
+    toast.classList.remove('hidden');
+    
+    toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+}
+
+// =============================================
+// CUSTOM DIALOG
+// =============================================
+let dialogCallback = null;
+
+function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel') {
+    return new Promise((resolve) => {
+        document.getElementById('dialogTitle').textContent = title;
+        document.getElementById('dialogMessage').textContent = message;
+        document.querySelector('.btn-dialog.confirm').textContent = confirmText;
+        document.querySelector('.btn-dialog.cancel').textContent = cancelText;
+        document.getElementById('customDialog').classList.remove('hidden');
+        dialogCallback = resolve;
+    });
+}
+
+function closeDialog() {
+    document.getElementById('customDialog').classList.add('hidden');
+    if (dialogCallback) dialogCallback(false);
+    dialogCallback = null;
+}
+
+function confirmDialog() {
+    document.getElementById('customDialog').classList.add('hidden');
+    if (dialogCallback) dialogCallback(true);
+    dialogCallback = null;
+}
+
+// =============================================
+// LOADING SPINNER
+// =============================================
+function showLoading() {
+    document.getElementById('loadingSpinner').classList.remove('hidden');
+}
+
+function hideLoading() {
+    document.getElementById('loadingSpinner').classList.add('hidden');
+}
+
 // =============================================
 // PAGE NAVIGATION
 // =============================================
@@ -365,10 +859,58 @@ function showPage(pageId) {
         target.classList.remove('hidden');
     }
 
+    // Update bottom nav
+    updateBottomNav(pageId);
+
     // If showing profile, refresh data
     if (pageId === 'pageProfile') {
         renderProfile();
     }
+
+    // Track page view
+    trackEvent('page_view', { page: pageId });
+}
+
+function navigateTo(pageId) {
+    const user = getCurrentUser();
+    if (pageId === 'pageProfile' && !user) {
+        showToast('Please login first', 'error');
+        showPage('pageLogin');
+        return;
+    }
+    showPage(pageId);
+}
+
+function updateBottomNav(currentPage) {
+    const nav = document.getElementById('bottomNav');
+    const items = nav.querySelectorAll('.nav-item');
+    
+    // Show nav only on home and profile
+    if (currentPage === 'pageHome' || currentPage === 'pageProfile') {
+        nav.style.display = 'flex';
+    } else {
+        nav.style.display = 'none';
+        return;
+    }
+    
+    // Update active state
+    items.forEach(item => {
+        item.classList.remove('active');
+        const text = item.querySelector('small')?.textContent?.toLowerCase();
+        if ((currentPage === 'pageHome' && text === 'home') ||
+            (currentPage === 'pageProfile' && text === 'profile')) {
+            item.classList.add('active');
+        }
+    });
+}
+
+function getCurrentPage() {
+    const pages = ['pageHome', 'pageLogin', 'pageRegister', 'pageProfile'];
+    for (let page of pages) {
+        const el = document.getElementById(page);
+        if (el && !el.classList.contains('hidden')) return page;
+    }
+    return 'pageHome';
 }
 
 // =============================================
@@ -404,13 +946,90 @@ function clearCurrentUser() {
 
 function generateUserID(users) {
     const count = users.length + 1;
+    const device = getDeviceInfo();
     return 'ATH' + String(count).padStart(6, '0');
 }
 
 // =============================================
+// DEVICE INFO
+// =============================================
+function getDeviceInfo() {
+    return {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    };
+}
+
+// =============================================
+// PASSWORD TOGGLE
+// =============================================
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    const btn = input.parentElement.querySelector('.password-toggle');
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+    }
+}
+
+// =============================================
+// PASSWORD STRENGTH
+// =============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('regPassword');
+    if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+            const val = this.value;
+            const bar = document.getElementById('strengthBar');
+            const text = document.getElementById('strengthText');
+            
+            if (val.length === 0) {
+                bar.style.width = '0%';
+                bar.style.background = '#ef4444';
+                text.textContent = '';
+                return;
+            }
+            
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (val.match(/[a-z]/)) score++;
+            if (val.match(/[A-Z]/)) score++;
+            if (val.match(/[0-9]/)) score++;
+            if (val.match(/[^a-zA-Z0-9]/)) score++;
+            
+            const strength = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+            const colors = ['#ef4444', '#f59e0b', '#f59e0b', '#10b981', '#10b981'];
+            const width = (score / 5) * 100;
+            
+            bar.style.width = width + '%';
+            bar.style.background = colors[score] || '#ef4444';
+            text.textContent = strength[score] || '';
+            text.style.color = colors[score] || '#ef4444';
+        });
+    }
+    
+    // Real-time phone validation
+    const phoneInputs = document.querySelectorAll('#regPhone, #loginPhone');
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const phone = this.value.trim();
+            const isValid = phone.match(/^09\d{7,9}$/);
+            this.style.borderColor = isValid ? '#10b981' : (phone.length > 0 ? '#ef4444' : '');
+        });
+    });
+});
+
+// =============================================
 // REGISTER
 // =============================================
-function handleRegister(e) {
+async function handleRegister(e) {
     e.preventDefault();
 
     const name = document.getElementById('regName').value.trim();
@@ -418,73 +1037,121 @@ function handleRegister(e) {
     const password = document.getElementById('regPassword').value.trim();
 
     if (!name || !phone || !password) {
-        alert('Please fill all fields.');
+        showToast('Please fill all fields.', 'error');
         return;
     }
 
     if (password.length < 4) {
-        alert('Password must be at least 4 characters.');
+        showToast('Password must be at least 4 characters.', 'error');
         return;
     }
 
-    // Phone validation (basic)
+    // Phone validation
     if (!phone.match(/^09\d{7,9}$/)) {
-        alert('Please enter a valid Myanmar phone number starting with 09 (7-9 digits).');
+        showToast('Please enter a valid Myanmar phone number starting with 09 (7-9 digits).', 'error');
         return;
     }
 
-    let users = getUsers();
+    showLoading();
 
-    // Check duplicate
-    if (users.find(u => u.phone === phone)) {
-        alert('❌ This phone number is already registered!');
-        return;
+    try {
+        let users = getUsers();
+
+        // Check duplicate
+        if (users.find(u => u.phone === phone)) {
+            showToast('❌ This phone number is already registered!', 'error');
+            hideLoading();
+            return;
+        }
+
+        // Hash password (simplified for demo)
+        const hashedPassword = await hashPassword(password);
+
+        const newUser = {
+            user_id: generateUserID(users),
+            name: name,
+            phone: phone,
+            password: hashedPassword,
+            created_at: new Date().toISOString(),
+            device: getDeviceInfo()
+        };
+
+        users.push(newUser);
+        saveUsers(users);
+
+        showToast('✅ Account Created!\nID: ' + newUser.user_id);
+        document.getElementById('regForm').reset();
+        document.getElementById('strengthBar').style.width = '0%';
+        document.getElementById('strengthText').textContent = '';
+
+        hideLoading();
+        showPage('pageLogin');
+    } catch (error) {
+        hideLoading();
+        showToast('Registration failed. Please try again.', 'error');
+        console.error('Register error:', error);
     }
+}
 
-    const newUser = {
-        user_id: generateUserID(users),
-        name: name,
-        phone: phone,
-        password: password,
-        created_at: new Date().toISOString()
-    };
-
-    users.push(newUser);
-    saveUsers(users);
-
-    alert('✅ Account Created!\nYour ID: ' + newUser.user_id + '\nPhone: ' + phone);
-
-    // Clear form
-    document.getElementById('regForm').reset();
-
-    // Go to login
-    showPage('pageLogin');
+// =============================================
+// HASH PASSWORD (simplified)
+// =============================================
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
 }
 
 // =============================================
 // LOGIN
 // =============================================
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
 
     const phone = document.getElementById('loginPhone').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
 
     if (!phone || !password) {
-        alert('Please enter phone and password.');
+        showToast('Please enter phone and password.', 'error');
         return;
     }
 
-    const users = getUsers();
-    const user = users.find(u => u.phone === phone && u.password === password);
+    showLoading();
 
-    if (user) {
-        setCurrentUser(user);
-        alert('✅ Login Success! Welcome ' + user.name);
-        document.getElementById('loginForm').reset();
-        showPage('pageProfile');
-    } else {
-        alert('❌ Invalid phone or password.');
+    try {
+        const users = getUsers();
+        const hashedPassword = await hashPassword(password);
+        const user = users.find(u => u.phone === phone && u.password === hashedPassword);
+
+        if (user) {
+            setCurrentUser(user);
+            
+            // Remember me
+            if (document.getElementById('rememberMe').checked) {
+                localStorage.setItem('rememberPhone', phone);
+            } else {
+                localStorage.removeItem('rememberPhone');
+            }
+            
+            showToast('✅ Login Success! Welcome ' + user.name);
+            document.getElementById('loginForm').reset();
+            
+            // Reset session timer
+            resetSessionTimer();
+            
+            hideLoading();
+            showPage('pageProfile');
+        } else {
+            hideLoading();
+            showToast('❌ Invalid phone or password.', 'error');
+        }
+    } catch (error) {
+        hideLoading();
+        showToast('Login failed. Please try again.', 'error');
+        console.error('Login error:', error);
     }
 }
 
@@ -509,51 +1176,269 @@ function renderProfile() {
             <p><b>👤 Name:</b> ${user.name}</p>
             <p><b>📱 Phone:</b> ${user.phone}</p>
             ${user.created_at ? `<p><b>📅 Joined:</b> ${new Date(user.created_at).toLocaleDateString()}</p>` : ''}
+            ${user.device ? `<p><b>📱 Device:</b> ${user.device.platform || 'Unknown'}</p>` : ''}
         </div>
     `;
 }
 
 // =============================================
+// SHARE PROFILE
+// =============================================
+function shareProfile() {
+    const user = getCurrentUser();
+    if (!user) {
+        showToast('Please login first', 'error');
+        return;
+    }
+    
+    const shareText = `👤 ${user.name}\n📱 ${user.phone}\n🆔 ${user.user_id}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'My Profile',
+            text: shareText
+        }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(shareText)
+            .then(() => showToast('📋 Profile copied to clipboard!'))
+            .catch(() => showToast('Failed to copy', 'error'));
+    }
+}
+
+// =============================================
 // LOGOUT
 // =============================================
-function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
+async function handleLogout() {
+    const confirmed = await showDialog('Logout', 'Are you sure you want to logout?');
+    if (confirmed) {
         clearCurrentUser();
-        alert('👋 Logged out successfully.');
+        clearSessionTimer();
+        showToast('👋 Logged out successfully.');
         showPage('pageHome');
     }
 }
 
 // =============================================
-// AUTO-REDIRECT: If user is logged in, show profile
+// SESSION TIMEOUT
 // =============================================
-(function init() {
-    const user = getCurrentUser();
-    if (user) {
-        // User is logged in, show profile
-        showPage('pageProfile');
-    } else {
-        // Show home page
-        showPage('pageHome');
-    }
-})();
+let sessionTimer;
+
+function resetSessionTimer() {
+    clearTimeout(sessionTimer);
+    sessionTimer = setTimeout(() => {
+        if (getCurrentUser()) {
+            showToast('⏰ Session expired. Please login again.', 'error');
+            clearCurrentUser();
+            showPage('pageHome');
+        }
+    }, 30 * 60 * 1000); // 30 minutes
+}
+
+function clearSessionTimer() {
+    clearTimeout(sessionTimer);
+}
+
+// Reset timer on user activity
+['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
+    document.addEventListener(event, () => {
+        if (getCurrentUser()) {
+            resetSessionTimer();
+        }
+    });
+});
 
 // =============================================
-// KEYBOARD: Enter key support
+// ANALYTICS
 // =============================================
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
-        const active = document.activeElement;
-        if (active && active.closest('form')) {
-            // Let form handle it
+function trackEvent(eventName, data = {}) {
+    try {
+        const log = {
+            event: eventName,
+            timestamp: new Date().toISOString(),
+            user: getCurrentUser()?.user_id || 'guest',
+            data: data,
+            page: getCurrentPage()
+        };
+        
+        const logs = JSON.parse(localStorage.getItem('analytics') || '[]');
+        logs.push(log);
+        if (logs.length > 100) logs.shift();
+        localStorage.setItem('analytics', JSON.stringify(logs));
+    } catch (e) {
+        // Silent fail
+    }
+}
+
+// =============================================
+// SWIPE NAVIGATION
+// =============================================
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+});
+
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    const swipeX = touchStartX - touchEndX;
+    const swipeY = touchStartY - touchEndY;
+    
+    // Only handle horizontal swipes that are significant
+    if (Math.abs(swipeX) < 50 || Math.abs(swipeX) < Math.abs(swipeY) * 1.5) return;
+    
+    const currentPage = getCurrentPage();
+    const user = getCurrentUser();
+    
+    if (swipeX > 0) { // Swipe Left - Go forward
+        if (currentPage === 'pageHome' && !user) {
+            showPage('pageLogin');
+        } else if (currentPage === 'pageLogin') {
+            showPage('pageRegister');
+        }
+    } else { // Swipe Right - Go back
+        if (currentPage === 'pageRegister') {
+            showPage('pageLogin');
+        } else if (currentPage === 'pageLogin') {
+            showPage('pageHome');
+        } else if (currentPage === 'pageProfile') {
+            showPage('pageHome');
+        }
+    }
+}
+
+// =============================================
+// PULL TO REFRESH
+// =============================================
+let pullStartY = 0;
+let isPulling = false;
+
+document.addEventListener('touchstart', e => {
+    if (window.scrollY === 0) {
+        pullStartY = e.touches[0].pageY;
+        isPulling = true;
+    }
+});
+
+document.addEventListener('touchmove', e => {
+    if (isPulling && window.scrollY === 0) {
+        const pullDistance = e.touches[0].pageY - pullStartY;
+        if (pullDistance > 120) {
+            isPulling = false;
+            const currentPage = getCurrentPage();
+            if (currentPage === 'pageProfile' || currentPage === 'pageHome') {
+                showToast('🔄 Refreshing...');
+                if (currentPage === 'pageProfile') {
+                    renderProfile();
+                }
+                setTimeout(() => showToast('✅ Refreshed!'), 500);
+            }
         }
     }
 });
 
-// Console helper (for testing)
-console.log('📱 ATH DIGITAL HUB loaded successfully!');
-console.log('👥 Users:', getUsers());
-</script>
+document.addEventListener('touchend', () => {
+    isPulling = false;
+});
 
+// =============================================
+// VIBRATION / HAPTIC FEEDBACK
+// =============================================
+function vibrate(pattern = 10) {
+    if (navigator.vibrate) {
+        navigator.vibrate(pattern);
+    }
+}
+
+// Add haptic feedback to all interactive elements
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.btn, button, .nav-item, .link a').forEach(el => {
+        el.addEventListener('click', () => vibrate(10));
+        el.addEventListener('touchstart', () => vibrate(5), { passive: true });
+    });
+});
+
+// =============================================
+// FULLSCREEN
+// =============================================
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+        document.exitFullscreen().catch(() => {});
+    }
+}
+
+// =============================================
+// INIT
+// =============================================
+(function init() {
+    const user = getCurrentUser();
+    
+    // Check remember me
+    const savedPhone = localStorage.getItem('rememberPhone');
+    if (savedPhone) {
+        const phoneInput = document.getElementById('loginPhone');
+        if (phoneInput) {
+            phoneInput.value = savedPhone;
+            document.getElementById('rememberMe').checked = true;
+        }
+    }
+    
+    if (user) {
+        showPage('pageProfile');
+        resetSessionTimer();
+    } else {
+        showPage('pageHome');
+    }
+    
+    // Track initial load
+    trackEvent('app_load', { 
+        platform: navigator.platform,
+        language: navigator.language
+    });
+    
+    console.log('📱 ATH DIGITAL HUB loaded successfully!');
+    console.log('👥 Users:', getUsers().length);
+})();
+
+// =============================================
+// ERROR HANDLING
+// =============================================
+window.onerror = function(message, source, lineno, colno, error) {
+    console.error('Global error:', message, error);
+    showToast('Something went wrong. Please try again.', 'error');
+    trackEvent('error', { message, source, lineno });
+    return true;
+};
+
+// Network status
+window.addEventListener('online', () => {
+    showToast('🟢 Back online!');
+});
+
+window.addEventListener('offline', () => {
+    showToast('🔴 You are offline. Some features may not work.', 'error');
+});
+
+// =============================================
+// PERFORMANCE METRICS
+// =============================================
+window.addEventListener('load', function() {
+    if (performance && performance.timing) {
+        const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+        console.log(`⏱️ Page load time: ${loadTime}ms`);
+        trackEvent('performance', { loadTime });
+    }
+});
+</script>
 </body>
 </html>
