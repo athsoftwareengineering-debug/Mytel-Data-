@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>ATH DIGITAL HUB</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    padding: 16px;
+    padding-bottom: 80px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Main Container */
+.container {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    animation: fadeSlide 0.4s ease;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #2563eb;
+}
+
+.subtitle {
+    color: #cbd5e1;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.desc {
+    color: #cbd5e1;
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Button Group */
+.btn-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 22px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    text-decoration: none;
+    padding: 14px 30px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.2s;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.3s;
+}
+
+.btn:active::after {
+    transform: scale(3);
+    opacity: 0;
+}
+
+.login {
+    background: #2563eb;
+    color: white;
+}
+
+.login:hover {
+    background: #1d4ed8;
+}
+
+.register {
+    background: #10b981;
+    color: white;
+}
+
+.register:hover {
+    background: #059669;
+}
+
+.admin-btn {
+    background: #8b5cf6;
+    color: white;
+}
+
+.admin-btn:hover {
+    background: #7c3aed;
+}
+
+.footer {
+    margin-top: 28px;
+    font-size: 12px;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+}
+
+/* ===== LOGIN FORM ===== */
+.box {
+    width: 100%;
+    max-width: 380px;
+    padding: 28px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin: 0 auto;
+    animation: fadeSlide 0.4s ease;
+}
+
+.box h2 {
+    text-align: center;
+    margin-bottom: 18px;
+    font-size: 22px;
+}
+
+input {
+    width: 100%;
+    padding: 14px 16px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    transition: 0.2s;
+    -webkit-appearance: none;
+}
+
+input::placeholder {
+    color: #94a3b8;
+}
+
+input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+}
+
+input[type="text"],
+input[type="password"] {
+    font-size: 16px;
+}
+
+/* Password input with toggle */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 48px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    width: auto;
+    border-radius: 50%;
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+/* Password Strength */
+.password-strength {
+    margin-top: -4px;
+    margin-bottom: 8px;
+}
+
+.strength-bar {
+    height: 4px;
+    border-radius: 4px;
+    background: #ef4444;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.strength-text {
+    color: #94a3b8;
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+}
+
+/* Remember Me */
+.remember-me {
+    text-align: left;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #2563eb;
+}
+
+.remember-me label {
+    color: #cbd5e1;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.3s;
+}
+
+button:active::after {
+    transform: scale(3);
+    opacity: 0;
+}
+
+.btn-login {
+    background: #2563eb;
+}
+.btn-login:hover {
+    background: #1d4ed8;
+}
+
+.btn-register {
+    background: #10b981;
+}
+.btn-register:hover {
+    background: #059669;
+}
+
+.btn-logout {
+    background: #ef4444;
+}
+.btn-logout:hover {
+    background: #dc2626;
+}
+
+.btn-goto {
+    background: #2563eb;
+}
+.btn-goto:hover {
+    background: #1d4ed8;
+}
+
+.btn-share {
+    background: #8b5cf6;
+    margin-top: 8px;
+}
+.btn-share:hover {
+    background: #7c3aed;
+}
+
+.btn-admin {
+    background: #8b5cf6;
+}
+.btn-admin:hover {
+    background: #7c3aed;
+}
+
+.btn-danger {
+    background: #ef4444;
+}
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.btn-warning {
+    background: #f59e0b;
+}
+.btn-warning:hover {
+    background: #d97706;
+}
+
+.link {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+}
+
+.link a {
+    color: #38bdf8;
+    text-decoration: none;
+}
+
+.link a:active {
+    opacity: 0.7;
+}
+
+/* Profile */
+.info {
+    text-align: left;
+    margin: 12px 0;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    word-break: break-word;
+}
+
+.info p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+.info .badge {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-user {
+    background: #2563eb;
+    color: white;
+}
+
+.badge-admin {
+    background: #8b5cf6;
+    color: white;
+}
+
+/* Admin Dashboard */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 14px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-card .number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #38bdf8;
+}
+
+.stat-card .label {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.user-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 12px 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 14px;
+}
+
+.user-item:last-child {
+    border-bottom: none;
+}
+
+.user-item .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.user-item .user-name {
+    font-weight: bold;
+}
+
+.user-item .user-phone {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.user-item .user-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.user-item .user-actions button {
+    padding: 4px 10px;
+    font-size: 12px;
+    width: auto;
+    margin: 0;
+    border-radius: 6px;
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 12px;
+    width: auto;
+    margin: 0;
+    border-radius: 6px;
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* ===== LOADING SPINNER ===== */
+.loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== TOAST NOTIFICATION ===== */
+.toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 12px;
+    z-index: 1000;
+    animation: slideUp 0.3s ease;
+    max-width: 90%;
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
+
+.toast.success {
+    border-left: 4px solid #10b981;
+}
+
+.toast.error {
+    border-left: 4px solid #ef4444;
+}
+
+@keyframes slideUp {
+    from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* ===== CUSTOM DIALOG ===== */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.dialog-box {
+    background: #1e293b;
+    padding: 30px 24px;
+    border-radius: 16px;
+    max-width: 340px;
+    width: 90%;
+    text-align: center;
+    animation: scaleIn 0.3s ease;
+}
+
+.dialog-box h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.dialog-box p {
+    color: #94a3b8;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.dialog-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-dialog {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-dialog:active {
+    transform: scale(0.95);
+}
+
+.btn-dialog.confirm {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-dialog.confirm:hover {
+    background: #1d4ed8;
+}
+
+.btn-dialog.cancel {
+    background: #334155;
+    color: white;
+}
+
+.btn-dialog.cancel:hover {
+    background: #475569;
+}
+
+.btn-dialog.danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-dialog.danger:hover {
+    background: #dc2626;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== BOTTOM NAVIGATION ===== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 100;
+    display: none;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    min-width: 60px;
+}
+
+.nav-item span {
+    font-size: 24px;
+    margin-bottom: 2px;
+}
+
+.nav-item small {
+    font-size: 10px;
+}
+
+.nav-item.active {
+    color: #2563eb;
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: #2563eb;
+    border-radius: 0 0 3px 3px;
+}
+
+.nav-item:active {
+    transform: scale(0.9);
+}
+
+/* Scrollbar */
+.user-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.user-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.user-list::-webkit-scrollbar-thumb {
+    background: #2563eb;
+    border-radius: 4px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeSlide {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 400px) {
+    .container {
+        padding: 20px 14px;
+    }
+    .logo {
+        font-size: 24px;
+    }
+    .btn {
+        padding: 12px 18px;
+        font-size: 14px;
+        min-width: 100px;
+    }
+    .box {
+        padding: 20px 14px;
+    }
+    input {
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+    button {
+        padding: 12px;
+        font-size: 15px;
+    }
+    .bottom-nav {
+        padding: 4px 0;
+    }
+    .nav-item span {
+        font-size: 20px;
+    }
+    .nav-item small {
+        font-size: 9px;
+    }
+    .admin-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .stat-card .number {
+        font-size: 20px;
+    }
+    .user-item {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .user-item .user-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 45px 40px;
+    }
+    .logo {
+        font-size: 36px;
+    }
+    .bottom-nav {
+        max-width: 500px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 16px 16px 0 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .dialog-box {
+        padding: 24px 16px;
+    }
+    .dialog-buttons {
+        flex-direction: column;
+    }
+    .btn-dialog {
+        padding: 14px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- LOADING SPINNER -->
+<!-- ============================================ -->
+<div id="loadingSpinner" class="loading-spinner hidden">
+    <div class="spinner"></div>
+</div>
+
+<!-- ============================================ -->
+<!-- TOAST NOTIFICATION -->
+<!-- ============================================ -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- ============================================ -->
+<!-- CUSTOM DIALOG -->
+<!-- ============================================ -->
+<div id="customDialog" class="dialog-overlay hidden">
+    <div class="dialog-box">
+        <h3 id="dialogTitle">Title</h3>
+        <p id="dialogMessage">Message</p>
+        <div class="dialog-buttons">
+            <button onclick="closeDialog()" class="btn-dialog cancel">Cancel</button>
+            <button onclick="confirmDialog()" class="btn-dialog confirm">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: HOME -->
+<!-- ============================================ -->
+<div id="pageHome" class="container">
+    <div class="logo">ATH <span>DIGITAL</span> HUB</div>
+    <div class="subtitle">Secure • Fast • Reliable</div>
+    <h2>Welcome</h2>
+    <p class="desc">Login or create a new account to continue.</p>
+    <div class="btn-group">
+        <button class="btn login" onclick="showPage('pageLogin')">Login</button>
+        <button class="btn register" onclick="showPage('pageRegister')">Register</button>
+        <button class="btn admin-btn" onclick="showPage('pageAdminLogin')">👑 Admin</button>
+    </div>
+    <div class="footer">Copyright © 2026 AUNG THU HTWE</div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: LOGIN -->
+<!-- ============================================ -->
+<div id="pageLogin" class="box hidden">
+    <h2>🔐 User Login</h2>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+        <input type="text" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
+        
+        <div class="password-wrapper">
+            <input type="password" id="loginPassword" placeholder="🔑 Password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁️</button>
+        </div>
+        
+        <div class="remember-me">
+            <input type="checkbox" id="rememberMe">
+            <label for="rememberMe">Remember Me</label>
+        </div>
+        
+        <button type="submit" class="btn-login">Login</button>
+    </form>
+    <div class="link">
+        Don't have account? <a href="#" onclick="showPage('pageRegister')">Register</a>
+    </div>
+    <div class="link" style="margin-top:8px;">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: REGISTER -->
+<!-- ============================================ -->
+<div id="pageRegister" class="box hidden">
+    <h2>📝 User Register</h2>
+    <form id="regForm" onsubmit="handleRegister(event)">
+        <input type="text" id="regName" placeholder="👤 Your Name" required>
+        <input type="text" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
+        
+        <div class="password-wrapper">
+            <input type="password" id="regPassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
+            <button type="button" class="password-toggle" onclick="togglePassword('regPassword')">👁️</button>
+        </div>
+        
+        <div class="password-strength">
+            <div id="strengthBar" class="strength-bar"></div>
+            <span id="strengthText" class="strength-text"></span>
+        </div>
+        
+        <button type="submit" class="btn-register">Create Account</button>
+    </form>
+    <div class="link">
+        Already have account? <a href="#" onclick="showPage('pageLogin')">Login</a>
+    </div>
+    <div class="link" style="margin-top:8px;">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: ADMIN LOGIN -->
+<!-- ============================================ -->
+<div id="pageAdminLogin" class="box hidden">
+    <h2>👑 Admin Login</h2>
+    <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+        <input type="text" id="adminUsername" placeholder="👤 Admin Username" required>
+        <div class="password-wrapper">
+            <input type="password" id="adminPassword" placeholder="🔑 Admin Password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword('adminPassword')">👁️</button>
+        </div>
+        <button type="submit" class="btn-admin">Login as Admin</button>
+    </form>
+    <div class="link">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: ADMIN DASHBOARD -->
+<!-- ============================================ -->
+<div id="pageAdminDashboard" class="box hidden">
+    <h2>👑 Admin Dashboard</h2>
+    <div style="text-align:right;margin-bottom:12px;">
+        <span class="badge badge-admin">Admin</span>
+        <span id="adminName" style="color:#cbd5e1;font-size:14px;margin-left:8px;"></span>
+    </div>
+    
+    <div class="admin-stats">
+        <div class="stat-card">
+            <div class="number" id="totalUsers">0</div>
+            <div class="label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="totalAdmins">0</div>
+            <div class="label">Total Admins</div>
+        </div>
+    </div>
+    
+    <div style="display:flex;gap:8px;margin:12px 0;">
+        <button onclick="refreshAdminData()" class="btn-sm" style="background:#2563eb;flex:1;">🔄 Refresh</button>
+        <button onclick="showPage('pageAdminCreate')" class="btn-sm" style="background:#10b981;flex:1;">➕ New Admin</button>
+    </div>
+    
+    <div class="user-list" id="adminUserList">
+        <!-- Users will be rendered here -->
+    </div>
+    
+    <button class="btn-logout" onclick="handleAdminLogout()" style="margin-top:12px;">🚪 Logout</button>
+    <div class="link" style="margin-top:8px;">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: CREATE ADMIN -->
+<!-- ============================================ -->
+<div id="pageAdminCreate" class="box hidden">
+    <h2>➕ Create Admin</h2>
+    <form id="adminCreateForm" onsubmit="handleCreateAdmin(event)">
+        <input type="text" id="adminCreateName" placeholder="👤 Admin Name" required>
+        <input type="text" id="adminCreateUsername" placeholder="👤 Username" required>
+        <div class="password-wrapper">
+            <input type="password" id="adminCreatePassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
+            <button type="button" class="password-toggle" onclick="togglePassword('adminCreatePassword')">👁️</button>
+        </div>
+        <button type="submit" class="btn-admin">Create Admin</button>
+    </form>
+    <div class="link">
+        <a href="#" onclick="showPage('pageAdminDashboard')">← Back to Dashboard</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: PROFILE -->
+<!-- ============================================ -->
+<div id="pageProfile" class="box hidden">
+    <h2>👤 Profile</h2>
+    <div id="profileBox"></div>
+    <button class="btn-share" onclick="shareProfile()">📤 Share Profile</button>
+    <button class="btn-logout" onclick="handleLogout()">🚪 Logout</button>
+    <div class="link" style="margin-top:12px;">
+        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- BOTTOM NAVIGATION -->
+<!-- ============================================ -->
+<div id="bottomNav" class="bottom-nav">
+    <button class="nav-item active" onclick="navigateTo('pageHome')">
+        <span>🏠</span>
+        <small>Home</small>
+    </button>
+    <button class="nav-item" onclick="navigateTo('pageProfile')">
+        <span>👤</span>
+        <small>Profile</small>
+    </button>
+    <button class="nav-item" onclick="handleLogout()">
+        <span>🚪</span>
+        <small>Logout</small>
+    </button>
+</div>
+
+<!-- ============================================ -->
+<script>
+// =============================================
+// TOAST NOTIFICATION
+// =============================================
+let toastTimeout;
+
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast ' + type;
+    clearTimeout(toastTimeout);
+    
+    void toast.offsetWidth;
+    toast.classList.remove('hidden');
+    
+    toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+}
+
+// =============================================
+// CUSTOM DIALOG
+// =============================================
+let dialogCallback = null;
+
+function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cancel', isDanger = false) {
+    return new Promise((resolve) => {
+        document.getElementById('dialogTitle').textContent = title;
+        document.getElementById('dialogMessage').textContent = message;
+        const confirmBtn = document.querySelector('.btn-dialog.confirm');
+        confirmBtn.textContent = confirmText;
+        document.querySelector('.btn-dialog.cancel').textContent = cancelText;
+        
+        if (isDanger) {
+            confirmBtn.className = 'btn-dialog danger';
+        } else {
+            confirmBtn.className = 'btn-dialog confirm';
+        }
+        
+        document.getElementById('customDialog').classList.remove('hidden');
+        dialogCallback = resolve;
+    });
+}
+
+function closeDialog() {
+    document.getElementById('customDialog').classList.add('hidden');
+    if (dialogCallback) dialogCallback(false);
+    dialogCallback = null;
+}
+
+function confirmDialog() {
+    document.getElementById('customDialog').classList.add('hidden');
+    if (dialogCallback) dialogCallback(true);
+    dialogCallback = null;
+}
+
+// =============================================
+// LOADING SPINNER
+// =============================================
+function showLoading() {
+    document.getElementById('loadingSpinner').classList.remove('hidden');
+}
+
+function hideLoading() {
+    document.getElementById('loadingSpinner').classList.add('hidden');
+}
+
+// =============================================
+// PAGE NAVIGATION
+// =============================================
+function showPage(pageId) {
+    document.querySelectorAll('.container, .box').forEach(el => {
+        el.classList.add('hidden');
+    });
+
+    const target = document.getElementById(pageId);
+    if (target) {
+        target.classList.remove('hidden');
+    }
+
+    updateBottomNav(pageId);
+
+    if (pageId === 'pageProfile') {
+        renderProfile();
+    }
+    if (pageId === 'pageAdminDashboard') {
+        refreshAdminData();
+    }
+}
+
+function navigateTo(pageId) {
+    const user = getCurrentUser();
+    if (pageId === 'pageProfile' && !user) {
+        showToast('Please login first', 'error');
+        showPage('pageLogin');
+        return;
+    }
+    showPage(pageId);
+}
+
+function updateBottomNav(currentPage) {
+    const nav = document.getElementById('bottomNav');
+    const items = nav.querySelectorAll('.nav-item');
+    
+    const showNavPages = ['pageHome', 'pageProfile', 'pageAdminDashboard'];
+    if (showNavPages.includes(currentPage)) {
+        nav.style.display = 'flex';
+    } else {
+        nav.style.display = 'none';
+        return;
+    }
+    
+    items.forEach(item => {
+        item.classList.remove('active');
+        const text = item.querySelector('small')?.textContent?.toLowerCase();
+        if ((currentPage === 'pageHome' && text === 'home') ||
+            (currentPage === 'pageProfile' && text === 'profile')) {
+            item.classList.add('active');
+        }
+    });
+}
+
+function getCurrentPage() {
+    const pages = ['pageHome', 'pageLogin', 'pageRegister', 'pageProfile', 'pageAdminLogin', 'pageAdminDashboard', 'pageAdminCreate'];
+    for (let page of pages) {
+        const el = document.getElementById(page);
+        if (el && !el.classList.contains('hidden')) return page;
+    }
+    return 'pageHome';
+}
+
+// =============================================
+// USER DATA (localStorage)
+// =============================================
+function getUsers() {
+    try {
+        return JSON.parse(localStorage.getItem('users')) || [];
+    } catch {
+        return [];
+    }
+}
+
+function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+function getAdmins() {
+    try {
+        return JSON.parse(localStorage.getItem('admins')) || [];
+    } catch {
+        return [];
+    }
+}
+
+function saveAdmins(admins) {
+    localStorage.setItem('admins', JSON.stringify(admins));
+}
+
+function getCurrentUser() {
+    try {
+        return JSON.parse(localStorage.getItem('user'));
+    } catch {
+        return null;
+    }
+}
+
+function getCurrentAdmin() {
+    try {
+        return JSON.parse(localStorage.getItem('admin'));
+    } catch {
+        return null;
+    }
+}
+
+function setCurrentUser(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+function setCurrentAdmin(admin) {
+    localStorage.setItem('admin', JSON.stringify(admin));
+}
+
+function clearCurrentUser() {
+    localStorage.removeItem('user');
+}
+
+function clearCurrentAdmin() {
+    localStorage.removeItem('admin');
+}
+
+function generateUserID(users) {
+    const count = users.length + 1;
+    return 'ATH' + String(count).padStart(6, '0');
+}
+
+function generateAdminID(admins) {
+    const count = admins.length + 1;
+    return 'ADM' + String(count).padStart(6, '0');
+}
+
+// =============================================
+// DEVICE INFO
+// =============================================
+function getDeviceInfo() {
+    return {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    };
+}
+
+// =============================================
+// PASSWORD TOGGLE
+// =============================================
+function togglePassword(id) {
+    const input = document.getElementById(id);
+    const btn = input.parentElement.querySelector('.password-toggle');
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+    }
+}
+
+// =============================================
+// PASSWORD STRENGTH
+// =============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('regPassword');
+    if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+            const val = this.value;
+            const bar = document.getElementById('strengthBar');
+            const text = document.getElementById('strengthText');
+            
+            if (val.length === 0) {
+                bar.style.width = '0%';
+                bar.style.background = '#ef4444';
+                text.textContent = '';
+                return;
+            }
+            
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (val.match(/[a-z]/)) score++;
+            if (val.match(/[A-Z]/)) score++;
+            if (val.match(/[0-9]/)) score++;
+            if (val.match(/[^a-zA-Z0-9]/)) score++;
+            
+            const strength = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+            const colors = ['#ef4444', '#f59e0b', '#f59e0b', '#10b981', '#10b981'];
+            const width = (score / 5) * 100;
+            
+            bar.style.width = width + '%';
+            bar.style.background = colors[score] || '#ef4444';
+            text.textContent = strength[score] || '';
+            text.style.color = colors[score] || '#ef4444';
+        });
+    }
+    
+    const phoneInputs = document.querySelectorAll('#regPhone, #loginPhone');
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const phone = this.value.trim();
+            const isValid = phone.match(/^09\d{7,9}$/);
+            this.style.borderColor = isValid ? '#10b981' : (phone.length > 0 ? '#ef4444' : '');
+        });
+    });
+});
+
+// =============================================
+// HASH PASSWORD
+// =============================================
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+// =============================================
+// INIT DEFAULT ADMIN
+// =============================================
+function initDefaultAdmin() {
+    let admins = getAdmins();
+    if (admins.length === 0) {
+        const defaultAdmin = {
+            admin_id: 'ADM000001',
+            name: 'Super Admin',
+            username: 'admin',
+            password: 'admin123', // Will be hashed
+            created_at: new Date().toISOString(),
+            is_super: true
+        };
+        admins.push(defaultAdmin);
+        saveAdmins(admins);
+        console.log('✅ Default admin created: admin / admin123');
+    }
+}
+
+// =============================================
+// REGISTER
+// =============================================
+async function handleRegister(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('regName').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    const password = document.getElementById('regPassword').value.trim();
+
+    if (!name || !phone || !password) {
+        showToast('Please fill all fields.', 'error');
+        return;
+    }
+
+    if (password.length < 4) {
+        showToast('Password must be at least 4 characters.', 'error');
+        return;
+    }
+
+    if (!phone.match(/^09\d{7,9}$/)) {
+        showToast('Please enter a valid Myanmar phone number starting with 09 (7-9 digits).', 'error');
+        return;
+    }
+
+    showLoading();
+
+    try {
+        let users = getUsers();
+
+        if (users.find(u => u.phone === phone)) {
+            showToast('❌ This phone number is already registered!', 'error');
+            hideLoading();
+            return;
+        }
+
+        const hashedPassword = await hashPassword(password);
+
+        const newUser = {
+            user_id: generateUserID(users),
+            name: name,
+            phone: phone,
+            password: hashedPassword,
+            created_at: new Date().toISOString(),
+            device: getDeviceInfo(),
+            role: 'user'
+        };
+
+        users.push(newUser);
+        saveUsers(users);
+
+        showToast('✅ Account Created!\nID: ' + newUser.user_id);
+        document.getElementById('regForm').reset();
+        document.getElementById('strengthBar').style.width = '0%';
+        document.getElementById('strengthText').textContent = '';
+
+        hideLoading();
+        showPage('pageLogin');
+    } catch (error) {
+        hideLoading();
+        showToast('Registration failed. Please try again.', 'error');
+        console.error('Register error:', error);
+    }
+}
+
+// =============================================
+// LOGIN
+// =============================================
+async function handleLogin(e) {
+    e.preventDefault();
+
+    const phone = document.getElementById('loginPhone').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    if (!phone || !password) {
+        showToast('Please enter phone and password.', 'error');
+        return;
+    }
+
+    showLoading();
+
+    try {
+        const users = getUsers();
+        const hashedPassword = await hashPassword(password);
+        const user = users.find(u => u.phone === phone && u.password === hashedPassword);
+
+        if (user) {
+            setCurrentUser(user);
+            
+            if (document.getElementById('rememberMe').checked) {
+                localStorage.setItem('rememberPhone', phone);
+            } else {
+                localStorage.removeItem('rememberPhone');
+            }
+            
+            showToast('✅ Login Success! Welcome ' + user.name);
+            document.getElementById('loginForm').reset();
+            
+            resetSessionTimer();
+            
+            hideLoading();
+            showPage('pageProfile');
+        } else {
+            hideLoading();
+            showToast('❌ Invalid phone or password.', 'error');
+        }
+    } catch (error) {
+        hideLoading();
+        showToast('Login failed. Please try again.', 'error');
+        console.error('Login error:', error);
+    }
+}
+
+// =============================================
+// ADMIN LOGIN
+// =============================================
+async function handleAdminLogin(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('adminUsername').value.trim();
+    const password = document.getElementById('adminPassword').value.trim();
+
+    if (!username || !password) {
+        showToast('Please enter username and password.', 'error');
+        return;
+    }
+
+    showLoading();
+
+    try {
+        let admins = getAdmins();
+        
+        // Hash admin passwords if they aren't already
+        for (let admin of admins) {
+            if (admin.password && !admin.password.match(/^[0-9a-f]{64}$/)) {
+                admin.password = await hashPassword(admin.password);
+            }
+        }
+        saveAdmins(admins);
+        
+        const hashedPassword = await hashPassword(password);
+        const admin = admins.find(a => a.username === username && a.password === hashedPassword);
+
+        if (admin) {
+            setCurrentAdmin(admin);
+            showToast('👑 Welcome Admin: ' + admin.name);
+            document.getElementById('adminLoginForm').reset();
+            hideLoading();
+            showPage('pageAdminDashboard');
+        } else {
+            hideLoading();
+            showToast('❌ Invalid admin credentials.', 'error');
+        }
+    } catch (error) {
+        hideLoading();
+        showToast('Admin login failed. Please try again.', 'error');
+        console.error('Admin login error:', error);
+    }
+}
+
+// =============================================
+// CREATE ADMIN
+// =============================================
+async function handleCreateAdmin(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('adminCreateName').value.trim();
+    const username = document.getElementById('adminCreateUsername').value.trim();
+    const password = document.getElementById('adminCreatePassword').value.trim();
+
+    if (!name || !username || !password) {
+        showToast('Please fill all fields.', 'error');
+        return;
+    }
+
+    if (password.length < 4) {
+        showToast('Password must be at least 4 characters.', 'error');
+        return;
+    }
+
+    showLoading();
+
+    try {
+        let admins = getAdmins();
+
+        if (admins.find(a => a.username === username)) {
+            showToast('❌ Username already exists!', 'error');
+            hideLoading();
+            return;
+        }
+
+        const hashedPassword = await hashPassword(password);
+
+        const newAdmin = {
+            admin_id: generateAdminID(admins),
+            name: name,
+            username: username,
+            password: hashedPassword,
+            created_at: new Date().toISOString(),
+            is_super: false
+        };
+
+        admins.push(newAdmin);
+        saveAdmins(admins);
+
+        showToast('✅ Admin Created!\nID: ' + newAdmin.admin_id);
+        document.getElementById('adminCreateForm').reset();
+        
+        hideLoading();
+        showPage('pageAdminDashboard');
+    } catch (error) {
+        hideLoading();
+        showToast('Failed to create admin. Please try again.', 'error');
+        console.error('Create admin error:', error);
+    }
+}
+
+// =============================================
+// ADMIN DASHBOARD
+// =============================================
+function refreshAdminData() {
+    const admin = getCurrentAdmin();
+    if (!admin) {
+        showPage('pageAdminLogin');
+        return;
+    }
+    
+    document.getElementById('adminName').textContent = admin.name;
+    
+    const users = getUsers();
+    const admins = getAdmins();
+    
+    document.getElementById('totalUsers').textContent = users.length;
+    document.getElementById('totalAdmins').textContent = admins.length;
+    
+    renderUserList(users);
+}
+
+function renderUserList(users) {
+    const container = document.getElementById('adminUserList');
+    
+    if (users.length === 0) {
+        container.innerHTML = `
+            <div style="text-align:center;padding:30px 0;color:#94a3b8;">
+                <p>No users registered yet.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    users.forEach((user, index) => {
+        html += `
+            <div class="user-item">
+                <div class="user-info">
+                    <span class="user-name">${user.name}</span>
+                    <span class="user-phone">📱 ${user.phone}</span>
+                    <span style="font-size:10px;color:#64748b;">${user.user_id}</span>
+                </div>
+                <div class="user-actions">
+                    <button onclick="viewUser('${user.user_id}')" class="btn-sm" style="background:#2563eb;">View</button>
+                    <button onclick="deleteUser('${user.user_id}', ${index})" class="btn-sm" style="background:#ef4444;">Delete</button>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+async function viewUser(userId) {
+    const users = getUsers();
+    const user = users.find(u => u.user_id === userId);
+    if (!user) {
+        showToast('User not found.', 'error');
+        return;
+    }
+    
+    const info = `
+        🆔 ID: ${user.user_id}
+        👤 Name: ${user.name}
+        📱 Phone: ${user.phone}
+        📅 Joined: ${new Date(user.created_at).toLocaleDateString()}
+        📱 Device: ${user.device?.platform || 'Unknown'}
+    `;
+    
+    await showDialog('User Details', info, 'Close', '');
+}
+
+async function deleteUser(userId, index) {
+    const confirmed = await showDialog('Delete User', 'Are you sure you want to delete this user? This action cannot be undone.', 'Delete', 'Cancel', true);
+    
+    if (confirmed) {
+        let users = getUsers();
+        users = users.filter(u => u.user_id !== userId);
+        saveUsers(users);
+        showToast('🗑️ User deleted successfully.');
+        refreshAdminData();
+    }
+}
+
+// =============================================
+// ADMIN LOGOUT
+// =============================================
+async function handleAdminLogout() {
+    const confirmed = await showDialog('Logout', 'Are you sure you want to logout?');
+    if (confirmed) {
+        clearCurrentAdmin();
+        showToast('👋 Logged out from admin.');
+        showPage('pageHome');
+    }
+}
+
+// =============================================
+// PROFILE
+// =============================================
+function renderProfile() {
+    const box = document.getElementById('profileBox');
+    const user = getCurrentUser();
+
+    if (!user) {
+        box.innerHTML = `
+            <p style="color:#94a3b8; margin-bottom:12px;">You are not logged in.</p>
+            <button class="btn-goto" onclick="showPage('pageLogin')">Go to Login</button>
+        `;
+        return;
+    }
+
+    box.innerHTML = `
+        <div class="info">
+            <p><b>🆔 User ID:</b> ${user.user_id}</p>
+            <p><b>👤 Name:</b> ${user.name}</p>
+            <p><b>📱 Phone:</b> ${user.phone}</p>
+            <p><b>👑 Role:</b> <span class="badge badge-user">${user.role || 'User'}</span></p>
+            ${user.created_at ? `<p><b>📅 Joined:</b> ${new Date(user.created_at).toLocaleDateString()}</p>` : ''}
+            ${user.device ? `<p><b>📱 Device:</b> ${user.device.platform || 'Unknown'}</p>` : ''}
+        </div>
+    `;
+}
+
+// =============================================
+// SHARE PROFILE
+// =============================================
+function shareProfile() {
+    const user = getCurrentUser();
+    if (!user) {
+        showToast('Please login first', 'error');
+        return;
+    }
+    
+    const shareText = `👤 ${user.name}\n📱 ${user.phone}\n🆔 ${user.user_id}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'My Profile',
+            text: shareText
+        }).catch(() => {});
+    } else {
+        navigator.clipboard.writeText(shareText)
+            .then(() => showToast('📋 Profile copied to clipboard!'))
+            .catch(() => showToast('Failed to copy', 'error'));
+    }
+}
+
+// =============================================
+// LOGOUT
+// =============================================
+async function handleLogout() {
+    const confirmed = await showDialog('Logout', 'Are you sure you want to logout?');
+    if (confirmed) {
+        clearCurrentUser();
+        clearSessionTimer();
+        showToast('👋 Logged out successfully.');
+        showPage('pageHome');
+    }
+}
+
+// =============================================
+// SESSION TIMEOUT
+// =============================================
+let sessionTimer;
+
+function resetSessionTimer() {
+    clearTimeout(sessionTimer);
+    sessionTimer = setTimeout(() => {
+        if (getCurrentUser()) {
+            showToast('⏰ Session expired. Please login again.', 'error');
+            clearCurrentUser();
+            showPage('pageHome');
+        }
+    }, 30 * 60 * 1000);
+}
+
+function clearSessionTimer() {
+    clearTimeout(sessionTimer);
+}
+
+['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
+    document.addEventListener(event, () => {
+        if (getCurrentUser()) {
+            resetSessionTimer();
+        }
+    });
+});
+
+// =============================================
+// SWIPE NAVIGATION
+// =============================================
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+});
+
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    const swipeX = touchStartX - touchEndX;
+    const swipeY = touchStartY - touchEndY;
+    
+    if (Math.abs(swipeX) < 50 || Math.abs(swipeX) < Math.abs(swipeY) * 1.5) return;
+    
+    const currentPage = getCurrentPage();
+    const user = getCurrentUser();
+    const admin = getCurrentAdmin();
+    
+    if (swipeX > 0) {
+        if (currentPage === 'pageHome' && !user && !admin) {
+            showPage('pageLogin');
+        } else if (currentPage === 'pageLogin') {
+            showPage('pageRegister');
+        }
+    } else {
+        if (currentPage === 'pageRegister') {
+            showPage('pageLogin');
+        } else if (currentPage === 'pageLogin') {
+            showPage('pageHome');
+        } else if (currentPage === 'pageProfile') {
+            showPage('pageHome');
+        } else if (currentPage === 'pageAdminDashboard') {
+            showPage('pageHome');
+        }
+    }
+}
+
+// =============================================
+// VIBRATION
+// =============================================
+function vibrate(pattern = 10) {
+    if (navigator.vibrate) {
+        navigator.vibrate(pattern);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.btn, button, .nav-item, .link a').forEach(el => {
+        el.addEventListener('click', () => vibrate(10));
+        el.addEventListener('touchstart', () => vibrate(5), { passive: true });
+    });
+});
+
+// =============================================
+// INIT
+// =============================================
+(function init() {
+    // Initialize default admin
+    initDefaultAdmin();
+    
+    const user = getCurrentUser();
+    const admin = getCurrentAdmin();
+    
+    const savedPhone = localStorage.getItem('rememberPhone');
+    if (savedPhone) {
+        const phoneInput = document.getElementById('loginPhone');
+        if (phoneInput) {
+            phoneInput.value = savedPhone;
+            document.getElementById('rememberMe').checked = true;
+        }
+    }
+    
+    if (admin) {
+        showPage('pageAdminDashboard');
+    } else if (user) {
+        showPage('pageProfile');
+        resetSessionTimer();
+    } else {
+        showPage('pageHome');
+    }
+    
+    console.log('📱 ATH DIGITAL HUB loaded successfully!');
+    console.log('👥 Users:', getUsers().length);
+    console.log('👑 Admins:', getAdmins().length);
+})();
+
+// =============================================
+// ERROR HANDLING
+// =============================================
+window.onerror = function(message, source, lineno, colno, error) {
+    console.error('Global error:', message, error);
+    showToast('Something went wrong. Please try again.', 'error');
+    return true;
+};
+
+window.addEventListener('online', () => {
+    showToast('🟢 Back online!');
+});
+
+window.addEventListener('offline', () => {
+    showToast('🔴 You are offline. Some features may not work.', 'error');
+});
+</script>
+</body>
+</html>
