@@ -769,6 +769,33 @@ body {
     color: #e2e8f0;
 }
 
+/* Chart Container */
+.chart-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px 0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    min-height: 150px;
+    position: relative;
+}
+
+.chart-container canvas {
+    max-height: 200px;
+}
+
+.chart-placeholder {
+    text-align: center;
+    padding: 30px 0;
+    color: #475569;
+}
+
+.chart-placeholder i {
+    font-size: 32px;
+    margin-bottom: 10px;
+    display: block;
+}
+
 /* Toast */
 .toast {
     position: fixed;
@@ -955,15 +982,6 @@ body {
     border-radius: 4px;
 }
 
-/* Chart */
-.chart-container {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 16px;
-    padding: 16px;
-    margin: 12px 0;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 /* Mobile Bottom Nav */
 .mobile-nav {
     display: none;
@@ -1121,6 +1139,15 @@ body {
     body {
         padding-bottom: 70px;
     }
+    
+    .chart-container {
+        min-height: 120px;
+        padding: 12px;
+    }
+    
+    .chart-container canvas {
+        max-height: 150px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -1248,8 +1275,12 @@ body {
     </div>
     
     <!-- Chart Container -->
-    <div class="chart-container">
-        <canvas id="userChart"></canvas>
+    <div class="chart-container" id="chartContainer">
+        <div id="chartPlaceholder" class="chart-placeholder">
+            <i class="fas fa-chart-line"></i>
+            <p>Loading chart...</p>
+        </div>
+        <canvas id="userChart" style="display:none;"></canvas>
     </div>
     
     <div class="action-bar">
@@ -1597,7 +1628,7 @@ function showPage(pageId) {
 
     if (pageId === 'pageAdminDashboard') {
         refreshAdminData();
-        setTimeout(renderCharts, 300);
+        setTimeout(renderCharts, 500);
     }
     if (pageId === 'pageAdminList') {
         renderAdminList();
@@ -1848,18 +1879,25 @@ async function handleCreateAdmin(e) {
 }
 
 // =============================================
-// CHARTS
+// CHARTS (Fixed - No CDN dependency)
 // =============================================
-let chartInstance = null;
-
 function renderCharts() {
-    const users = getUsers();
-    const ctx = document.getElementById('userChart')?.getContext('2d');
-    if (!ctx) return;
+    const canvas = document.getElementById('userChart');
+    const placeholder = document.getElementById('chartPlaceholder');
     
-    // Destroy existing chart
-    if (chartInstance) {
-        chartInstance.destroy();
+    if (!canvas) return;
+    
+    const users = getUsers();
+    
+    // If no users, show placeholder
+    if (users.length === 0) {
+        canvas.style.display = 'none';
+        placeholder.style.display = 'block';
+        placeholder.innerHTML = `
+            <i class="fas fa-chart-line"></i>
+            <p>No data to display</p>
+        `;
+        return;
     }
     
     // Group users by date (last 7 days)
@@ -1880,54 +1918,103 @@ function renderCharts() {
         }
     });
     
+    // Show canvas, hide placeholder
+    canvas.style.display = 'block';
+    placeholder.style.display = 'none';
+    
+    // Draw chart using Canvas API (no external library needed)
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const width = canvas.parentElement.clientWidth - 32;
+    const height = Math.min(200, width * 0.6);
+    
+    canvas.width = width * 2; // For retina
+    canvas.height = height * 2;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.scale(2, 2);
+    
     const isDark = document.body.style.background.includes('0c0e1a');
     const textColor = isDark ? '#94a3b8' : '#475569';
     const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+    const lineColor = '#8b5cf6';
+    const fillColor = 'rgba(139,92,246,0.1)';
     
-    chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: Object.keys(dateMap),
-            datasets: [{
-                label: 'New Users',
-                data: Object.values(dateMap),
-                borderColor: '#8b5cf6',
-                backgroundColor: 'rgba(139,92,246,0.1)',
-                fill: true,
-                tension: 0.4,
-                pointBackgroundColor: '#8b5cf6',
-                pointBorderColor: '#8b5cf6',
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor,
-                        font: { size: 12 }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { 
-                        color: textColor,
-                        stepSize: 1
-                    },
-                    grid: { color: gridColor }
-                },
-                x: {
-                    ticks: { color: textColor },
-                    grid: { color: gridColor }
-                }
-            }
+    const labels = Object.keys(dateMap);
+    const data = Object.values(dateMap);
+    const maxValue = Math.max(...data, 1);
+    const padding = { top: 20, bottom: 30, left: 30, right: 10 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+    
+    // Clear
+    ctx.clearRect(0, 0, width, height);
+    
+    // Draw grid lines
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 4; i++) {
+        const y = padding.top + (chartHeight / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
+        ctx.stroke();
+    }
+    
+    // Draw data points
+    if (data.length > 0) {
+        const points = data.map((value, index) => ({
+            x: padding.left + (index / (data.length - 1 || 1)) * chartWidth,
+            y: padding.top + chartHeight - (value / maxValue) * chartHeight
+        }));
+        
+        // Fill area
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, padding.top + chartHeight);
+        points.forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.lineTo(points[points.length - 1].x, padding.top + chartHeight);
+        ctx.closePath();
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+        
+        // Draw line
+        ctx.beginPath();
+        points.forEach((p, i) => {
+            if (i === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+        });
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // Draw points
+        points.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+            ctx.fillStyle = lineColor;
+            ctx.fill();
+            ctx.strokeStyle = isDark ? '#1a1d2e' : '#ffffff';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        });
+        
+        // Draw labels
+        ctx.fillStyle = textColor;
+        ctx.font = '10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        labels.forEach((label, i) => {
+            const x = padding.left + (i / (labels.length - 1 || 1)) * chartWidth;
+            ctx.fillText(label, x, height - 5);
+        });
+        
+        // Draw y-axis labels
+        ctx.textAlign = 'right';
+        for (let i = 0; i <= 4; i++) {
+            const value = Math.round((maxValue / 4) * (4 - i));
+            const y = padding.top + (chartHeight / 4) * i;
+            ctx.fillText(value.toString(), padding.left - 5, y + 4);
         }
-    });
+    }
 }
 
 // =============================================
@@ -2441,7 +2528,6 @@ function toggleDarkMode() {
     const isDark = !body.style.background.includes('f1f5f9');
     
     if (isDark) {
-        // Light mode
         body.style.background = 'linear-gradient(135deg, #f1f5f9, #e2e8f0)';
         body.style.color = '#0f172a';
         document.querySelectorAll('.glass-container').forEach(el => {
@@ -2478,7 +2564,6 @@ function toggleDarkMode() {
         localStorage.setItem('theme', 'light');
         showToast('🌞 Light mode activated');
     } else {
-        // Dark mode
         body.style.background = 'linear-gradient(135deg, #0c0e1a 0%, #1a1d2e 50%, #0f0e1a 100%)';
         body.style.color = '#e2e8f0';
         document.querySelectorAll('.glass-container').forEach(el => {
@@ -2516,11 +2601,9 @@ function toggleDarkMode() {
         showToast('🌙 Dark mode activated');
     }
     
-    // Refresh charts for new theme
     setTimeout(renderCharts, 300);
 }
 
-// Load saved theme
 function loadTheme() {
     const theme = localStorage.getItem('theme') || 'dark';
     if (theme === 'light') {
@@ -2574,27 +2657,22 @@ document.addEventListener('DOMContentLoaded', function() {
 // KEYBOARD SHORTCUTS
 // =============================================
 document.addEventListener('keydown', (e) => {
-    // Ctrl + R = Refresh
     if (e.ctrlKey && e.key === 'r') {
         e.preventDefault();
         refreshAdminData();
         showToast('🔄 Refreshed');
     }
-    // Ctrl + N = New Admin
     if (e.ctrlKey && e.key === 'n') {
         e.preventDefault();
         showPage('pageAdminCreate');
     }
-    // Ctrl + S = Settings
     if (e.ctrlKey && e.key === 's') {
         e.preventDefault();
         showPage('pageSettings');
     }
-    // Escape = Close dialog
     if (e.key === 'Escape') {
         closeDialog();
     }
-    // / = Focus search
     if (e.key === '/' && !e.ctrlKey && !e.metaKey && 
         document.getElementById('pageAdminDashboard') && 
         !document.getElementById('pageAdminDashboard').classList.contains('hidden')) {
@@ -2666,9 +2744,6 @@ window.addEventListener('offline', () => {
     showToast('🔴 You are offline. Some features may not work.', 'error');
 });
 </script>
-
-<!-- Chart.js for Charts -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
 </html>
