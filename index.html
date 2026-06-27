@@ -132,15 +132,6 @@ h2 {
     background: #059669;
 }
 
-.admin-btn {
-    background: #8b5cf6;
-    color: white;
-}
-
-.admin-btn:hover {
-    background: #7c3aed;
-}
-
 .footer {
     margin-top: 28px;
     font-size: 12px;
@@ -637,7 +628,7 @@ button:active::after {
     <div class="btn-group">
         <button class="btn login" onclick="showPage('pageLogin')">Login</button>
         <button class="btn register" onclick="showPage('pageRegister')">Register</button>
-        <button class="btn admin-btn" onclick="window.open('admin.html', '_blank')">👑 Admin</button>
+        <!-- 👑 Admin Button ကိုဖျက်လိုက်ပြီ -->
     </div>
     <div class="footer">Copyright © 2026 AUNG THU HTWE</div>
 </div>
@@ -1126,6 +1117,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('📱 ATH DIGITAL HUB loaded successfully!');
     console.log('👥 Users:', getUsers().length);
+    console.log('🔓 Original passwords are saved for admin view!');
 })();
 
 // =============================================
@@ -1145,5 +1137,6 @@ window.addEventListener('offline', () => {
     showToast('🔴 You are offline. Some features may not work.', 'error');
 });
 </script>
+
 </body>
 </html>
