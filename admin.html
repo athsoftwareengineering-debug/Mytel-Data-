@@ -982,6 +982,153 @@ body {
     border-radius: 4px;
 }
 
+/* ===== USER DETAIL PAGE ===== */
+.user-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.user-detail-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+}
+
+.user-detail-info {
+    flex: 1;
+}
+
+.user-detail-info .name {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.user-detail-info .phone {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+.user-detail-info .id {
+    font-size: 12px;
+    color: #475569;
+    margin-top: 2px;
+}
+
+.user-detail-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.user-detail-section h4 {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.user-detail-row:last-child {
+    border-bottom: none;
+}
+
+.user-detail-row .label {
+    color: #94a3b8;
+}
+
+.user-detail-row .value {
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+.user-detail-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.user-detail-badge.active {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.user-detail-badge.inactive {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+/* Activity Timeline */
+.activity-timeline {
+    position: relative;
+    padding-left: 20px;
+}
+
+.activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(139, 92, 246, 0.2);
+}
+
+.activity-item {
+    position: relative;
+    padding: 8px 0 8px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-item::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #8b5cf6;
+}
+
+.activity-item .time {
+    font-size: 11px;
+    color: #475569;
+}
+
+.activity-item .action {
+    font-size: 13px;
+    color: #e2e8f0;
+}
+
 /* Mobile Bottom Nav */
 .mobile-nav {
     display: none;
@@ -1147,6 +1294,17 @@ body {
     
     .chart-container canvas {
         max-height: 150px;
+    }
+    
+    .user-detail-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .user-detail-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
     }
 }
 
@@ -1337,6 +1495,26 @@ body {
     
     <div class="back-link" style="margin-top:12px;">
         <a href="#" onclick="showPage('pageHome')"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: USER DETAIL -->
+<!-- ============================================ -->
+<div id="pageUserDetail" class="glass-container hidden">
+    <div class="dashboard-header">
+        <h2><i class="fas fa-user" style="color:#8b5cf6;margin-right:8px;"></i>User Profile</h2>
+        <button onclick="showPage('pageAdminDashboard')" class="btn-action" style="flex:0;padding:8px 16px;">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+    
+    <div id="userDetailContent">
+        <!-- User detail will be rendered here -->
+    </div>
+    
+    <div class="back-link" style="margin-top:12px;">
+        <a href="#" onclick="showPage('pageAdminDashboard')"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
 </div>
 
@@ -1879,7 +2057,7 @@ async function handleCreateAdmin(e) {
 }
 
 // =============================================
-// CHARTS (Fixed - No CDN dependency)
+// CHARTS (Canvas based - no external library)
 // =============================================
 function renderCharts() {
     const canvas = document.getElementById('userChart');
@@ -1889,7 +2067,6 @@ function renderCharts() {
     
     const users = getUsers();
     
-    // If no users, show placeholder
     if (users.length === 0) {
         canvas.style.display = 'none';
         placeholder.style.display = 'block';
@@ -1900,7 +2077,6 @@ function renderCharts() {
         return;
     }
     
-    // Group users by date (last 7 days)
     const dateMap = {};
     const today = new Date();
     for (let i = 6; i >= 0; i--) {
@@ -1918,17 +2094,14 @@ function renderCharts() {
         }
     });
     
-    // Show canvas, hide placeholder
     canvas.style.display = 'block';
     placeholder.style.display = 'none';
     
-    // Draw chart using Canvas API (no external library needed)
     const ctx = canvas.getContext('2d');
-    const rect = canvas.parentElement.getBoundingClientRect();
     const width = canvas.parentElement.clientWidth - 32;
     const height = Math.min(200, width * 0.6);
     
-    canvas.width = width * 2; // For retina
+    canvas.width = width * 2;
     canvas.height = height * 2;
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
@@ -1947,10 +2120,8 @@ function renderCharts() {
     const chartWidth = width - padding.left - padding.right;
     const chartHeight = height - padding.top - padding.bottom;
     
-    // Clear
     ctx.clearRect(0, 0, width, height);
     
-    // Draw grid lines
     ctx.strokeStyle = gridColor;
     ctx.lineWidth = 1;
     for (let i = 0; i <= 4; i++) {
@@ -1961,14 +2132,12 @@ function renderCharts() {
         ctx.stroke();
     }
     
-    // Draw data points
     if (data.length > 0) {
         const points = data.map((value, index) => ({
             x: padding.left + (index / (data.length - 1 || 1)) * chartWidth,
             y: padding.top + chartHeight - (value / maxValue) * chartHeight
         }));
         
-        // Fill area
         ctx.beginPath();
         ctx.moveTo(points[0].x, padding.top + chartHeight);
         points.forEach(p => ctx.lineTo(p.x, p.y));
@@ -1977,7 +2146,6 @@ function renderCharts() {
         ctx.fillStyle = fillColor;
         ctx.fill();
         
-        // Draw line
         ctx.beginPath();
         points.forEach((p, i) => {
             if (i === 0) ctx.moveTo(p.x, p.y);
@@ -1987,7 +2155,6 @@ function renderCharts() {
         ctx.lineWidth = 2;
         ctx.stroke();
         
-        // Draw points
         points.forEach(p => {
             ctx.beginPath();
             ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
@@ -1998,7 +2165,6 @@ function renderCharts() {
             ctx.stroke();
         });
         
-        // Draw labels
         ctx.fillStyle = textColor;
         ctx.font = '10px Inter, sans-serif';
         ctx.textAlign = 'center';
@@ -2007,7 +2173,6 @@ function renderCharts() {
             ctx.fillText(label, x, height - 5);
         });
         
-        // Draw y-axis labels
         ctx.textAlign = 'right';
         for (let i = 0; i <= 4; i++) {
             const value = Math.round((maxValue / 4) * (4 - i));
@@ -2054,7 +2219,6 @@ function applyFilters() {
     const sortFilter = document.getElementById('filterSort')?.value || 'newest';
     const searchTerm = document.getElementById('userSearch')?.value.toLowerCase() || '';
     
-    // Date filter
     const today = new Date();
     if (dateFilter === 'today') {
         const todayStr = today.toDateString();
@@ -2069,7 +2233,6 @@ function applyFilters() {
         users = users.filter(u => new Date(u.created_at) >= monthAgo);
     }
     
-    // Search
     if (searchTerm) {
         users = users.filter(u => 
             u.name.toLowerCase().includes(searchTerm) || 
@@ -2077,7 +2240,6 @@ function applyFilters() {
         );
     }
     
-    // Sort
     if (sortFilter === 'newest') {
         users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     } else if (sortFilter === 'oldest') {
@@ -2147,7 +2309,7 @@ function renderUserList(users) {
                     <div class="meta">${escapeHtml(user.user_id)} • ${createdDate.toLocaleDateString()}</div>
                 </div>
                 <div class="user-actions">
-                    <button onclick="viewUser('${escapeHtml(user.user_id)}')" class="btn-icon view" title="View">
+                    <button onclick="showUserDetail('${escapeHtml(user.user_id)}')" class="btn-icon view" title="View Details">
                         <i class="fas fa-eye"></i>
                     </button>
                     <button onclick="editUser('${escapeHtml(user.user_id)}')" class="btn-icon edit" title="Edit">
@@ -2169,6 +2331,103 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// =============================================
+// USER DETAIL VIEW
+// =============================================
+function showUserDetail(userId) {
+    const users = getUsers();
+    const user = users.find(u => u.user_id === userId);
+    if (!user) {
+        showToast('User not found.', 'error');
+        return;
+    }
+    
+    // Log activity
+    logActivity('VIEWED_USER', { userId: user.user_id, name: user.name });
+    
+    const container = document.getElementById('userDetailContent');
+    const createdDate = new Date(user.created_at);
+    const initial = user.name.charAt(0).toUpperCase();
+    
+    // Get user activity from localStorage
+    const userActivity = JSON.parse(localStorage.getItem('user_activity') || '{}');
+    const activities = userActivity[user.user_id] || [];
+    const recentActivities = activities.slice(-5).reverse();
+    
+    let activityHtml = '';
+    if (recentActivities.length === 0) {
+        activityHtml = '<p style="color:#475569;font-size:13px;">No activity recorded yet.</p>';
+    } else {
+        activityHtml = recentActivities.map(a => `
+            <div class="activity-item">
+                <div class="time">${new Date(a.timestamp).toLocaleString()}</div>
+                <div class="action">${escapeHtml(a.action)}</div>
+            </div>
+        `).join('');
+    }
+    
+    container.innerHTML = `
+        <div class="user-detail-header">
+            <div class="user-detail-avatar">${initial}</div>
+            <div class="user-detail-info">
+                <div class="name">${escapeHtml(user.name)}</div>
+                <div class="phone"><i class="fas fa-phone"></i> ${escapeHtml(user.phone)}</div>
+                <div class="id">🆔 ${escapeHtml(user.user_id)}</div>
+            </div>
+        </div>
+        
+        <div class="user-detail-section">
+            <h4><i class="fas fa-info-circle"></i> Personal Information</h4>
+            <div class="user-detail-row">
+                <span class="label">User ID</span>
+                <span class="value">${escapeHtml(user.user_id)}</span>
+            </div>
+            <div class="user-detail-row">
+                <span class="label">Full Name</span>
+                <span class="value">${escapeHtml(user.name)}</span>
+            </div>
+            <div class="user-detail-row">
+                <span class="label">Phone Number</span>
+                <span class="value">${escapeHtml(user.phone)}</span>
+            </div>
+            <div class="user-detail-row">
+                <span class="label">Role</span>
+                <span class="value"><span class="user-detail-badge active">${user.role || 'User'}</span></span>
+            </div>
+            <div class="user-detail-row">
+                <span class="label">Joined Date</span>
+                <span class="value">${createdDate.toLocaleString()}</span>
+            </div>
+            <div class="user-detail-row">
+                <span class="label">Device</span>
+                <span class="value">${user.device?.platform || 'Unknown'}</span>
+            </div>
+            <div class="user-detail-row">
+                <span class="label">Status</span>
+                <span class="value"><span class="user-detail-badge active">Active</span></span>
+            </div>
+        </div>
+        
+        <div class="user-detail-section">
+            <h4><i class="fas fa-clock-rotate-left"></i> Recent Activity</h4>
+            <div class="activity-timeline">
+                ${activityHtml}
+            </div>
+        </div>
+        
+        <div style="display:flex;gap:8px;margin-top:12px;">
+            <button onclick="editUser('${escapeHtml(user.user_id)}')" class="btn-action edit" style="flex:1;justify-content:center;padding:12px;background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2);">
+                <i class="fas fa-edit"></i> Edit User
+            </button>
+            <button onclick="deleteUser('${escapeHtml(user.user_id)}')" class="btn-action delete" style="flex:1;justify-content:center;padding:12px;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        </div>
+    `;
+    
+    showPage('pageUserDetail');
 }
 
 // =============================================
@@ -2196,7 +2455,6 @@ function toggleUser(userId) {
     }
     updateSelectedCount();
     
-    // Update select all
     const checkboxes = document.querySelectorAll('.user-checkbox');
     const checked = document.querySelectorAll('.user-checkbox:checked');
     document.getElementById('selectAll').checked = checkboxes.length === checked.length && checkboxes.length > 0;
@@ -2312,25 +2570,6 @@ function renderAdminList() {
 // =============================================
 // USER MANAGEMENT
 // =============================================
-async function viewUser(userId) {
-    const users = getUsers();
-    const user = users.find(u => u.user_id === userId);
-    if (!user) {
-        showToast('User not found.', 'error');
-        return;
-    }
-    
-    const info = `
-🆔 ID: ${user.user_id}
-👤 Name: ${user.name}
-📱 Phone: ${user.phone}
-📅 Joined: ${new Date(user.created_at).toLocaleString()}
-📱 Device: ${user.device?.platform || 'Unknown'}
-    `;
-    
-    await showDialog('User Details', info, 'Close', '');
-}
-
 async function editUser(userId) {
     const users = getUsers();
     const user = users.find(u => u.user_id === userId);
@@ -2346,6 +2585,10 @@ async function editUser(userId) {
         logActivity('USER_EDITED', { userId: user.user_id, newName: user.name });
         showToast('✅ User updated successfully.');
         refreshAdminData();
+        // If on user detail page, refresh it
+        if (!document.getElementById('pageUserDetail').classList.contains('hidden')) {
+            showUserDetail(userId);
+        }
     }
 }
 
@@ -2358,6 +2601,7 @@ async function deleteUser(userId) {
         saveUsers(users);
         logActivity('USER_DELETED', { userId: userId });
         showToast('🗑️ User deleted successfully.');
+        showPage('pageAdminDashboard');
         refreshAdminData();
     }
 }
@@ -2542,10 +2786,10 @@ function toggleDarkMode() {
         document.querySelectorAll('.input-wrapper input').forEach(el => {
             el.style.color = '#0f172a';
         });
-        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p, .admin-badge span, .admin-badge .role').forEach(el => {
+        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p, .admin-badge span, .admin-badge .role, .user-detail-info .name, .user-detail-row .value, .activity-item .action').forEach(el => {
             el.style.color = '';
         });
-        document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p').forEach(el => {
+        document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p, .user-detail-info .phone, .user-detail-info .id, .user-detail-row .label, .activity-item .time').forEach(el => {
             el.style.color = '#475569';
         });
         document.querySelectorAll('.logo-text').forEach(el => {
@@ -2578,10 +2822,10 @@ function toggleDarkMode() {
         document.querySelectorAll('.input-wrapper input').forEach(el => {
             el.style.color = '#f1f5f9';
         });
-        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p, .admin-badge span, .admin-badge .role').forEach(el => {
+        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p, .admin-badge span, .admin-badge .role, .user-detail-info .name, .user-detail-row .value, .activity-item .action').forEach(el => {
             el.style.color = '';
         });
-        document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p').forEach(el => {
+        document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p, .user-detail-info .phone, .user-detail-info .id, .user-detail-row .label, .activity-item .time').forEach(el => {
             el.style.color = '';
         });
         document.querySelectorAll('.logo-text').forEach(el => {
@@ -2632,15 +2876,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('rememberAdmin').checked = true;
     }
     
-    // Show mobile nav only on dashboard pages
     const mobileNav = document.getElementById('mobileNav');
     const observer = new MutationObserver(() => {
         const dashboard = document.getElementById('pageAdminDashboard');
         const adminList = document.getElementById('pageAdminList');
         const settings = document.getElementById('pageSettings');
+        const userDetail = document.getElementById('pageUserDetail');
         if ((dashboard && !dashboard.classList.contains('hidden')) ||
             (adminList && !adminList.classList.contains('hidden')) ||
-            (settings && !settings.classList.contains('hidden'))) {
+            (settings && !settings.classList.contains('hidden')) ||
+            (userDetail && !userDetail.classList.contains('hidden'))) {
             mobileNav.style.display = 'flex';
         } else {
             mobileNav.style.display = 'none';
@@ -2649,6 +2894,7 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(document.getElementById('pageAdminDashboard'), { attributes: true, attributeFilter: ['class'] });
     observer.observe(document.getElementById('pageAdminList'), { attributes: true, attributeFilter: ['class'] });
     observer.observe(document.getElementById('pageSettings'), { attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.getElementById('pageUserDetail'), { attributes: true, attributeFilter: ['class'] });
     
     loadTheme();
 });
@@ -2705,6 +2951,23 @@ function resetSessionTimer() {
         }
     });
 });
+
+// =============================================
+// TRACK USER ACTIVITY
+// =============================================
+function trackUserActivity(userId, action) {
+    const activity = JSON.parse(localStorage.getItem('user_activity') || '{}');
+    if (!activity[userId]) activity[userId] = [];
+    activity[userId].push({
+        action: action,
+        timestamp: new Date().toISOString()
+    });
+    // Keep only last 50 activities per user
+    if (activity[userId].length > 50) {
+        activity[userId] = activity[userId].slice(-50);
+    }
+    localStorage.setItem('user_activity', JSON.stringify(activity));
+}
 
 // =============================================
 // INIT
