@@ -24,10 +24,12 @@ body {
     background: linear-gradient(135deg, #0c0e1a 0%, #1a1d2e 50%, #0f0e1a 100%);
     color: #e2e8f0;
     padding: 20px;
+    padding-bottom: 80px;
     -webkit-tap-highlight-color: transparent;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Glass Morphism Container */
+/* Glass Container */
 .glass-container {
     width: 100%;
     max-width: 520px;
@@ -39,6 +41,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     animation: fadeSlide 0.5s ease;
+    transition: background 0.3s ease, border 0.3s ease;
 }
 
 /* Logo */
@@ -59,6 +62,11 @@ body {
     color: white;
     margin-bottom: 10px;
     box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.logo-icon:hover {
+    transform: scale(1.05) rotate(-5deg);
 }
 
 .logo-text {
@@ -78,7 +86,7 @@ body {
     margin-top: 4px;
 }
 
-/* ===== LOGIN PAGE ===== */
+/* Login Page */
 .login-header {
     text-align: center;
     margin-bottom: 28px;
@@ -196,7 +204,7 @@ body {
     color: #a78bfa;
 }
 
-/* Login Button */
+/* Buttons */
 .btn-primary {
     width: 100%;
     padding: 15px;
@@ -242,12 +250,14 @@ body {
     color: #94a3b8;
 }
 
-/* ===== DASHBOARD ===== */
+/* Dashboard */
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .dashboard-header h2 {
@@ -265,12 +275,17 @@ body {
     border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
-.admin-badge img {
+.admin-avatar {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    object-fit: cover;
     background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .admin-badge span {
@@ -328,7 +343,7 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Action Buttons */
+/* Action Bar */
 .action-bar {
     display: flex;
     gap: 8px;
@@ -338,8 +353,8 @@ body {
 
 .btn-action {
     flex: 1;
-    min-width: 60px;
-    padding: 10px 14px;
+    min-width: 50px;
+    padding: 10px 12px;
     border: none;
     border-radius: 10px;
     font-size: 12px;
@@ -484,6 +499,14 @@ body {
     border-bottom: none;
 }
 
+.user-checkbox {
+    margin-right: 10px;
+    accent-color: #8b5cf6;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
 .user-avatar {
     width: 38px;
     height: 38px;
@@ -551,6 +574,15 @@ body {
     background: rgba(37, 99, 235, 0.25);
 }
 
+.btn-icon.edit {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+}
+
+.btn-icon.edit:hover {
+    background: rgba(16, 185, 129, 0.25);
+}
+
 .btn-icon.delete {
     background: rgba(239, 68, 68, 0.15);
     color: #f87171;
@@ -560,7 +592,7 @@ body {
     background: rgba(239, 68, 68, 0.25);
 }
 
-/* New User Badge */
+/* Badge New */
 .badge-new {
     display: inline-block;
     font-size: 9px;
@@ -597,7 +629,7 @@ body {
     margin-right: 8px;
 }
 
-/* ===== ADMIN LIST ===== */
+/* Admin List */
 .admin-list {
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.02);
@@ -649,42 +681,95 @@ body {
     gap: 6px;
 }
 
-/* ===== UTILITY ===== */
-.hidden {
-    display: none !important;
+/* Bulk Actions */
+.bulk-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.text-center {
-    text-align: center;
+.bulk-actions input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #8b5cf6;
+    cursor: pointer;
 }
 
-.mt-10 {
-    margin-top: 10px;
+.bulk-actions .btn-sm {
+    padding: 6px 14px;
+    font-size: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
 }
 
-.mb-10 {
-    margin-bottom: 10px;
+.bulk-actions .btn-sm:hover {
+    transform: translateY(-2px);
 }
 
-/* ===== SCROLLBAR ===== */
-.user-list::-webkit-scrollbar,
-.admin-list::-webkit-scrollbar {
-    width: 3px;
+.bulk-actions .btn-sm.danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
 }
 
-.user-list::-webkit-scrollbar-track,
-.admin-list::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 4px;
+.bulk-actions .btn-sm.danger:hover {
+    background: rgba(239, 68, 68, 0.25);
 }
 
-.user-list::-webkit-scrollbar-thumb,
-.admin-list::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.3);
-    border-radius: 4px;
+.bulk-actions .btn-sm.warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
 }
 
-/* ===== TOAST ===== */
+.bulk-actions .btn-sm.warning:hover {
+    background: rgba(245, 158, 11, 0.25);
+}
+
+.bulk-actions .selected-count {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-left: auto;
+}
+
+/* Filters */
+.advanced-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.advanced-filters select {
+    flex: 1;
+    min-width: 80px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    color: #e2e8f0;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.advanced-filters select:focus {
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.advanced-filters select option {
+    background: #1a1d2e;
+    color: #e2e8f0;
+}
+
+/* Toast */
 .toast {
     position: fixed;
     bottom: 30px;
@@ -713,7 +798,7 @@ body {
     border-left: 3px solid #f87171;
 }
 
-/* ===== LOADING ===== */
+/* Loading */
 .loading-spinner {
     position: fixed;
     top: 0;
@@ -738,7 +823,7 @@ body {
     animation: spin 0.8s linear infinite;
 }
 
-/* ===== DIALOG ===== */
+/* Dialog */
 .dialog-overlay {
     position: fixed;
     top: 0;
@@ -835,7 +920,93 @@ body {
     box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
 }
 
-/* ===== ANIMATIONS ===== */
+/* Utility */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+/* Scrollbar */
+.user-list::-webkit-scrollbar,
+.admin-list::-webkit-scrollbar {
+    width: 3px;
+}
+
+.user-list::-webkit-scrollbar-track,
+.admin-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+
+.user-list::-webkit-scrollbar-thumb,
+.admin-list::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+}
+
+/* Chart */
+.chart-container {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px 0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile Bottom Nav */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15, 15, 30, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 8px 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 100;
+}
+
+.mobile-nav-item {
+    background: none;
+    border: none;
+    color: #64748b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 10px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.mobile-nav-item i {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+.mobile-nav-item.active {
+    color: #8b5cf6;
+}
+
+.mobile-nav-item:active {
+    transform: scale(0.9);
+}
+
+/* Animations */
 @keyframes fadeSlide {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -861,7 +1032,7 @@ body {
     to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media (max-width: 480px) {
     .glass-container {
         padding: 20px 16px;
@@ -905,6 +1076,7 @@ body {
     
     .user-item {
         padding: 10px 12px;
+        flex-wrap: wrap;
     }
     
     .user-info .name {
@@ -917,12 +1089,37 @@ body {
         font-size: 14px;
     }
     
+    .user-actions {
+        margin-top: 6px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
     .dialog-box {
         padding: 24px 16px;
     }
     
     .dialog-buttons {
         flex-direction: column;
+    }
+    
+    .bulk-actions {
+        flex-wrap: wrap;
+    }
+    
+    .advanced-filters select {
+        min-width: 60px;
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+    
+    .mobile-nav {
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    body {
+        padding-bottom: 70px;
     }
 }
 
@@ -954,7 +1151,7 @@ body {
 <!-- ============================================ -->
 <div id="customDialog" class="dialog-overlay hidden">
     <div class="dialog-box">
-        <div class="icon" id="dialogIcon">⚠️</div>
+        <div class="icon" id="dialogIcon">📌</div>
         <h3 id="dialogTitle">Title</h3>
         <p id="dialogMessage">Message</p>
         <div class="dialog-buttons">
@@ -1004,7 +1201,7 @@ body {
                 <input type="checkbox" id="rememberAdmin">
                 Remember me
             </label>
-            <a href="#">Forgot password?</a>
+            <a href="#" onclick="showToast('Contact admin to reset password.', 'error')">Forgot password?</a>
         </div>
         
         <button type="submit" class="btn-primary">
@@ -1027,9 +1224,7 @@ body {
     <div class="dashboard-header">
         <h2><i class="fas fa-chart-simple" style="color:#8b5cf6;margin-right:8px;"></i>Dashboard</h2>
         <div class="admin-badge">
-            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#6d28d9);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:600;">
-                <span id="adminInitial">A</span>
-            </div>
+            <div class="admin-avatar" id="adminInitial">A</div>
             <div>
                 <span id="adminNameDisplay">Admin</span>
                 <div class="role" id="adminRoleDisplay">Super Admin</div>
@@ -1052,6 +1247,11 @@ body {
         </div>
     </div>
     
+    <!-- Chart Container -->
+    <div class="chart-container">
+        <canvas id="userChart"></canvas>
+    </div>
+    
     <div class="action-bar">
         <button onclick="refreshAdminData()" class="btn-action primary"><i class="fas fa-rotate"></i> Refresh</button>
         <button onclick="showPage('pageAdminCreate')" class="btn-action success"><i class="fas fa-plus"></i> New Admin</button>
@@ -1060,9 +1260,32 @@ body {
         <button onclick="showPage('pageSettings')" class="btn-action"><i class="fas fa-sliders"></i></button>
     </div>
     
+    <div class="advanced-filters">
+        <select id="filterDate" onchange="applyFilters()">
+            <option value="all">📅 All Time</option>
+            <option value="today">📆 Today</option>
+            <option value="week">📊 This Week</option>
+            <option value="month">📈 This Month</option>
+        </select>
+        <select id="filterSort" onchange="applyFilters()">
+            <option value="newest">🔄 Newest First</option>
+            <option value="oldest">🔄 Oldest First</option>
+            <option value="name">🔤 Name A-Z</option>
+        </select>
+        <button onclick="resetFilters()" class="btn-action" style="flex:0.5;"><i class="fas fa-undo"></i></button>
+    </div>
+    
     <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="userSearch" placeholder="Search users by name or phone..." oninput="filterUserList(this.value)">
+        <input type="text" id="userSearch" placeholder="Search users by name or phone..." oninput="applyFilters()">
+    </div>
+    
+    <div class="bulk-actions">
+        <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)">
+        <label for="selectAll" style="font-size:13px;color:#94a3b8;cursor:pointer;">Select All</label>
+        <button onclick="bulkDelete()" class="btn-sm danger"><i class="fas fa-trash"></i> Delete</button>
+        <button onclick="bulkExport()" class="btn-sm warning"><i class="fas fa-download"></i> Export</button>
+        <span class="selected-count" id="selectedCount">0 selected</span>
     </div>
     
     <div class="section-title">
@@ -1189,6 +1412,9 @@ body {
                     <i class="fas fa-upload"></i> Import Data
                 </button>
                 <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+                <button onclick="createBackup()" class="btn-action" style="width:100%;justify-content:center;padding:12px;background:rgba(16,185,129,0.15);color:#34d399;">
+                    <i class="fas fa-cloud-arrow-up"></i> Create Backup
+                </button>
                 <button onclick="clearAllData()" class="btn-action danger" style="width:100%;justify-content:center;padding:12px;">
                     <i class="fas fa-trash"></i> Clear All Data
                 </button>
@@ -1204,6 +1430,9 @@ body {
                 <button onclick="sessionTimeout()" class="btn-action" style="width:100%;justify-content:center;padding:12px;">
                     <i class="fas fa-clock"></i> Session Timeout
                 </button>
+                <button onclick="viewActivityLogs()" class="btn-action primary" style="width:100%;justify-content:center;padding:12px;">
+                    <i class="fas fa-list-check"></i> View Activity Logs
+                </button>
             </div>
         </div>
         
@@ -1212,6 +1441,15 @@ body {
             <button onclick="toggleDarkMode()" class="btn-action primary" style="width:100%;justify-content:center;padding:12px;">
                 <i class="fas fa-moon"></i> Toggle Dark/Light Mode
             </button>
+        </div>
+        
+        <div style="padding:16px;background:rgba(255,255,255,0.03);border-radius:14px;border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#94a3b8;font-size:14px;margin-bottom:10px;"><i class="fas fa-info-circle"></i> About</h4>
+            <p style="color:#64748b;font-size:13px;line-height:1.6;">
+                <strong>ATH Digital Hub</strong> v2.0<br>
+                Admin Panel Pro<br>
+                Copyright © 2026 AUNG THU HTWE
+            </p>
         </div>
     </div>
     
@@ -1242,6 +1480,28 @@ body {
     <div style="text-align:center;margin-top:20px;font-size:11px;color:#475569;">
         Copyright © 2026 AUNG THU HTWE
     </div>
+</div>
+
+<!-- ============================================ -->
+<!-- MOBILE BOTTOM NAVIGATION -->
+<!-- ============================================ -->
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-item active" onclick="showPage('pageAdminDashboard')" data-page="pageAdminDashboard">
+        <i class="fas fa-chart-simple"></i>
+        <span>Dashboard</span>
+    </button>
+    <button class="mobile-nav-item" onclick="showPage('pageAdminList')" data-page="pageAdminList">
+        <i class="fas fa-users-gear"></i>
+        <span>Admins</span>
+    </button>
+    <button class="mobile-nav-item" onclick="showPage('pageSettings')" data-page="pageSettings">
+        <i class="fas fa-sliders"></i>
+        <span>Settings</span>
+    </button>
+    <button class="mobile-nav-item" onclick="handleAdminLogout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+    </button>
 </div>
 
 <!-- ============================================ -->
@@ -1327,8 +1587,17 @@ function showPage(pageId) {
         target.classList.remove('hidden');
     }
 
+    // Update mobile nav
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.page === pageId) {
+            item.classList.add('active');
+        }
+    });
+
     if (pageId === 'pageAdminDashboard') {
         refreshAdminData();
+        setTimeout(renderCharts, 300);
     }
     if (pageId === 'pageAdminList') {
         renderAdminList();
@@ -1399,6 +1668,41 @@ function generateAdminID(admins) {
 }
 
 // =============================================
+// ACTIVITY LOGS
+// =============================================
+function logActivity(action, details) {
+    const logs = JSON.parse(localStorage.getItem('activity_logs') || '[]');
+    const admin = getCurrentAdmin();
+    logs.push({
+        id: 'LOG' + String(logs.length + 1).padStart(6, '0'),
+        admin: admin ? admin.name : 'Unknown',
+        action: action,
+        details: details,
+        timestamp: new Date().toISOString()
+    });
+    if (logs.length > 1000) logs.shift();
+    localStorage.setItem('activity_logs', JSON.stringify(logs));
+}
+
+async function viewActivityLogs() {
+    const logs = JSON.parse(localStorage.getItem('activity_logs') || '[]');
+    if (logs.length === 0) {
+        await showDialog('Activity Logs', 'No activity logs found.', 'Close', '');
+        return;
+    }
+    
+    let logText = '📋 Recent Activities\n\n';
+    logs.slice(-20).reverse().forEach(log => {
+        logText += `${new Date(log.timestamp).toLocaleString()}\n`;
+        logText += `👤 ${log.admin}: ${log.action}\n`;
+        if (log.details) logText += `📌 ${JSON.stringify(log.details)}\n`;
+        logText += '─'.repeat(30) + '\n';
+    });
+    
+    await showDialog('Activity Logs', logText, 'Close', '');
+}
+
+// =============================================
 // HASH PASSWORD
 // =============================================
 async function hashPassword(password) {
@@ -1428,6 +1732,7 @@ async function initDefaultAdmin() {
         };
         admins.push(defaultAdmin);
         saveAdmins(admins);
+        logActivity('SYSTEM_INIT', 'Default admin created');
         console.log('✅ Default admin created: admin / admin123');
         return true;
     }
@@ -1464,6 +1769,7 @@ async function handleAdminLogin(e) {
                 localStorage.removeItem('rememberAdminUsername');
             }
             
+            logActivity('LOGIN', { username: admin.username });
             showToast('👑 Welcome Admin: ' + admin.name);
             document.getElementById('adminLoginForm').reset();
             hideLoading();
@@ -1525,6 +1831,8 @@ async function handleCreateAdmin(e) {
 
         admins.push(newAdmin);
         saveAdmins(admins);
+        
+        logActivity('ADMIN_CREATED', { adminId: newAdmin.admin_id, name: newAdmin.name });
 
         showToast('✅ Admin Created!\nID: ' + newAdmin.admin_id);
         document.getElementById('adminCreateForm').reset();
@@ -1537,6 +1845,89 @@ async function handleCreateAdmin(e) {
         showToast('Failed to create admin. Please try again.', 'error');
         console.error('Create admin error:', error);
     }
+}
+
+// =============================================
+// CHARTS
+// =============================================
+let chartInstance = null;
+
+function renderCharts() {
+    const users = getUsers();
+    const ctx = document.getElementById('userChart')?.getContext('2d');
+    if (!ctx) return;
+    
+    // Destroy existing chart
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+    
+    // Group users by date (last 7 days)
+    const dateMap = {};
+    const today = new Date();
+    for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const key = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        dateMap[key] = 0;
+    }
+    
+    users.forEach(u => {
+        const date = new Date(u.created_at);
+        const key = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        if (dateMap[key] !== undefined) {
+            dateMap[key]++;
+        }
+    });
+    
+    const isDark = document.body.style.background.includes('0c0e1a');
+    const textColor = isDark ? '#94a3b8' : '#475569';
+    const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+    
+    chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: Object.keys(dateMap),
+            datasets: [{
+                label: 'New Users',
+                data: Object.values(dateMap),
+                borderColor: '#8b5cf6',
+                backgroundColor: 'rgba(139,92,246,0.1)',
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#8b5cf6',
+                pointBorderColor: '#8b5cf6',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor,
+                        font: { size: 12 }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { 
+                        color: textColor,
+                        stepSize: 1
+                    },
+                    grid: { color: gridColor }
+                },
+                x: {
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                }
+            }
+        }
+    });
 }
 
 // =============================================
@@ -1564,68 +1955,59 @@ function refreshAdminData() {
     document.getElementById('totalAdmins').textContent = admins.length;
     document.getElementById('userCountDisplay').textContent = users.length + ' users';
     
-    renderUserList(users);
+    applyFilters();
 }
 
-function renderUserList(users) {
-    const container = document.getElementById('adminUserList');
+// =============================================
+// FILTERS
+// =============================================
+function applyFilters() {
+    let users = getUsers();
+    const dateFilter = document.getElementById('filterDate')?.value || 'all';
+    const sortFilter = document.getElementById('filterSort')?.value || 'newest';
     const searchTerm = document.getElementById('userSearch')?.value.toLowerCase() || '';
     
-    let filteredUsers = users;
+    // Date filter
+    const today = new Date();
+    if (dateFilter === 'today') {
+        const todayStr = today.toDateString();
+        users = users.filter(u => new Date(u.created_at).toDateString() === todayStr);
+    } else if (dateFilter === 'week') {
+        const weekAgo = new Date(today);
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        users = users.filter(u => new Date(u.created_at) >= weekAgo);
+    } else if (dateFilter === 'month') {
+        const monthAgo = new Date(today);
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        users = users.filter(u => new Date(u.created_at) >= monthAgo);
+    }
+    
+    // Search
     if (searchTerm) {
-        filteredUsers = users.filter(u => 
+        users = users.filter(u => 
             u.name.toLowerCase().includes(searchTerm) || 
             u.phone.includes(searchTerm)
         );
     }
     
-    if (filteredUsers.length === 0) {
-        container.innerHTML = `
-            <div style="text-align:center;padding:40px 20px;color:#475569;">
-                <i class="fas fa-users-slash" style="font-size:32px;margin-bottom:12px;display:block;"></i>
-                <p>${users.length === 0 ? 'No users registered yet.' : 'No users found matching "' + searchTerm + '"'}</p>
-            </div>
-        `;
-        return;
+    // Sort
+    if (sortFilter === 'newest') {
+        users.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    } else if (sortFilter === 'oldest') {
+        users.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    } else if (sortFilter === 'name') {
+        users.sort((a, b) => a.name.localeCompare(b.name));
     }
     
-    let html = '';
-    filteredUsers.slice().reverse().forEach((user) => {
-        const createdDate = new Date(user.created_at);
-        const isToday = createdDate.toDateString() === new Date().toDateString();
-        const initial = user.name.charAt(0).toUpperCase();
-        
-        html += `
-            <div class="user-item">
-                <div style="display:flex;align-items:center;flex:1;">
-                    <div class="user-avatar">${initial}</div>
-                    <div class="user-info">
-                        <div class="name">
-                            ${escapeHtml(user.name)}
-                            ${isToday ? '<span class="badge-new">NEW</span>' : ''}
-                        </div>
-                        <div class="phone"><i class="fas fa-phone" style="font-size:10px;"></i> ${escapeHtml(user.phone)}</div>
-                        <div class="meta">${escapeHtml(user.user_id)} • ${createdDate.toLocaleDateString()}</div>
-                    </div>
-                </div>
-                <div class="user-actions">
-                    <button onclick="viewUser('${escapeHtml(user.user_id)}')" class="btn-icon view" title="View">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <button onclick="deleteUser('${escapeHtml(user.user_id)}')" class="btn-icon delete" title="Delete">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-    });
-    
-    container.innerHTML = html;
+    renderUserList(users);
 }
 
-function filterUserList(searchTerm) {
-    const users = getUsers();
-    renderUserList(users);
+function resetFilters() {
+    document.getElementById('filterDate').value = 'all';
+    document.getElementById('filterSort').value = 'newest';
+    document.getElementById('userSearch').value = '';
+    applyFilters();
+    showToast('Filters reset.');
 }
 
 function filterUsers(filter) {
@@ -1641,10 +2023,147 @@ function filterUsers(filter) {
     }
 }
 
+// =============================================
+// RENDER USER LIST
+// =============================================
+function renderUserList(users) {
+    const container = document.getElementById('adminUserList');
+    
+    if (users.length === 0) {
+        container.innerHTML = `
+            <div style="text-align:center;padding:40px 20px;color:#475569;">
+                <i class="fas fa-users-slash" style="font-size:32px;margin-bottom:12px;display:block;"></i>
+                <p>No users found.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    users.forEach((user) => {
+        const createdDate = new Date(user.created_at);
+        const isToday = createdDate.toDateString() === new Date().toDateString();
+        const initial = user.name.charAt(0).toUpperCase();
+        const isSelected = selectedUsers.has(user.user_id);
+        
+        html += `
+            <div class="user-item">
+                <input type="checkbox" class="user-checkbox" data-userid="${escapeHtml(user.user_id)}" 
+                       ${isSelected ? 'checked' : ''} onchange="toggleUser('${escapeHtml(user.user_id)}')">
+                <div class="user-avatar">${initial}</div>
+                <div class="user-info">
+                    <div class="name">
+                        ${escapeHtml(user.name)}
+                        ${isToday ? '<span class="badge-new">NEW</span>' : ''}
+                    </div>
+                    <div class="phone"><i class="fas fa-phone" style="font-size:10px;"></i> ${escapeHtml(user.phone)}</div>
+                    <div class="meta">${escapeHtml(user.user_id)} • ${createdDate.toLocaleDateString()}</div>
+                </div>
+                <div class="user-actions">
+                    <button onclick="viewUser('${escapeHtml(user.user_id)}')" class="btn-icon view" title="View">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button onclick="editUser('${escapeHtml(user.user_id)}')" class="btn-icon edit" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="deleteUser('${escapeHtml(user.user_id)}')" class="btn-icon delete" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    updateSelectedCount();
+}
+
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// =============================================
+// BULK ACTIONS
+// =============================================
+let selectedUsers = new Set();
+
+function toggleSelectAll(checkbox) {
+    document.querySelectorAll('.user-checkbox').forEach(cb => {
+        cb.checked = checkbox.checked;
+        if (checkbox.checked) {
+            selectedUsers.add(cb.dataset.userid);
+        } else {
+            selectedUsers.delete(cb.dataset.userid);
+        }
+    });
+    updateSelectedCount();
+}
+
+function toggleUser(userId) {
+    if (selectedUsers.has(userId)) {
+        selectedUsers.delete(userId);
+    } else {
+        selectedUsers.add(userId);
+    }
+    updateSelectedCount();
+    
+    // Update select all
+    const checkboxes = document.querySelectorAll('.user-checkbox');
+    const checked = document.querySelectorAll('.user-checkbox:checked');
+    document.getElementById('selectAll').checked = checkboxes.length === checked.length && checkboxes.length > 0;
+}
+
+function updateSelectedCount() {
+    document.getElementById('selectedCount').textContent = selectedUsers.size + ' selected';
+}
+
+async function bulkDelete() {
+    if (selectedUsers.size === 0) {
+        showToast('Please select users to delete.', 'error');
+        return;
+    }
+    
+    const confirmed = await showDialog('Bulk Delete', 
+        `Are you sure you want to delete ${selectedUsers.size} users? This action cannot be undone.`, 
+        'Delete All', 'Cancel', true);
+    
+    if (confirmed) {
+        let users = getUsers();
+        users = users.filter(u => !selectedUsers.has(u.user_id));
+        saveUsers(users);
+        
+        logActivity('BULK_DELETE', { count: selectedUsers.size });
+        showToast(`🗑️ ${selectedUsers.size} users deleted.`);
+        selectedUsers.clear();
+        document.getElementById('selectAll').checked = false;
+        refreshAdminData();
+    }
+}
+
+function bulkExport() {
+    if (selectedUsers.size === 0) {
+        showToast('Please select users to export.', 'error');
+        return;
+    }
+    
+    const users = getUsers();
+    const selected = users.filter(u => selectedUsers.has(u.user_id));
+    const data = {
+        users: selected,
+        exported_at: new Date().toISOString(),
+        type: 'bulk_export'
+    };
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `exported_users_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`📤 ${selectedUsers.size} users exported.`);
 }
 
 // =============================================
@@ -1725,6 +2244,24 @@ async function viewUser(userId) {
     await showDialog('User Details', info, 'Close', '');
 }
 
+async function editUser(userId) {
+    const users = getUsers();
+    const user = users.find(u => u.user_id === userId);
+    if (!user) {
+        showToast('User not found.', 'error');
+        return;
+    }
+    
+    const newName = prompt('Enter new name:', user.name);
+    if (newName && newName.trim()) {
+        user.name = newName.trim();
+        saveUsers(users);
+        logActivity('USER_EDITED', { userId: user.user_id, newName: user.name });
+        showToast('✅ User updated successfully.');
+        refreshAdminData();
+    }
+}
+
 async function deleteUser(userId) {
     const confirmed = await showDialog('Delete User', 'Are you sure you want to delete this user? This action cannot be undone.', 'Delete', 'Cancel', true);
     
@@ -1732,6 +2269,7 @@ async function deleteUser(userId) {
         let users = getUsers();
         users = users.filter(u => u.user_id !== userId);
         saveUsers(users);
+        logActivity('USER_DELETED', { userId: userId });
         showToast('🗑️ User deleted successfully.');
         refreshAdminData();
     }
@@ -1744,6 +2282,7 @@ async function deleteAdmin(adminId) {
         let admins = getAdmins();
         admins = admins.filter(a => a.admin_id !== adminId);
         saveAdmins(admins);
+        logActivity('ADMIN_DELETED', { adminId: adminId });
         showToast('🗑️ Admin deleted successfully.');
         renderAdminList();
         refreshAdminData();
@@ -1756,6 +2295,7 @@ async function deleteAdmin(adminId) {
 async function handleAdminLogout() {
     const confirmed = await showDialog('Logout', 'Are you sure you want to logout?');
     if (confirmed) {
+        logActivity('LOGOUT', {});
         clearCurrentAdmin();
         showToast('👋 Logged out from admin.');
         showPage('pageAdminLogin');
@@ -1770,7 +2310,7 @@ function exportData() {
         users: getUsers(),
         admins: getAdmins(),
         exported_at: new Date().toISOString(),
-        version: '1.0'
+        version: '2.0'
     };
     
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1780,6 +2320,7 @@ function exportData() {
     a.download = 'ath_digital_hub_backup_' + new Date().toISOString().slice(0,10) + '.json';
     a.click();
     URL.revokeObjectURL(url);
+    logActivity('DATA_EXPORTED', {});
     showToast('📤 Data exported successfully!');
 }
 
@@ -1799,6 +2340,7 @@ function importData(event) {
                 saveAdmins(data.admins);
                 showToast('✅ Admins imported: ' + data.admins.length);
             }
+            logActivity('DATA_IMPORTED', {});
             refreshAdminData();
         } catch (error) {
             showToast('❌ Invalid file format.', 'error');
@@ -1806,6 +2348,24 @@ function importData(event) {
     };
     reader.readAsText(file);
     event.target.value = '';
+}
+
+// =============================================
+// BACKUP
+// =============================================
+function createBackup() {
+    const data = {
+        users: getUsers(),
+        admins: getAdmins(),
+        logs: JSON.parse(localStorage.getItem('activity_logs') || '[]'),
+        timestamp: new Date().toISOString(),
+        version: '2.0'
+    };
+    
+    const backupId = 'backup_' + Date.now();
+    localStorage.setItem(backupId, JSON.stringify(data));
+    logActivity('BACKUP_CREATED', { backupId: backupId });
+    showToast('💾 Backup created successfully.');
 }
 
 // =============================================
@@ -1817,6 +2377,7 @@ async function clearAllData() {
     if (confirmed) {
         saveUsers([]);
         saveAdmins([]);
+        logActivity('ALL_DATA_CLEARED', {});
         showToast('🗑️ All data cleared.');
         refreshAdminData();
     }
@@ -1851,6 +2412,7 @@ async function changeAdminPassword() {
         if (index !== -1) {
             admins[index].password = await hashPassword(newPassword);
             saveAdmins(admins);
+            logActivity('PASSWORD_CHANGED', { adminId: admin.admin_id });
             showToast('✅ Password changed successfully!');
         }
     } catch (error) {
@@ -1866,6 +2428,7 @@ function sessionTimeout() {
     const minutes = prompt('Enter session timeout in minutes (default: 30):', '30');
     if (minutes && !isNaN(minutes) && minutes > 0) {
         localStorage.setItem('sessionTimeout', minutes * 60 * 1000);
+        logActivity('SESSION_TIMEOUT_CHANGED', { minutes: minutes });
         showToast('✅ Session timeout set to ' + minutes + ' minutes');
     }
 }
@@ -1875,9 +2438,10 @@ function sessionTimeout() {
 // =============================================
 function toggleDarkMode() {
     const body = document.body;
-    const isDark = body.style.background !== 'linear-gradient(135deg, #f1f5f9, #e2e8f0)';
+    const isDark = !body.style.background.includes('f1f5f9');
     
     if (isDark) {
+        // Light mode
         body.style.background = 'linear-gradient(135deg, #f1f5f9, #e2e8f0)';
         body.style.color = '#0f172a';
         document.querySelectorAll('.glass-container').forEach(el => {
@@ -1892,8 +2456,8 @@ function toggleDarkMode() {
         document.querySelectorAll('.input-wrapper input').forEach(el => {
             el.style.color = '#0f172a';
         });
-        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p').forEach(el => {
-            el.style.color = '#0f172a';
+        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p, .admin-badge span, .admin-badge .role').forEach(el => {
+            el.style.color = '';
         });
         document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p').forEach(el => {
             el.style.color = '#475569';
@@ -1907,8 +2471,14 @@ function toggleDarkMode() {
             el.style.background = 'rgba(0, 0, 0, 0.03)';
             el.style.color = '#0f172a';
         });
+        document.querySelectorAll('.admin-badge').forEach(el => {
+            el.style.background = 'rgba(139, 92, 246, 0.1)';
+            el.style.border = '1px solid rgba(139, 92, 246, 0.2)';
+        });
+        localStorage.setItem('theme', 'light');
         showToast('🌞 Light mode activated');
     } else {
+        // Dark mode
         body.style.background = 'linear-gradient(135deg, #0c0e1a 0%, #1a1d2e 50%, #0f0e1a 100%)';
         body.style.color = '#e2e8f0';
         document.querySelectorAll('.glass-container').forEach(el => {
@@ -1923,22 +2493,38 @@ function toggleDarkMode() {
         document.querySelectorAll('.input-wrapper input').forEach(el => {
             el.style.color = '#f1f5f9';
         });
-        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p').forEach(el => {
+        document.querySelectorAll('.stat-card, .user-item, .admin-item, .section-title h4, .admin-badge, .form-group label, .remember-row label, .back-link a, .logo-sub, .login-header p, .admin-badge span, .admin-badge .role').forEach(el => {
             el.style.color = '';
         });
         document.querySelectorAll('.stat-card .label, .user-info .phone, .user-info .meta, .admin-info .admin-username, .dialog-box p').forEach(el => {
             el.style.color = '';
         });
         document.querySelectorAll('.logo-text').forEach(el => {
-            el.style.background = '';
-            el.style.webkitBackgroundClip = '';
-            el.style.webkitTextFillColor = '';
+            el.style.background = 'linear-gradient(135deg, #a78bfa, #8b5cf6)';
+            el.style.webkitBackgroundClip = 'text';
+            el.style.webkitTextFillColor = 'transparent';
         });
         document.querySelectorAll('.search-box input').forEach(el => {
             el.style.background = '';
             el.style.color = '';
         });
+        document.querySelectorAll('.admin-badge').forEach(el => {
+            el.style.background = 'rgba(139, 92, 246, 0.15)';
+            el.style.border = '1px solid rgba(139, 92, 246, 0.2)';
+        });
+        localStorage.setItem('theme', 'dark');
         showToast('🌙 Dark mode activated');
+    }
+    
+    // Refresh charts for new theme
+    setTimeout(renderCharts, 300);
+}
+
+// Load saved theme
+function loadTheme() {
+    const theme = localStorage.getItem('theme') || 'dark';
+    if (theme === 'light') {
+        toggleDarkMode();
     }
 }
 
@@ -1952,7 +2538,7 @@ function vibrate(pattern = 10) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn-primary, .btn-action, .btn-logout, .btn-dialog, .btn-icon, .back-link a').forEach(el => {
+    document.querySelectorAll('.btn-primary, .btn-action, .btn-logout, .btn-dialog, .btn-icon, .back-link a, .mobile-nav-item').forEach(el => {
         el.addEventListener('click', () => vibrate(10));
         el.addEventListener('touchstart', () => vibrate(5), { passive: true });
     });
@@ -1961,6 +2547,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if (savedUsername) {
         document.getElementById('adminUsername').value = savedUsername;
         document.getElementById('rememberAdmin').checked = true;
+    }
+    
+    // Show mobile nav only on dashboard pages
+    const mobileNav = document.getElementById('mobileNav');
+    const observer = new MutationObserver(() => {
+        const dashboard = document.getElementById('pageAdminDashboard');
+        const adminList = document.getElementById('pageAdminList');
+        const settings = document.getElementById('pageSettings');
+        if ((dashboard && !dashboard.classList.contains('hidden')) ||
+            (adminList && !adminList.classList.contains('hidden')) ||
+            (settings && !settings.classList.contains('hidden'))) {
+            mobileNav.style.display = 'flex';
+        } else {
+            mobileNav.style.display = 'none';
+        }
+    });
+    observer.observe(document.getElementById('pageAdminDashboard'), { attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.getElementById('pageAdminList'), { attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.getElementById('pageSettings'), { attributes: true, attributeFilter: ['class'] });
+    
+    loadTheme();
+});
+
+// =============================================
+// KEYBOARD SHORTCUTS
+// =============================================
+document.addEventListener('keydown', (e) => {
+    // Ctrl + R = Refresh
+    if (e.ctrlKey && e.key === 'r') {
+        e.preventDefault();
+        refreshAdminData();
+        showToast('🔄 Refreshed');
+    }
+    // Ctrl + N = New Admin
+    if (e.ctrlKey && e.key === 'n') {
+        e.preventDefault();
+        showPage('pageAdminCreate');
+    }
+    // Ctrl + S = Settings
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        showPage('pageSettings');
+    }
+    // Escape = Close dialog
+    if (e.key === 'Escape') {
+        closeDialog();
+    }
+    // / = Focus search
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && 
+        document.getElementById('pageAdminDashboard') && 
+        !document.getElementById('pageAdminDashboard').classList.contains('hidden')) {
+        e.preventDefault();
+        document.getElementById('userSearch')?.focus();
     }
 });
 
@@ -2027,5 +2666,9 @@ window.addEventListener('offline', () => {
     showToast('🔴 You are offline. Some features may not work.', 'error');
 });
 </script>
+
+<!-- Chart.js for Charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>
