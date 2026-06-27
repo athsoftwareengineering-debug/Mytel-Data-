@@ -8,6 +8,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ATH DIGITAL HUB</title>
 
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
 /* ===== RESET & BASE ===== */
 * {
@@ -621,7 +624,7 @@ button:active {
     color: #64748b;
 }
 
-/* ===== BOTTOM NAVIGATION ===== */
+/* ===== BOTTOM NAVIGATION - Login လုပ်မှပြမယ် ===== */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -631,13 +634,17 @@ button:active {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255, 255, 255, 0.06);
-    display: flex;
+    display: none; /* ⭐ Login မလုပ်ရင် မပြဘူး */
     justify-content: space-around;
     padding: 6px 0;
     padding-bottom: calc(6px + var(--safe-bottom));
     z-index: 100;
     max-width: 500px;
     margin: 0 auto;
+}
+
+.bottom-nav.show {
+    display: flex; /* ⭐ Login လုပ်ရင် ပြမယ် */
 }
 
 .nav-item {
@@ -984,49 +991,49 @@ button:active {
                 <i class="fas fa-home"></i> Home
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="menuLogin">
             <a href="#" onclick="showPage('pageLogin');closeSidebar();">
                 <i class="fas fa-sign-in-alt"></i> Login
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="menuRegister">
             <a href="#" onclick="showPage('pageRegister');closeSidebar();">
                 <i class="fas fa-user-plus"></i> Register
             </a>
         </li>
-        <li class="menu-divider"></li>
-        <li class="menu-item">
+        <li class="menu-divider" id="menuDivider1"></li>
+        <li class="menu-item" id="menuProfile" style="display:none;">
             <a href="#" onclick="showPage('pageProfile');closeSidebar();">
                 <i class="fas fa-user"></i> Profile
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="menuAdmin">
             <a href="#" onclick="window.open('admin.html','_blank');closeSidebar();">
                 <i class="fas fa-shield-halved"></i> Admin Panel
             </a>
         </li>
-        <li class="menu-divider"></li>
-        <li class="menu-item">
+        <li class="menu-divider" id="menuDivider2"></li>
+        <li class="menu-item" id="menuLive" style="display:none;">
             <a href="#" onclick="window.open('live.html','_blank');closeSidebar();">
                 <i class="fas fa-broadcast"></i> Live
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="menuChat" style="display:none;">
             <a href="#" onclick="window.open('chat.html','_blank');closeSidebar();">
                 <i class="fas fa-comments"></i> Chat
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="menuMytel" style="display:none;">
             <a href="#" onclick="window.open('mytel.html','_blank');closeSidebar();">
                 <i class="fas fa-phone"></i> Mytel
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="menuAtom" style="display:none;">
             <a href="#" onclick="window.open('atom.html','_blank');closeSidebar();">
                 <i class="fas fa-atom"></i> Atom
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item" id="menuU9" style="display:none;">
             <a href="#" onclick="window.open('u9.html','_blank');closeSidebar();">
                 <i class="fas fa-gamepad"></i> U9
             </a>
@@ -1172,7 +1179,7 @@ button:active {
 </div>
 
 <!-- ============================================ -->
-<!-- PAGE: PROFILE -->
+<!-- PAGE: PROFILE (Login လုပ်မှပြမယ်) -->
 <!-- ============================================ -->
 <div id="pageProfile" class="box hidden">
     <div class="top-bar" style="margin-bottom:12px;">
@@ -1196,36 +1203,177 @@ button:active {
 </div>
 
 <!-- ============================================ -->
-<!-- BOTTOM NAVIGATION -->
+<!-- PAGE: MYTEL (Login လုပ်မှပြမယ်) -->
 <!-- ============================================ -->
-<nav class="bottom-nav" aria-label="Main navigation">
+<div id="pageMytel" class="container hidden">
+    <div class="top-bar">
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button class="live-tab" onclick="window.open('live.html','_blank')">
+            <span class="live-dot"></span>
+            LIVE
+        </button>
+    </div>
+    <div class="page-header">
+        <div class="icon-circle" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;">
+            <i class="fas fa-phone"></i>
+        </div>
+        <h1 style="font-size:26px;font-weight:700;">Mytel</h1>
+        <p style="color:#94a3b8;font-size:14px;">Connect with your community</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('📞 Calling Mytel Service...')">
+            <div style="font-size:28px;margin-bottom:6px;">📞</div>
+            <div style="font-size:14px;font-weight:600;">Call Service</div>
+            <div style="font-size:11px;color:#94a3b8;">24/7 Support</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('📱 Opening Mytel App...')">
+            <div style="font-size:28px;margin-bottom:6px;">📱</div>
+            <div style="font-size:14px;font-weight:600;">Mytel App</div>
+            <div style="font-size:11px;color:#94a3b8;">Download App</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('💳 Checking Balance...')">
+            <div style="font-size:28px;margin-bottom:6px;">💳</div>
+            <div style="font-size:14px;font-weight:600;">Balance Check</div>
+            <div style="font-size:11px;color:#94a3b8;">View your balance</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('📶 Mytel Data Plans')">
+            <div style="font-size:28px;margin-bottom:6px;">📶</div>
+            <div style="font-size:14px;font-weight:600;">Data Plans</div>
+            <div style="font-size:11px;color:#94a3b8;">Best offers</div>
+        </div>
+    </div>
+    <div style="margin-top:16px;font-size:12px;color:#475569;">
+        <i class="fas fa-shield-halved" style="color:#8b5cf6;"></i> Secure Connection
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: ATOM (Login လုပ်မှပြမယ်) -->
+<!-- ============================================ -->
+<div id="pageAtom" class="container hidden">
+    <div class="top-bar">
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button class="live-tab" onclick="window.open('live.html','_blank')">
+            <span class="live-dot"></span>
+            LIVE
+        </button>
+    </div>
+    <div class="page-header">
+        <div class="icon-circle" style="background:linear-gradient(135deg,#06b6d4,#0891b2);width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;">
+            <i class="fas fa-atom"></i>
+        </div>
+        <h1 style="font-size:26px;font-weight:700;">Atom</h1>
+        <p style="color:#94a3b8;font-size:14px;">Explore the atomic world of innovation</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('🔬 Opening Atom Lab...')">
+            <div style="font-size:28px;margin-bottom:6px;">🔬</div>
+            <div style="font-size:14px;font-weight:600;">Atom Lab</div>
+            <div style="font-size:11px;color:#94a3b8;">Virtual Laboratory</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('⚛️ Exploring Quantum...')">
+            <div style="font-size:28px;margin-bottom:6px;">⚛️</div>
+            <div style="font-size:14px;font-weight:600;">Quantum Hub</div>
+            <div style="font-size:11px;color:#94a3b8;">Quantum Computing</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('🧪 Research Center')">
+            <div style="font-size:28px;margin-bottom:6px;">🧪</div>
+            <div style="font-size:14px;font-weight:600;">Research</div>
+            <div style="font-size:11px;color:#94a3b8;">Innovation Center</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('📡 Atom Network')">
+            <div style="font-size:28px;margin-bottom:6px;">📡</div>
+            <div style="font-size:14px;font-weight:600;">Atom Network</div>
+            <div style="font-size:11px;color:#94a3b8;">Global Connection</div>
+        </div>
+    </div>
+    <div style="margin-top:16px;font-size:12px;color:#475569;">
+        <i class="fas fa-shield-halved" style="color:#06b6d4;"></i> Secure Connection
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- PAGE: U9 (Login လုပ်မှပြမယ်) -->
+<!-- ============================================ -->
+<div id="pageU9" class="container hidden">
+    <div class="top-bar">
+        <button class="menu-btn" onclick="toggleSidebar()" aria-label="Open menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <button class="live-tab" onclick="window.open('live.html','_blank')">
+            <span class="live-dot"></span>
+            LIVE
+        </button>
+    </div>
+    <div class="page-header">
+        <div class="icon-circle" style="background:linear-gradient(135deg,#f59e0b,#d97706);width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;">
+            <i class="fas fa-gamepad"></i>
+        </div>
+        <h1 style="font-size:26px;font-weight:700;">U9</h1>
+        <p style="color:#94a3b8;font-size:14px;">Ultimate gaming experience</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('🎮 Opening Game Hub...')">
+            <div style="font-size:28px;margin-bottom:6px;">🎮</div>
+            <div style="font-size:14px;font-weight:600;">Game Hub</div>
+            <div style="font-size:11px;color:#94a3b8;">All games in one place</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('🏆 U9 Tournament')">
+            <div style="font-size:28px;margin-bottom:6px;">🏆</div>
+            <div style="font-size:14px;font-weight:600;">Tournament</div>
+            <div style="font-size:11px;color:#94a3b8;">Compete & win</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('👾 U9 Arcade')">
+            <div style="font-size:28px;margin-bottom:6px;">👾</div>
+            <div style="font-size:14px;font-weight:600;">Arcade</div>
+            <div style="font-size:11px;color:#94a3b8;">Classic games</div>
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:16px;text-align:center;cursor:pointer;" onclick="showToast('🎯 U9 Esports')">
+            <div style="font-size:28px;margin-bottom:6px;">🎯</div>
+            <div style="font-size:14px;font-weight:600;">Esports</div>
+            <div style="font-size:11px;color:#94a3b8;">Pro gaming</div>
+        </div>
+    </div>
+    <div style="margin-top:16px;font-size:12px;color:#475569;">
+        <i class="fas fa-shield-halved" style="color:#f59e0b;"></i> Secure Connection
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- BOTTOM NAVIGATION (Login လုပ်မှပြမယ်) -->
+<!-- ============================================ -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
     <a href="#" class="nav-item active" onclick="showPage('pageHome')" data-page="pageHome">
         <i class="fas fa-home"></i>
         <span>Home</span>
     </a>
-    <a href="#" class="nav-item" onclick="window.open('mytel.html','_blank')" data-page="mytel">
+    <a href="#" class="nav-item" onclick="showPage('pageMytel')" data-page="pageMytel">
         <i class="fas fa-phone"></i>
         <span>Mytel</span>
     </a>
-    <a href="#" class="nav-item" onclick="window.open('atom.html','_blank')" data-page="atom">
+    <a href="#" class="nav-item" onclick="showPage('pageAtom')" data-page="pageAtom">
         <i class="fas fa-atom"></i>
         <span>Atom</span>
     </a>
-    <a href="#" class="nav-item" onclick="window.open('u9.html','_blank')" data-page="u9">
+    <a href="#" class="nav-item" onclick="showPage('pageU9')" data-page="pageU9">
         <i class="fas fa-gamepad"></i>
         <span>U9</span>
     </a>
-    <a href="#" class="nav-item" onclick="window.open('chat.html','_blank')" data-page="chat">
-        <i class="fas fa-comments"></i>
-        <span>Chat</span>
-        <span class="badge-dot"></span>
+    <a href="#" class="nav-item" onclick="showPage('pageProfile')" data-page="pageProfile">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
     </a>
 </nav>
-
-<!-- ============================================ -->
-<!-- Font Awesome (CDN) -->
-<!-- ============================================ -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <!-- ============================================ -->
 <script>
@@ -1305,34 +1453,108 @@ function hideLoading() {
 }
 
 // =============================================
-// PAGE NAVIGATION
+// CHECK LOGIN - ⭐ Login လုပ်ထားရဲ့လား စစ်မယ်
+// =============================================
+function checkLogin() {
+    const user = getCurrentUser();
+    if (!user) {
+        showToast('Please login first to access this page.', 'error');
+        showPage('pageHome');
+        return false;
+    }
+    return true;
+}
+
+// =============================================
+// PAGE NAVIGATION - ⭐ Login လိုအပ်တဲ့ Page တွေကိုစစ်မယ်
 // =============================================
 function showPage(pageId) {
+    // Login လိုအပ်တဲ့ Page တွေ
+    const protectedPages = ['pageProfile', 'pageMytel', 'pageAtom', 'pageU9'];
+    
+    // Login လိုအပ်တယ်ဆိုရင် စစ်မယ်
+    if (protectedPages.includes(pageId)) {
+        if (!checkLogin()) {
+            return;
+        }
+    }
+    
+    // Page တွေကိုဖျောက်မယ်
     document.querySelectorAll('.container, .box').forEach(el => {
         el.classList.add('hidden');
     });
+    
+    // လိုချင်တဲ့ Page ကိုပြမယ်
     const target = document.getElementById(pageId);
     if (target) {
         target.classList.remove('hidden');
     }
+    
+    // Profile ဆိုရင် Data ပြန်ဆွဲမယ်
     if (pageId === 'pageProfile') {
         renderProfile();
     }
-    // Update bottom nav
+    
+    // Bottom Nav ကို Update လုပ်မယ်
+    updateBottomNav(pageId);
+    
+    // Sidebar ကို Update လုပ်မယ်
+    updateSidebarMenu();
+    
+    closeSidebar();
+}
+
+// =============================================
+// UPDATE BOTTOM NAV - ⭐ Login လုပ်ထားရင် ပြမယ်
+// =============================================
+function updateBottomNav(activePage) {
+    const nav = document.getElementById('bottomNav');
+    const user = getCurrentUser();
+    
+    if (user) {
+        nav.classList.add('show');
+    } else {
+        nav.classList.remove('show');
+    }
+    
+    // Active state ပြောင်းမယ်
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
-        if (item.dataset.page === pageId) {
+        if (item.dataset.page === activePage) {
             item.classList.add('active');
         }
     });
-    // Update sidebar
-    document.querySelectorAll('.sidebar-menu .menu-item a').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('onclick') && link.getAttribute('onclick').includes("showPage('" + pageId + "')")) {
-            link.classList.add('active');
+}
+
+// =============================================
+// UPDATE SIDEBAR MENU - ⭐ Login လုပ်ထားရင် Menu တွေပြမယ်
+// =============================================
+function updateSidebarMenu() {
+    const user = getCurrentUser();
+    const menuItems = [
+        { id: 'menuLogin', show: !user },
+        { id: 'menuRegister', show: !user },
+        { id: 'menuProfile', show: !!user },
+        { id: 'menuLive', show: !!user },
+        { id: 'menuChat', show: !!user },
+        { id: 'menuMytel', show: !!user },
+        { id: 'menuAtom', show: !!user },
+        { id: 'menuU9', show: !!user },
+        { id: 'menuDivider1', show: true },
+        { id: 'menuDivider2', show: true },
+        { id: 'menuAdmin', show: true }
+    ];
+    
+    menuItems.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el) {
+            if (item.id.startsWith('menuDivider')) {
+                el.style.display = 'block';
+            } else {
+                el.style.display = item.show ? 'block' : 'none';
+            }
         }
     });
-    closeSidebar();
 }
 
 // =============================================
@@ -1494,7 +1716,7 @@ async function handleRegister(e) {
 }
 
 // =============================================
-// LOGIN
+// LOGIN - ⭐ Login လုပ်ရင် User Data ကိုသိမ်းမယ်
 // =============================================
 async function handleLogin(e) {
     e.preventDefault();
@@ -1519,8 +1741,11 @@ async function handleLogin(e) {
             showToast('✅ Login Success! Welcome ' + user.name);
             document.getElementById('loginForm').reset();
             hideLoading();
-            showPage('pageProfile');
+            
+            // ⭐ Login ပြီးရင် UI ကို Update လုပ်မယ်
             updateSidebarUser(user);
+            updateSidebarMenu();
+            showPage('pageProfile');
         } else {
             hideLoading();
             showToast('❌ Invalid phone or password.', 'error');
@@ -1593,13 +1818,15 @@ function shareProfile() {
 }
 
 // =============================================
-// LOGOUT
+// LOGOUT - ⭐ Logout လုပ်ရင် UI ကို Reset လုပ်မယ်
 // =============================================
 async function handleLogout() {
     const confirmed = await showDialog('Logout', 'Are you sure you want to logout?');
     if (confirmed) {
         clearCurrentUser();
         updateSidebarUser(null);
+        updateSidebarMenu();
+        document.getElementById('bottomNav').classList.remove('show');
         showToast('👋 Logged out successfully.');
         showPage('pageHome');
     }
@@ -1614,13 +1841,22 @@ function vibrate(pattern = 10) {
     }
 }
 
+// =============================================
+// INIT - ⭐ စတင်တဲ့အခါ Login Status ကိုစစ်မယ်
+// =============================================
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn, button, .link a, .nav-item, .menu-btn, .live-tab, .sidebar-menu a').forEach(el => {
+    // Vibration ထည့်မယ်
+    document.querySelectorAll('.btn, button, .link a, .nav-item, .menu-btn, .live-tab, .sidebar-menu a, .card').forEach(el => {
         el.addEventListener('click', () => vibrate(8));
         el.addEventListener('touchstart', () => vibrate(5), { passive: true });
     });
+    
+    // User Data ကိုစစ်မယ်
     const user = getCurrentUser();
     updateSidebarUser(user);
+    updateSidebarMenu();
+    
+    // Remember Phone
     const savedPhone = localStorage.getItem('rememberPhone');
     if (savedPhone) {
         const phoneInput = document.getElementById('loginPhone');
@@ -1629,11 +1865,14 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('rememberMe').checked = true;
         }
     }
+    
+    // Login လုပ်ထားရင် Profile ကိုပြမယ်၊ မဟုတ်ရင် Home ကိုပြမယ်
     if (user) {
         showPage('pageProfile');
     } else {
         showPage('pageHome');
     }
+    
     console.log('📱 ATH DIGITAL HUB loaded successfully!');
     console.log('👥 Users:', getUsers().length);
 });
