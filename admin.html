@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-<title>ATH DIGITAL HUB</title>
+<title>ATH DIGITAL HUB - Admin Panel</title>
 
 <style>
 * {
@@ -21,14 +21,13 @@ body {
     background: linear-gradient(135deg, #0f172a, #1e293b);
     color: white;
     padding: 16px;
-    padding-bottom: 80px;
     -webkit-tap-highlight-color: transparent;
 }
 
 /* Main Container */
 .container {
     width: 100%;
-    max-width: 420px;
+    max-width: 480px;
     text-align: center;
     background: rgba(255, 255, 255, 0.05);
     padding: 30px 20px;
@@ -47,7 +46,7 @@ body {
 }
 
 .logo span {
-    color: #2563eb;
+    color: #8b5cf6;
 }
 
 .subtitle {
@@ -152,7 +151,7 @@ h2 {
 /* ===== LOGIN FORM ===== */
 .box {
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
     padding: 28px 20px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
@@ -189,7 +188,7 @@ input::placeholder {
 
 input:focus {
     background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5);
 }
 
 input[type="text"],
@@ -225,27 +224,6 @@ input[type="password"] {
     transform: translateY(-50%) scale(0.9);
 }
 
-/* Password Strength */
-.password-strength {
-    margin-top: -4px;
-    margin-bottom: 8px;
-}
-
-.strength-bar {
-    height: 4px;
-    border-radius: 4px;
-    background: #ef4444;
-    width: 0%;
-    transition: width 0.3s ease;
-}
-
-.strength-text {
-    color: #94a3b8;
-    font-size: 12px;
-    display: block;
-    margin-top: 4px;
-}
-
 /* Remember Me */
 .remember-me {
     text-align: left;
@@ -260,7 +238,7 @@ input[type="password"] {
     height: 18px;
     margin: 0;
     cursor: pointer;
-    accent-color: #2563eb;
+    accent-color: #8b5cf6;
 }
 
 .remember-me label {
@@ -362,6 +340,13 @@ button:active::after {
     background: #d97706;
 }
 
+.btn-success {
+    background: #10b981;
+}
+.btn-success:hover {
+    background: #059669;
+}
+
 .link {
     text-align: center;
     margin-top: 16px;
@@ -410,10 +395,15 @@ button:active::after {
     color: white;
 }
 
+.badge-super {
+    background: #ef4444;
+    color: white;
+}
+
 /* Admin Dashboard */
 .admin-stats {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     margin: 12px 0;
 }
@@ -507,6 +497,10 @@ button:active::after {
     text-align: center;
 }
 
+.mb-10 {
+    margin-bottom: 10px;
+}
+
 /* ===== LOADING SPINNER ===== */
 .loading-spinner {
     position: fixed;
@@ -524,7 +518,7 @@ button:active::after {
 
 .spinner {
     border: 4px solid rgba(255, 255, 255, 0.1);
-    border-top: 4px solid #2563eb;
+    border-top: 4px solid #8b5cf6;
     border-radius: 50%;
     width: 50px;
     height: 50px;
@@ -539,7 +533,7 @@ button:active::after {
 /* ===== TOAST NOTIFICATION ===== */
 .toast {
     position: fixed;
-    bottom: 90px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
@@ -605,6 +599,7 @@ button:active::after {
     color: #94a3b8;
     margin-bottom: 24px;
     line-height: 1.5;
+    white-space: pre-line;
 }
 
 .dialog-buttons {
@@ -628,12 +623,12 @@ button:active::after {
 }
 
 .btn-dialog.confirm {
-    background: #2563eb;
+    background: #8b5cf6;
     color: white;
 }
 
 .btn-dialog.confirm:hover {
-    background: #1d4ed8;
+    background: #7c3aed;
 }
 
 .btn-dialog.cancel {
@@ -664,69 +659,7 @@ button:active::after {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* ===== BOTTOM NAVIGATION ===== */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    display: flex;
-    justify-content: space-around;
-    padding: 8px 0;
-    padding-bottom: env(safe-area-inset-bottom);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    z-index: 100;
-    display: none;
-}
-
-.nav-item {
-    background: none;
-    border: none;
-    color: #94a3b8;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 11px;
-    padding: 4px 12px;
-    cursor: pointer;
-    transition: 0.2s;
-    position: relative;
-    min-width: 60px;
-}
-
-.nav-item span {
-    font-size: 24px;
-    margin-bottom: 2px;
-}
-
-.nav-item small {
-    font-size: 10px;
-}
-
-.nav-item.active {
-    color: #2563eb;
-}
-
-.nav-item.active::after {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 3px;
-    background: #2563eb;
-    border-radius: 0 0 3px 3px;
-}
-
-.nav-item:active {
-    transform: scale(0.9);
-}
-
-/* Scrollbar */
+/* ===== SCROLLBAR ===== */
 .user-list::-webkit-scrollbar {
     width: 4px;
 }
@@ -737,8 +670,58 @@ button:active::after {
 }
 
 .user-list::-webkit-scrollbar-thumb {
-    background: #2563eb;
+    background: #8b5cf6;
     border-radius: 4px;
+}
+
+/* Admin List */
+.admin-list {
+    margin: 12px 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.admin-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 14px;
+}
+
+.admin-item:last-child {
+    border-bottom: none;
+}
+
+.admin-item .admin-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.admin-item .admin-name {
+    font-weight: bold;
+}
+
+.admin-item .admin-username {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.admin-item .admin-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: rgba(139, 92, 246, 0.2);
+    color: #8b5cf6;
+}
+
+.admin-item .admin-badge.super {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
 }
 
 /* ===== ANIMATIONS ===== */
@@ -777,15 +760,6 @@ button:active::after {
         padding: 12px;
         font-size: 15px;
     }
-    .bottom-nav {
-        padding: 4px 0;
-    }
-    .nav-item span {
-        font-size: 20px;
-    }
-    .nav-item small {
-        font-size: 9px;
-    }
     .admin-stats {
         grid-template-columns: 1fr 1fr;
         gap: 8px;
@@ -809,12 +783,6 @@ button:active::after {
     }
     .logo {
         font-size: 36px;
-    }
-    .bottom-nav {
-        max-width: 500px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 16px 16px 0 0;
     }
 }
 
@@ -853,94 +821,22 @@ button:active::after {
         <h3 id="dialogTitle">Title</h3>
         <p id="dialogMessage">Message</p>
         <div class="dialog-buttons">
-            <button onclick="closeDialog()" class="btn-dialog cancel">Cancel</button>
-            <button onclick="confirmDialog()" class="btn-dialog confirm">Confirm</button>
+            <button onclick="closeDialog()" class="btn-dialog cancel" id="dialogCancel">Cancel</button>
+            <button onclick="confirmDialog()" class="btn-dialog confirm" id="dialogConfirm">Confirm</button>
         </div>
-    </div>
-</div>
-
-<!-- ============================================ -->
-<!-- PAGE: HOME -->
-<!-- ============================================ -->
-<div id="pageHome" class="container">
-    <div class="logo">ATH <span>DIGITAL</span> HUB</div>
-    <div class="subtitle">Secure • Fast • Reliable</div>
-    <h2>Welcome</h2>
-    <p class="desc">Login or create a new account to continue.</p>
-    <div class="btn-group">
-        <button class="btn login" onclick="showPage('pageLogin')">Login</button>
-        <button class="btn register" onclick="showPage('pageRegister')">Register</button>
-        <button class="btn admin-btn" onclick="showPage('pageAdminLogin')">👑 Admin</button>
-    </div>
-    <div class="footer">Copyright © 2026 AUNG THU HTWE</div>
-</div>
-
-<!-- ============================================ -->
-<!-- PAGE: LOGIN -->
-<!-- ============================================ -->
-<div id="pageLogin" class="box hidden">
-    <h2>🔐 User Login</h2>
-    <form id="loginForm" onsubmit="handleLogin(event)">
-        <input type="text" id="loginPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
-        
-        <div class="password-wrapper">
-            <input type="password" id="loginPassword" placeholder="🔑 Password" required>
-            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁️</button>
-        </div>
-        
-        <div class="remember-me">
-            <input type="checkbox" id="rememberMe">
-            <label for="rememberMe">Remember Me</label>
-        </div>
-        
-        <button type="submit" class="btn-login">Login</button>
-    </form>
-    <div class="link">
-        Don't have account? <a href="#" onclick="showPage('pageRegister')">Register</a>
-    </div>
-    <div class="link" style="margin-top:8px;">
-        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
-    </div>
-</div>
-
-<!-- ============================================ -->
-<!-- PAGE: REGISTER -->
-<!-- ============================================ -->
-<div id="pageRegister" class="box hidden">
-    <h2>📝 User Register</h2>
-    <form id="regForm" onsubmit="handleRegister(event)">
-        <input type="text" id="regName" placeholder="👤 Your Name" required>
-        <input type="text" id="regPhone" placeholder="📱 Phone (09xxxxxxxx)" required inputmode="tel" autocapitalize="off" autocorrect="off" spellcheck="false">
-        
-        <div class="password-wrapper">
-            <input type="password" id="regPassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
-            <button type="button" class="password-toggle" onclick="togglePassword('regPassword')">👁️</button>
-        </div>
-        
-        <div class="password-strength">
-            <div id="strengthBar" class="strength-bar"></div>
-            <span id="strengthText" class="strength-text"></span>
-        </div>
-        
-        <button type="submit" class="btn-register">Create Account</button>
-    </form>
-    <div class="link">
-        Already have account? <a href="#" onclick="showPage('pageLogin')">Login</a>
-    </div>
-    <div class="link" style="margin-top:8px;">
-        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
     </div>
 </div>
 
 <!-- ============================================ -->
 <!-- PAGE: ADMIN LOGIN -->
 <!-- ============================================ -->
-<div id="pageAdminLogin" class="box hidden">
+<div id="pageAdminLogin" class="box">
+    <div class="logo" style="font-size:24px;margin-bottom:20px;">ATH <span>DIGITAL</span> HUB</div>
     <h2>👑 Admin Login</h2>
     <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
-        <input type="text" id="adminUsername" placeholder="👤 Admin Username" required>
+        <input type="text" id="adminUsername" placeholder="👤 Username" required autofocus>
         <div class="password-wrapper">
-            <input type="password" id="adminPassword" placeholder="🔑 Admin Password" required>
+            <input type="password" id="adminPassword" placeholder="🔑 Password" required>
             <button type="button" class="password-toggle" onclick="togglePassword('adminPassword')">👁️</button>
         </div>
         <button type="submit" class="btn-admin">Login as Admin</button>
@@ -948,16 +844,16 @@ button:active::after {
     <div class="link">
         <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
     </div>
+    <div class="footer" style="margin-top:20px;">Copyright © 2026 AUNG THU HTWE</div>
 </div>
 
 <!-- ============================================ -->
 <!-- PAGE: ADMIN DASHBOARD -->
 <!-- ============================================ -->
 <div id="pageAdminDashboard" class="box hidden">
-    <h2>👑 Admin Dashboard</h2>
-    <div style="text-align:right;margin-bottom:12px;">
-        <span class="badge badge-admin">Admin</span>
-        <span id="adminName" style="color:#cbd5e1;font-size:14px;margin-left:8px;"></span>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h2 style="margin:0;">👑 Dashboard</h2>
+        <span id="adminName" style="color:#cbd5e1;font-size:14px;"></span>
     </div>
     
     <div class="admin-stats">
@@ -969,15 +865,23 @@ button:active::after {
             <div class="number" id="totalAdmins">0</div>
             <div class="label">Total Admins</div>
         </div>
+        <div class="stat-card">
+            <div class="number" id="totalSuperAdmins">0</div>
+            <div class="label">Super Admins</div>
+        </div>
     </div>
     
-    <div style="display:flex;gap:8px;margin:12px 0;">
+    <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">
         <button onclick="refreshAdminData()" class="btn-sm" style="background:#2563eb;flex:1;">🔄 Refresh</button>
         <button onclick="showPage('pageAdminCreate')" class="btn-sm" style="background:#10b981;flex:1;">➕ New Admin</button>
+        <button onclick="showPage('pageAdminList')" class="btn-sm" style="background:#8b5cf6;flex:1;">👑 Admins</button>
     </div>
     
+    <h4 style="text-align:left;color:#94a3b8;font-size:14px;margin:8px 0;">📋 All Users</h4>
     <div class="user-list" id="adminUserList">
-        <!-- Users will be rendered here -->
+        <div style="text-align:center;padding:30px 0;color:#94a3b8;">
+            <p>Loading users...</p>
+        </div>
     </div>
     
     <button class="btn-logout" onclick="handleAdminLogout()" style="margin-top:12px;">🚪 Logout</button>
@@ -998,6 +902,10 @@ button:active::after {
             <input type="password" id="adminCreatePassword" placeholder="🔑 Password (min 4 chars)" required minlength="4">
             <button type="button" class="password-toggle" onclick="togglePassword('adminCreatePassword')">👁️</button>
         </div>
+        <div style="text-align:left;margin:8px 0;">
+            <input type="checkbox" id="adminCreateSuper" style="width:auto;margin-right:8px;">
+            <label for="adminCreateSuper" style="color:#cbd5e1;">👑 Super Admin</label>
+        </div>
         <button type="submit" class="btn-admin">Create Admin</button>
     </form>
     <div class="link">
@@ -1006,34 +914,30 @@ button:active::after {
 </div>
 
 <!-- ============================================ -->
-<!-- PAGE: PROFILE -->
+<!-- PAGE: ADMIN LIST -->
 <!-- ============================================ -->
-<div id="pageProfile" class="box hidden">
-    <h2>👤 Profile</h2>
-    <div id="profileBox"></div>
-    <button class="btn-share" onclick="shareProfile()">📤 Share Profile</button>
-    <button class="btn-logout" onclick="handleLogout()">🚪 Logout</button>
-    <div class="link" style="margin-top:12px;">
-        <a href="#" onclick="showPage('pageHome')">← Back to Home</a>
+<div id="pageAdminList" class="box hidden">
+    <h2>👑 Admin List</h2>
+    <div class="admin-list" id="adminListContainer">
+        <div style="text-align:center;padding:30px 0;color:#94a3b8;">
+            <p>Loading admins...</p>
+        </div>
     </div>
+    <button class="btn-goto" onclick="showPage('pageAdminDashboard')" style="margin-top:12px;">← Back to Dashboard</button>
 </div>
 
 <!-- ============================================ -->
-<!-- BOTTOM NAVIGATION -->
+<!-- PAGE: HOME (for back button) -->
 <!-- ============================================ -->
-<div id="bottomNav" class="bottom-nav">
-    <button class="nav-item active" onclick="navigateTo('pageHome')">
-        <span>🏠</span>
-        <small>Home</small>
-    </button>
-    <button class="nav-item" onclick="navigateTo('pageProfile')">
-        <span>👤</span>
-        <small>Profile</small>
-    </button>
-    <button class="nav-item" onclick="handleLogout()">
-        <span>🚪</span>
-        <small>Logout</small>
-    </button>
+<div id="pageHome" class="container hidden">
+    <div class="logo">ATH <span>DIGITAL</span> HUB</div>
+    <div class="subtitle">Secure • Fast • Reliable</div>
+    <h2>Welcome</h2>
+    <p class="desc">Admin panel is ready.</p>
+    <div class="btn-group">
+        <button class="btn admin-btn" onclick="showPage('pageAdminLogin')">👑 Admin Login</button>
+    </div>
+    <div class="footer">Copyright © 2026 AUNG THU HTWE</div>
 </div>
 
 <!-- ============================================ -->
@@ -1066,9 +970,10 @@ function showDialog(title, message, confirmText = 'Confirm', cancelText = 'Cance
     return new Promise((resolve) => {
         document.getElementById('dialogTitle').textContent = title;
         document.getElementById('dialogMessage').textContent = message;
-        const confirmBtn = document.querySelector('.btn-dialog.confirm');
+        const confirmBtn = document.getElementById('dialogConfirm');
+        const cancelBtn = document.getElementById('dialogCancel');
         confirmBtn.textContent = confirmText;
-        document.querySelector('.btn-dialog.cancel').textContent = cancelText;
+        cancelBtn.textContent = cancelText;
         
         if (isDanger) {
             confirmBtn.className = 'btn-dialog danger';
@@ -1117,138 +1022,12 @@ function showPage(pageId) {
         target.classList.remove('hidden');
     }
 
-    updateBottomNav(pageId);
-
-    if (pageId === 'pageProfile') {
-        renderProfile();
-    }
     if (pageId === 'pageAdminDashboard') {
         refreshAdminData();
     }
-}
-
-function navigateTo(pageId) {
-    const user = getCurrentUser();
-    if (pageId === 'pageProfile' && !user) {
-        showToast('Please login first', 'error');
-        showPage('pageLogin');
-        return;
+    if (pageId === 'pageAdminList') {
+        renderAdminList();
     }
-    showPage(pageId);
-}
-
-function updateBottomNav(currentPage) {
-    const nav = document.getElementById('bottomNav');
-    const items = nav.querySelectorAll('.nav-item');
-    
-    const showNavPages = ['pageHome', 'pageProfile', 'pageAdminDashboard'];
-    if (showNavPages.includes(currentPage)) {
-        nav.style.display = 'flex';
-    } else {
-        nav.style.display = 'none';
-        return;
-    }
-    
-    items.forEach(item => {
-        item.classList.remove('active');
-        const text = item.querySelector('small')?.textContent?.toLowerCase();
-        if ((currentPage === 'pageHome' && text === 'home') ||
-            (currentPage === 'pageProfile' && text === 'profile')) {
-            item.classList.add('active');
-        }
-    });
-}
-
-function getCurrentPage() {
-    const pages = ['pageHome', 'pageLogin', 'pageRegister', 'pageProfile', 'pageAdminLogin', 'pageAdminDashboard', 'pageAdminCreate'];
-    for (let page of pages) {
-        const el = document.getElementById(page);
-        if (el && !el.classList.contains('hidden')) return page;
-    }
-    return 'pageHome';
-}
-
-// =============================================
-// USER DATA (localStorage)
-// =============================================
-function getUsers() {
-    try {
-        return JSON.parse(localStorage.getItem('users')) || [];
-    } catch {
-        return [];
-    }
-}
-
-function saveUsers(users) {
-    localStorage.setItem('users', JSON.stringify(users));
-}
-
-function getAdmins() {
-    try {
-        return JSON.parse(localStorage.getItem('admins')) || [];
-    } catch {
-        return [];
-    }
-}
-
-function saveAdmins(admins) {
-    localStorage.setItem('admins', JSON.stringify(admins));
-}
-
-function getCurrentUser() {
-    try {
-        return JSON.parse(localStorage.getItem('user'));
-    } catch {
-        return null;
-    }
-}
-
-function getCurrentAdmin() {
-    try {
-        return JSON.parse(localStorage.getItem('admin'));
-    } catch {
-        return null;
-    }
-}
-
-function setCurrentUser(user) {
-    localStorage.setItem('user', JSON.stringify(user));
-}
-
-function setCurrentAdmin(admin) {
-    localStorage.setItem('admin', JSON.stringify(admin));
-}
-
-function clearCurrentUser() {
-    localStorage.removeItem('user');
-}
-
-function clearCurrentAdmin() {
-    localStorage.removeItem('admin');
-}
-
-function generateUserID(users) {
-    const count = users.length + 1;
-    return 'ATH' + String(count).padStart(6, '0');
-}
-
-function generateAdminID(admins) {
-    const count = admins.length + 1;
-    return 'ADM' + String(count).padStart(6, '0');
-}
-
-// =============================================
-// DEVICE INFO
-// =============================================
-function getDeviceInfo() {
-    return {
-        userAgent: navigator.userAgent,
-        language: navigator.language,
-        platform: navigator.platform,
-        screenWidth: window.screen.width,
-        screenHeight: window.screen.height,
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-    };
 }
 
 // =============================================
@@ -1267,50 +1046,48 @@ function togglePassword(id) {
 }
 
 // =============================================
-// PASSWORD STRENGTH
+// ADMIN DATABASE
 // =============================================
-document.addEventListener('DOMContentLoaded', function() {
-    const passwordInput = document.getElementById('regPassword');
-    if (passwordInput) {
-        passwordInput.addEventListener('input', function() {
-            const val = this.value;
-            const bar = document.getElementById('strengthBar');
-            const text = document.getElementById('strengthText');
-            
-            if (val.length === 0) {
-                bar.style.width = '0%';
-                bar.style.background = '#ef4444';
-                text.textContent = '';
-                return;
-            }
-            
-            let score = 0;
-            if (val.length >= 8) score++;
-            if (val.match(/[a-z]/)) score++;
-            if (val.match(/[A-Z]/)) score++;
-            if (val.match(/[0-9]/)) score++;
-            if (val.match(/[^a-zA-Z0-9]/)) score++;
-            
-            const strength = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
-            const colors = ['#ef4444', '#f59e0b', '#f59e0b', '#10b981', '#10b981'];
-            const width = (score / 5) * 100;
-            
-            bar.style.width = width + '%';
-            bar.style.background = colors[score] || '#ef4444';
-            text.textContent = strength[score] || '';
-            text.style.color = colors[score] || '#ef4444';
-        });
+function getAdmins() {
+    try {
+        return JSON.parse(localStorage.getItem('admins_db')) || [];
+    } catch {
+        return [];
     }
-    
-    const phoneInputs = document.querySelectorAll('#regPhone, #loginPhone');
-    phoneInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            const phone = this.value.trim();
-            const isValid = phone.match(/^09\d{7,9}$/);
-            this.style.borderColor = isValid ? '#10b981' : (phone.length > 0 ? '#ef4444' : '');
-        });
-    });
-});
+}
+
+function saveAdmins(admins) {
+    localStorage.setItem('admins_db', JSON.stringify(admins));
+}
+
+function getUsers() {
+    try {
+        return JSON.parse(localStorage.getItem('users')) || [];
+    } catch {
+        return [];
+    }
+}
+
+function getCurrentAdmin() {
+    try {
+        return JSON.parse(localStorage.getItem('admin'));
+    } catch {
+        return null;
+    }
+}
+
+function setCurrentAdmin(admin) {
+    localStorage.setItem('admin', JSON.stringify(admin));
+}
+
+function clearCurrentAdmin() {
+    localStorage.removeItem('admin');
+}
+
+function generateAdminID(admins) {
+    const count = admins.length + 1;
+    return 'ADM' + String(count).padStart(6, '0');
+}
 
 // =============================================
 // HASH PASSWORD
@@ -1327,134 +1104,25 @@ async function hashPassword(password) {
 // =============================================
 // INIT DEFAULT ADMIN
 // =============================================
-function initDefaultAdmin() {
+async function initDefaultAdmin() {
     let admins = getAdmins();
     if (admins.length === 0) {
+        const hashedPassword = await hashPassword('admin123');
         const defaultAdmin = {
             admin_id: 'ADM000001',
             name: 'Super Admin',
             username: 'admin',
-            password: 'admin123', // Will be hashed
+            password: hashedPassword,
             created_at: new Date().toISOString(),
-            is_super: true
+            is_super: true,
+            role: 'super_admin'
         };
         admins.push(defaultAdmin);
         saveAdmins(admins);
         console.log('✅ Default admin created: admin / admin123');
+        return true;
     }
-}
-
-// =============================================
-// REGISTER
-// =============================================
-async function handleRegister(e) {
-    e.preventDefault();
-
-    const name = document.getElementById('regName').value.trim();
-    const phone = document.getElementById('regPhone').value.trim();
-    const password = document.getElementById('regPassword').value.trim();
-
-    if (!name || !phone || !password) {
-        showToast('Please fill all fields.', 'error');
-        return;
-    }
-
-    if (password.length < 4) {
-        showToast('Password must be at least 4 characters.', 'error');
-        return;
-    }
-
-    if (!phone.match(/^09\d{7,9}$/)) {
-        showToast('Please enter a valid Myanmar phone number starting with 09 (7-9 digits).', 'error');
-        return;
-    }
-
-    showLoading();
-
-    try {
-        let users = getUsers();
-
-        if (users.find(u => u.phone === phone)) {
-            showToast('❌ This phone number is already registered!', 'error');
-            hideLoading();
-            return;
-        }
-
-        const hashedPassword = await hashPassword(password);
-
-        const newUser = {
-            user_id: generateUserID(users),
-            name: name,
-            phone: phone,
-            password: hashedPassword,
-            created_at: new Date().toISOString(),
-            device: getDeviceInfo(),
-            role: 'user'
-        };
-
-        users.push(newUser);
-        saveUsers(users);
-
-        showToast('✅ Account Created!\nID: ' + newUser.user_id);
-        document.getElementById('regForm').reset();
-        document.getElementById('strengthBar').style.width = '0%';
-        document.getElementById('strengthText').textContent = '';
-
-        hideLoading();
-        showPage('pageLogin');
-    } catch (error) {
-        hideLoading();
-        showToast('Registration failed. Please try again.', 'error');
-        console.error('Register error:', error);
-    }
-}
-
-// =============================================
-// LOGIN
-// =============================================
-async function handleLogin(e) {
-    e.preventDefault();
-
-    const phone = document.getElementById('loginPhone').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
-
-    if (!phone || !password) {
-        showToast('Please enter phone and password.', 'error');
-        return;
-    }
-
-    showLoading();
-
-    try {
-        const users = getUsers();
-        const hashedPassword = await hashPassword(password);
-        const user = users.find(u => u.phone === phone && u.password === hashedPassword);
-
-        if (user) {
-            setCurrentUser(user);
-            
-            if (document.getElementById('rememberMe').checked) {
-                localStorage.setItem('rememberPhone', phone);
-            } else {
-                localStorage.removeItem('rememberPhone');
-            }
-            
-            showToast('✅ Login Success! Welcome ' + user.name);
-            document.getElementById('loginForm').reset();
-            
-            resetSessionTimer();
-            
-            hideLoading();
-            showPage('pageProfile');
-        } else {
-            hideLoading();
-            showToast('❌ Invalid phone or password.', 'error');
-        }
-    } catch (error) {
-        hideLoading();
-        showToast('Login failed. Please try again.', 'error');
-        console.error('Login error:', error);
-    }
+    return false;
 }
 
 // =============================================
@@ -1474,16 +1142,7 @@ async function handleAdminLogin(e) {
     showLoading();
 
     try {
-        let admins = getAdmins();
-        
-        // Hash admin passwords if they aren't already
-        for (let admin of admins) {
-            if (admin.password && !admin.password.match(/^[0-9a-f]{64}$/)) {
-                admin.password = await hashPassword(admin.password);
-            }
-        }
-        saveAdmins(admins);
-        
+        const admins = getAdmins();
         const hashedPassword = await hashPassword(password);
         const admin = admins.find(a => a.username === username && a.password === hashedPassword);
 
@@ -1513,6 +1172,7 @@ async function handleCreateAdmin(e) {
     const name = document.getElementById('adminCreateName').value.trim();
     const username = document.getElementById('adminCreateUsername').value.trim();
     const password = document.getElementById('adminCreatePassword').value.trim();
+    const isSuper = document.getElementById('adminCreateSuper').checked;
 
     if (!name || !username || !password) {
         showToast('Please fill all fields.', 'error');
@@ -1543,7 +1203,8 @@ async function handleCreateAdmin(e) {
             username: username,
             password: hashedPassword,
             created_at: new Date().toISOString(),
-            is_super: false
+            is_super: isSuper,
+            role: isSuper ? 'super_admin' : 'admin'
         };
 
         admins.push(newAdmin);
@@ -1551,6 +1212,7 @@ async function handleCreateAdmin(e) {
 
         showToast('✅ Admin Created!\nID: ' + newAdmin.admin_id);
         document.getElementById('adminCreateForm').reset();
+        document.getElementById('adminCreateSuper').checked = false;
         
         hideLoading();
         showPage('pageAdminDashboard');
@@ -1571,13 +1233,15 @@ function refreshAdminData() {
         return;
     }
     
-    document.getElementById('adminName').textContent = admin.name;
+    document.getElementById('adminName').textContent = '👑 ' + admin.name + (admin.is_super ? ' (Super)' : '');
     
     const users = getUsers();
     const admins = getAdmins();
+    const superAdmins = admins.filter(a => a.is_super === true);
     
     document.getElementById('totalUsers').textContent = users.length;
     document.getElementById('totalAdmins').textContent = admins.length;
+    document.getElementById('totalSuperAdmins').textContent = superAdmins.length;
     
     renderUserList(users);
 }
@@ -1595,17 +1259,17 @@ function renderUserList(users) {
     }
     
     let html = '';
-    users.forEach((user, index) => {
+    users.slice().reverse().forEach((user) => {
         html += `
             <div class="user-item">
                 <div class="user-info">
-                    <span class="user-name">${user.name}</span>
-                    <span class="user-phone">📱 ${user.phone}</span>
-                    <span style="font-size:10px;color:#64748b;">${user.user_id}</span>
+                    <span class="user-name">${escapeHtml(user.name)}</span>
+                    <span class="user-phone">📱 ${escapeHtml(user.phone)}</span>
+                    <span style="font-size:10px;color:#64748b;">${escapeHtml(user.user_id)}</span>
                 </div>
                 <div class="user-actions">
-                    <button onclick="viewUser('${user.user_id}')" class="btn-sm" style="background:#2563eb;">View</button>
-                    <button onclick="deleteUser('${user.user_id}', ${index})" class="btn-sm" style="background:#ef4444;">Delete</button>
+                    <button onclick="viewUser('${escapeHtml(user.user_id)}')" class="btn-sm" style="background:#2563eb;">View</button>
+                    <button onclick="deleteUser('${escapeHtml(user.user_id)}')" class="btn-sm" style="background:#ef4444;">Delete</button>
                 </div>
             </div>
         `;
@@ -1614,6 +1278,61 @@ function renderUserList(users) {
     container.innerHTML = html;
 }
 
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// =============================================
+// ADMIN LIST
+// =============================================
+function renderAdminList() {
+    const container = document.getElementById('adminListContainer');
+    const admins = getAdmins();
+    const currentAdmin = getCurrentAdmin();
+    
+    if (admins.length === 0) {
+        container.innerHTML = `
+            <div style="text-align:center;padding:30px 0;color:#94a3b8;">
+                <p>No admins found.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    admins.forEach((admin) => {
+        const isCurrent = currentAdmin && currentAdmin.admin_id === admin.admin_id;
+        const isSuper = admin.is_super;
+        
+        html += `
+            <div class="admin-item" style="${isCurrent ? 'background:rgba(139,92,246,0.1);' : ''}">
+                <div class="admin-info">
+                    <span class="admin-name">
+                        ${escapeHtml(admin.name)}
+                        ${isSuper ? ' 👑' : ''}
+                        ${isCurrent ? ' (You)' : ''}
+                    </span>
+                    <span class="admin-username">👤 ${escapeHtml(admin.username)}</span>
+                    <span style="font-size:10px;color:#64748b;">${escapeHtml(admin.admin_id)}</span>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <span class="admin-badge ${isSuper ? 'super' : ''}">${isSuper ? 'Super Admin' : 'Admin'}</span>
+                    ${!isCurrent && currentAdmin && currentAdmin.is_super ? 
+                        `<button onclick="deleteAdmin('${escapeHtml(admin.admin_id)}')" class="btn-sm" style="background:#ef4444;">Delete</button>` : 
+                        ''}
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// =============================================
+// USER MANAGEMENT
+// =============================================
 async function viewUser(userId) {
     const users = getUsers();
     const user = users.find(u => u.user_id === userId);
@@ -1623,17 +1342,17 @@ async function viewUser(userId) {
     }
     
     const info = `
-        🆔 ID: ${user.user_id}
-        👤 Name: ${user.name}
-        📱 Phone: ${user.phone}
-        📅 Joined: ${new Date(user.created_at).toLocaleDateString()}
-        📱 Device: ${user.device?.platform || 'Unknown'}
+🆔 ID: ${user.user_id}
+👤 Name: ${user.name}
+📱 Phone: ${user.phone}
+📅 Joined: ${new Date(user.created_at).toLocaleDateString()}
+📱 Device: ${user.device?.platform || 'Unknown'}
     `;
     
     await showDialog('User Details', info, 'Close', '');
 }
 
-async function deleteUser(userId, index) {
+async function deleteUser(userId) {
     const confirmed = await showDialog('Delete User', 'Are you sure you want to delete this user? This action cannot be undone.', 'Delete', 'Cancel', true);
     
     if (confirmed) {
@@ -1641,6 +1360,19 @@ async function deleteUser(userId, index) {
         users = users.filter(u => u.user_id !== userId);
         saveUsers(users);
         showToast('🗑️ User deleted successfully.');
+        refreshAdminData();
+    }
+}
+
+async function deleteAdmin(adminId) {
+    const confirmed = await showDialog('Delete Admin', 'Are you sure you want to delete this admin? This action cannot be undone.', 'Delete', 'Cancel', true);
+    
+    if (confirmed) {
+        let admins = getAdmins();
+        admins = admins.filter(a => a.admin_id !== adminId);
+        saveAdmins(admins);
+        showToast('🗑️ Admin deleted successfully.');
+        renderAdminList();
         refreshAdminData();
     }
 }
@@ -1653,148 +1385,15 @@ async function handleAdminLogout() {
     if (confirmed) {
         clearCurrentAdmin();
         showToast('👋 Logged out from admin.');
-        showPage('pageHome');
+        showPage('pageAdminLogin');
     }
 }
 
 // =============================================
-// PROFILE
+// SAVE USERS (from localStorage)
 // =============================================
-function renderProfile() {
-    const box = document.getElementById('profileBox');
-    const user = getCurrentUser();
-
-    if (!user) {
-        box.innerHTML = `
-            <p style="color:#94a3b8; margin-bottom:12px;">You are not logged in.</p>
-            <button class="btn-goto" onclick="showPage('pageLogin')">Go to Login</button>
-        `;
-        return;
-    }
-
-    box.innerHTML = `
-        <div class="info">
-            <p><b>🆔 User ID:</b> ${user.user_id}</p>
-            <p><b>👤 Name:</b> ${user.name}</p>
-            <p><b>📱 Phone:</b> ${user.phone}</p>
-            <p><b>👑 Role:</b> <span class="badge badge-user">${user.role || 'User'}</span></p>
-            ${user.created_at ? `<p><b>📅 Joined:</b> ${new Date(user.created_at).toLocaleDateString()}</p>` : ''}
-            ${user.device ? `<p><b>📱 Device:</b> ${user.device.platform || 'Unknown'}</p>` : ''}
-        </div>
-    `;
-}
-
-// =============================================
-// SHARE PROFILE
-// =============================================
-function shareProfile() {
-    const user = getCurrentUser();
-    if (!user) {
-        showToast('Please login first', 'error');
-        return;
-    }
-    
-    const shareText = `👤 ${user.name}\n📱 ${user.phone}\n🆔 ${user.user_id}`;
-    
-    if (navigator.share) {
-        navigator.share({
-            title: 'My Profile',
-            text: shareText
-        }).catch(() => {});
-    } else {
-        navigator.clipboard.writeText(shareText)
-            .then(() => showToast('📋 Profile copied to clipboard!'))
-            .catch(() => showToast('Failed to copy', 'error'));
-    }
-}
-
-// =============================================
-// LOGOUT
-// =============================================
-async function handleLogout() {
-    const confirmed = await showDialog('Logout', 'Are you sure you want to logout?');
-    if (confirmed) {
-        clearCurrentUser();
-        clearSessionTimer();
-        showToast('👋 Logged out successfully.');
-        showPage('pageHome');
-    }
-}
-
-// =============================================
-// SESSION TIMEOUT
-// =============================================
-let sessionTimer;
-
-function resetSessionTimer() {
-    clearTimeout(sessionTimer);
-    sessionTimer = setTimeout(() => {
-        if (getCurrentUser()) {
-            showToast('⏰ Session expired. Please login again.', 'error');
-            clearCurrentUser();
-            showPage('pageHome');
-        }
-    }, 30 * 60 * 1000);
-}
-
-function clearSessionTimer() {
-    clearTimeout(sessionTimer);
-}
-
-['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-    document.addEventListener(event, () => {
-        if (getCurrentUser()) {
-            resetSessionTimer();
-        }
-    });
-});
-
-// =============================================
-// SWIPE NAVIGATION
-// =============================================
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
-
-document.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-});
-
-document.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    touchEndY = e.changedTouches[0].screenY;
-    handleSwipe();
-});
-
-function handleSwipe() {
-    const swipeX = touchStartX - touchEndX;
-    const swipeY = touchStartY - touchEndY;
-    
-    if (Math.abs(swipeX) < 50 || Math.abs(swipeX) < Math.abs(swipeY) * 1.5) return;
-    
-    const currentPage = getCurrentPage();
-    const user = getCurrentUser();
-    const admin = getCurrentAdmin();
-    
-    if (swipeX > 0) {
-        if (currentPage === 'pageHome' && !user && !admin) {
-            showPage('pageLogin');
-        } else if (currentPage === 'pageLogin') {
-            showPage('pageRegister');
-        }
-    } else {
-        if (currentPage === 'pageRegister') {
-            showPage('pageLogin');
-        } else if (currentPage === 'pageLogin') {
-            showPage('pageHome');
-        } else if (currentPage === 'pageProfile') {
-            showPage('pageHome');
-        } else if (currentPage === 'pageAdminDashboard') {
-            showPage('pageHome');
-        }
-    }
+function saveUsers(users) {
+    localStorage.setItem('users', JSON.stringify(users));
 }
 
 // =============================================
@@ -1807,7 +1406,7 @@ function vibrate(pattern = 10) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn, button, .nav-item, .link a').forEach(el => {
+    document.querySelectorAll('.btn, button, .link a').forEach(el => {
         el.addEventListener('click', () => vibrate(10));
         el.addEventListener('touchstart', () => vibrate(5), { passive: true });
     });
@@ -1816,34 +1415,21 @@ document.addEventListener('DOMContentLoaded', function() {
 // =============================================
 // INIT
 // =============================================
-(function init() {
-    // Initialize default admin
-    initDefaultAdmin();
+(async function init() {
+    await initDefaultAdmin();
     
-    const user = getCurrentUser();
     const admin = getCurrentAdmin();
-    
-    const savedPhone = localStorage.getItem('rememberPhone');
-    if (savedPhone) {
-        const phoneInput = document.getElementById('loginPhone');
-        if (phoneInput) {
-            phoneInput.value = savedPhone;
-            document.getElementById('rememberMe').checked = true;
-        }
-    }
     
     if (admin) {
         showPage('pageAdminDashboard');
-    } else if (user) {
-        showPage('pageProfile');
-        resetSessionTimer();
     } else {
-        showPage('pageHome');
+        showPage('pageAdminLogin');
     }
     
-    console.log('📱 ATH DIGITAL HUB loaded successfully!');
-    console.log('👥 Users:', getUsers().length);
+    console.log('👑 ATH DIGITAL HUB Admin Panel loaded!');
     console.log('👑 Admins:', getAdmins().length);
+    console.log('👥 Users:', getUsers().length);
+    console.log('🔑 Default Admin: admin / admin123');
 })();
 
 // =============================================
@@ -1861,6 +1447,16 @@ window.addEventListener('online', () => {
 
 window.addEventListener('offline', () => {
     showToast('🔴 You are offline. Some features may not work.', 'error');
+});
+
+// Keyboard shortcut: Enter to login
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        const active = document.activeElement;
+        if (active && active.closest('form')) {
+            // Let form handle it
+        }
+    }
 });
 </script>
 </body>
