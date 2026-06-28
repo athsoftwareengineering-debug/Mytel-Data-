@@ -6,9 +6,16 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 10000;
+
+// ===== MULTER - for FormData support =====
+const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
 
 // ===== MIDDLEWARE =====
 app.use(cors({
@@ -261,22 +268,28 @@ app.get('/api/user/:phone', (req, res) => {
     }
 });
 
-// ===== CREATE ORDER =====
-app.post('/api/orders', (req, res) => {
+// ===== CREATE ORDER (FormData + JSON support) =====
+app.post('/api/orders', upload.none(), (req, res) => {
     try {
+        // Get data from FormData or JSON
         const { phone, plan, price, payment_method, sender_name, last5_digits } = req.body;
         
+        console.log('📝 Order received:', { phone, plan, price, payment_method });
+        
+        // Validate required fields
         if (!phone || !plan || !price) {
             return res.status(400).json({ 
                 success: false, 
-                error: 'Phone, plan and price are required' 
+                error: 'Phone, plan and price are required',
+                received: { phone, plan, price }
             });
         }
         
+        // Create order
         const order = {
             id: 'ORD' + Date.now().toString().slice(-6),
-            phone,
-            plan,
+            phone: phone.trim(),
+            plan: plan.trim(),
             price: parseInt(price),
             payment_method: payment_method || 'kpay',
             sender_name: sender_name || '',
@@ -287,22 +300,26 @@ app.post('/api/orders', (req, res) => {
             activated_at: null
         };
         
+        // Save to memory
         app.locals.orders.push(order);
         
+        // Update user's orders
         const user = app.locals.users.find(u => u.phone === phone);
         if (user) {
             if (!user.orders) user.orders = [];
             user.orders.push(order);
         }
         
+        // Save to file
         saveDataToFile();
         
         res.json({
             success: true,
             orderId: order.id,
-            order
+            order: order
         });
     } catch (error) {
+        console.error('❌ Order error:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });
