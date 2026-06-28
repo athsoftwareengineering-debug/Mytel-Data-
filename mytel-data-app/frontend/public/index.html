@@ -27,7 +27,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 20px 20px 90px 20px;
             position: relative;
             overflow-x: hidden;
         }
@@ -188,7 +188,6 @@
             left: 0;
         }
 
-        /* Close Button - တစ်ခုတည်းသာ */
         .sidebar .close-btn {
             position: absolute;
             top: 18px;
@@ -207,16 +206,15 @@
             justify-content: center;
         }
 
-        .sidebar .close-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        /* Pseudo-elements မပါအောင် သေချာပါစေ */
         .sidebar .close-btn::before,
         .sidebar .close-btn::after {
             display: none !important;
             content: none !important;
+        }
+
+        .sidebar .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
         }
 
         .sidebar .brand {
@@ -356,6 +354,7 @@
             position: relative;
             z-index: 1;
             animation: containerIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
         }
 
         @keyframes containerIn {
@@ -520,6 +519,104 @@
             transform: translateX(6px);
         }
 
+        /* ===== Buy Button ===== */
+        .buy-btn {
+            margin-top: 16px;
+            padding: 10px 28px;
+            background: linear-gradient(135deg, #4a9eff, #2d7dd2);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 16px rgba(74, 158, 255, 0.2);
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(74, 158, 255, 0.35);
+            background: linear-gradient(135deg, #5aafff, #3a8ae8);
+        }
+
+        .buy-btn:active {
+            transform: scale(0.97);
+        }
+
+        .buy-btn i {
+            margin-right: 8px;
+        }
+
+        /* ===== Bottom Navigation ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(18, 24, 42, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 0 14px 0;
+            box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 4px 16px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .bottom-nav .nav-item i {
+            font-size: 22px;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-nav .nav-item span {
+            font-size: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .bottom-nav .nav-item:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .bottom-nav .nav-item.active {
+            color: #4a9eff;
+        }
+
+        .bottom-nav .nav-item.active i {
+            text-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+        }
+
+        .bottom-nav .nav-item .badge-dot {
+            position: absolute;
+            top: 2px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            background: #ff4757;
+            border-radius: 50%;
+            border: 2px solid rgba(18, 24, 42, 0.85);
+        }
+
         /* ===== Social Proof Banner ===== */
         .social-proof {
             margin: 28px 0 8px;
@@ -577,7 +674,7 @@
         /* ===== Back to Top Button ===== */
         .back-to-top {
             position: fixed;
-            bottom: 30px;
+            bottom: 90px;
             right: 30px;
             z-index: 100;
             width: 48px;
@@ -631,6 +728,7 @@
             .container {
                 padding: 28px 16px 22px;
                 border-radius: 20px;
+                margin-bottom: 10px;
             }
 
             h1 {
@@ -659,6 +757,11 @@
             .operator-card .badge {
                 font-size: 10px;
                 padding: 2px 12px;
+            }
+
+            .buy-btn {
+                font-size: 13px;
+                padding: 8px 16px;
             }
 
             .subtitle {
@@ -702,11 +805,27 @@
             }
 
             .back-to-top {
-                bottom: 20px;
+                bottom: 80px;
                 right: 20px;
                 width: 42px;
                 height: 42px;
                 font-size: 17px;
+            }
+
+            .bottom-nav {
+                padding: 8px 0 12px 0;
+            }
+
+            .bottom-nav .nav-item i {
+                font-size: 18px;
+            }
+
+            .bottom-nav .nav-item span {
+                font-size: 9px;
+            }
+
+            .bottom-nav .nav-item {
+                padding: 2px 10px;
             }
         }
 
@@ -726,6 +845,11 @@
 
             .operator-card .name {
                 font-size: 14px;
+            }
+
+            .buy-btn {
+                font-size: 11px;
+                padding: 6px 12px;
             }
 
             h1 {
@@ -760,7 +884,6 @@
 
     <!-- ===== Sidebar ===== -->
     <div class="sidebar" id="sidebar">
-        <!-- Close Button - တစ်ခုတည်းသာ -->
         <button class="close-btn" id="closeBtn" aria-label="Close menu">
             <i class="fas fa-times"></i>
         </button>
@@ -839,6 +962,9 @@
                 <span class="name">ATOM</span>
                 <span class="badge"><i class="fas fa-crown" style="font-size: 10px; margin-right: 4px;"></i> 4 Plans</span>
                 <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                <button class="buy-btn" onclick="event.preventDefault(); alert('ATOM Plan ကို ဝယ်ယူရန် ပြင်ဆင်နေပါသည်။')">
+                    <i class="fas fa-shopping-cart"></i> ဝယ်ယူမည်
+                </button>
             </a>
 
             <!-- MYTEL -->
@@ -847,6 +973,9 @@
                 <span class="name">MYTEL</span>
                 <span class="badge"><i class="fas fa-crown" style="font-size: 10px; margin-right: 4px;"></i> 4 Plans</span>
                 <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                <button class="buy-btn" onclick="event.preventDefault(); alert('MYTEL Plan ကို ဝယ်ယူရန် ပြင်ဆင်နေပါသည်။')">
+                    <i class="fas fa-shopping-cart"></i> ဝယ်ယူမည်
+                </button>
             </a>
 
             <!-- OOREDOO -->
@@ -855,6 +984,9 @@
                 <span class="name">OOREDOO</span>
                 <span class="badge"><i class="fas fa-crown" style="font-size: 10px; margin-right: 4px;"></i> 4 Plans</span>
                 <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                <button class="buy-btn" onclick="event.preventDefault(); alert('OOREDOO Plan ကို ဝယ်ယူရန် ပြင်ဆင်နေပါသည်။')">
+                    <i class="fas fa-shopping-cart"></i> ဝယ်ယူမည်
+                </button>
             </a>
 
             <!-- MPT -->
@@ -863,6 +995,9 @@
                 <span class="name">MPT</span>
                 <span class="badge"><i class="fas fa-crown" style="font-size: 10px; margin-right: 4px;"></i> 4 Plans</span>
                 <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                <button class="buy-btn" onclick="event.preventDefault(); alert('MPT Plan ကို ဝယ်ယူရန် ပြင်ဆင်နေပါသည်။')">
+                    <i class="fas fa-shopping-cart"></i> ဝယ်ယူမည်
+                </button>
             </a>
 
         </div>
@@ -882,6 +1017,27 @@
         </div>
 
     </div>
+
+    <!-- ===== Bottom Navigation ===== -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="orders.html" class="nav-item">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Orders</span>
+            <span class="badge-dot"></span>
+        </a>
+        <a href="live.html" class="nav-item">
+            <i class="fas fa-broadcast-tower"></i>
+            <span>Live</span>
+        </a>
+        <a href="chat.html" class="nav-item">
+            <i class="fas fa-comment-dots"></i>
+            <span>Chat</span>
+        </a>
+    </nav>
 
     <!-- ===== Back to Top Button ===== -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
@@ -962,6 +1118,23 @@
 
             card.addEventListener('mouseleave', function() {
                 this.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
+            });
+        });
+
+        // ===== Bottom Nav Active State =====
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                document.querySelectorAll('.bottom-nav .nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // ===== Buy Button Click Handler =====
+        document.querySelectorAll('.buy-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent triggering parent link
+                // You can replace this with actual purchase logic
+                console.log('Buy button clicked for:', this.closest('.operator-card').querySelector('.name').textContent);
             });
         });
     </script>
