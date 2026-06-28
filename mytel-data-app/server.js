@@ -1,5 +1,5 @@
 // ============================================================
-// server.js - Full Server with Admin API Routes
+// server.js - Full Server with Admin API Routes (FIXED PATH)
 // ============================================================
 
 const express = require('express');
@@ -17,19 +17,44 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// ===== STATIC FILES - FIXED PATH =====
+// ဒီနေရာမှာ 'public' ကို 'frontend/public' လို့ ပြောင်းပါ
+const publicPath = path.join(__dirname, 'frontend', 'public');
+app.use(express.static(publicPath));
 
 // ===== SERVE HTML FILES =====
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+    res.sendFile(path.join(publicPath, 'admin.html'));
 });
 
 app.get('/admin.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+    res.sendFile(path.join(publicPath, 'admin.html'));
+});
+
+// ===== OPERATOR PAGES =====
+app.get('/atom', (req, res) => {
+    res.sendFile(path.join(publicPath, 'atom.html'));
+});
+
+app.get('/mytel', (req, res) => {
+    res.sendFile(path.join(publicPath, 'mytel.html'));
+});
+
+app.get('/ooredoo', (req, res) => {
+    res.sendFile(path.join(publicPath, 'ooredoo.html'));
+});
+
+app.get('/mpt', (req, res) => {
+    res.sendFile(path.join(publicPath, 'mpt.html'));
+});
+
+app.get('/plans-widget.html', (req, res) => {
+    res.sendFile(path.join(publicPath, 'plans-widget.html'));
 });
 
 // ============================================================
@@ -49,9 +74,10 @@ app.locals.orders = [];
 app.locals.users = [];
 
 // ===== LOAD DATA FROM FILE =====
+const dataPath = path.join(__dirname, 'data.json');
+
 function loadDataFromFile() {
     try {
-        const dataPath = path.join(__dirname, 'data.json');
         if (fs.existsSync(dataPath)) {
             const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
             if (data.orders) app.locals.orders = data.orders;
@@ -72,7 +98,7 @@ function saveDataToFile() {
             users: app.locals.users || [],
             salesHours: app.locals.salesHours || {}
         };
-        fs.writeFileSync(path.join(__dirname, 'data.json'), JSON.stringify(data, null, 2));
+        fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
         console.log('💾 Data saved to file');
     } catch (e) {
         console.error('Error saving data:', e);
@@ -101,12 +127,10 @@ app.post('/api/user/register', (req, res) => {
             });
         }
         
-        // Check if user exists
         let user = app.locals.users.find(u => u.phone === phone);
         let isNewUser = false;
         
         if (!user) {
-            // Create new user
             user = {
                 phone,
                 username,
@@ -188,7 +212,6 @@ app.post('/api/orders', (req, res) => {
         
         app.locals.orders.push(order);
         
-        // Update user's orders
         const user = app.locals.users.find(u => u.phone === phone);
         if (user) {
             if (!user.orders) user.orders = [];
@@ -222,7 +245,6 @@ app.get('/api/orders/:phone', (req, res) => {
 // ============================================================
 
 // ===== SALES HOURS =====
-// GET - Get current sales hours
 app.get('/api/admin/sales-hours', (req, res) => {
     try {
         const salesHours = app.locals.salesHours || {
@@ -238,7 +260,6 @@ app.get('/api/admin/sales-hours', (req, res) => {
     }
 });
 
-// POST - Update sales hours
 app.post('/api/admin/sales-hours', (req, res) => {
     try {
         const { enabled, startHour, endHour, mode, manualStatus } = req.body;
@@ -257,7 +278,6 @@ app.post('/api/admin/sales-hours', (req, res) => {
 });
 
 // ===== SALES STATUS =====
-// GET - Get current shop status
 app.get('/api/sales/status', (req, res) => {
     try {
         const salesHours = app.locals.salesHours || {
@@ -305,7 +325,6 @@ app.get('/api/sales/status', (req, res) => {
 });
 
 // ===== ORDERS =====
-// GET - Get all orders (admin)
 app.get('/api/admin/orders', (req, res) => {
     try {
         const orders = app.locals.orders || [];
@@ -315,7 +334,6 @@ app.get('/api/admin/orders', (req, res) => {
     }
 });
 
-// PUT - Approve order
 app.put('/api/admin/orders/:id/approve', (req, res) => {
     try {
         const order = app.locals.orders.find(o => o.id === req.params.id);
@@ -331,7 +349,6 @@ app.put('/api/admin/orders/:id/approve', (req, res) => {
     }
 });
 
-// PUT - Reject order
 app.put('/api/admin/orders/:id/reject', (req, res) => {
     try {
         const order = app.locals.orders.find(o => o.id === req.params.id);
@@ -346,7 +363,6 @@ app.put('/api/admin/orders/:id/reject', (req, res) => {
     }
 });
 
-// DELETE - Delete order
 app.delete('/api/admin/orders/:id', (req, res) => {
     try {
         const index = app.locals.orders.findIndex(o => o.id === req.params.id);
@@ -362,7 +378,6 @@ app.delete('/api/admin/orders/:id', (req, res) => {
 });
 
 // ===== USER STATS =====
-// GET - Get user statistics (admin)
 app.get('/api/admin/user-stats', (req, res) => {
     try {
         const users = app.locals.users || [];
@@ -382,7 +397,7 @@ app.get('/api/admin/user-stats', (req, res) => {
     }
 });
 
-// ===== ADMIN LOGIN (Simple) =====
+// ===== ADMIN LOGIN =====
 app.post('/api/admin/login', (req, res) => {
     try {
         const { password } = req.body;
@@ -456,10 +471,10 @@ app.post('/api/admin/system-reset', (req, res) => {
 });
 
 // ============================================================
-// SERVE ADMIN CHAT
+// ADMIN CHAT
 // ============================================================
 app.get('/admin-chat.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin-chat.html'));
+    res.sendFile(path.join(publicPath, 'admin-chat.html'));
 });
 
 // ============================================================
@@ -471,6 +486,7 @@ app.listen(PORT, () => {
     console.log(`║  📡 Port: ${PORT}                          ║`);
     console.log(`║  🌐 URL: http://localhost:${PORT}        ║`);
     console.log(`║  📁 Directory: ${__dirname}    ║`);
+    console.log(`║  📁 Public: ${publicPath}    ║`);
     console.log(`║  ⏰ Started: ${new Date().toLocaleString()}  ║`);
     console.log('║  Press Ctrl+C to stop the server        ║');
     console.log('╚══════════════════════════════════════════╝');
