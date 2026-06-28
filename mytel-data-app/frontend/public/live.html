@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LIVE - ATH DIGITAL HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-dark: #0a0c15;
+            --bg-card: rgba(18,22,35,0.85);
+            --cyan: #00d4ff;
+            --emerald: #10b981;
+            --amber: #f59e0b;
+            --rose: #f43f5e;
+            --violet: #8b5cf6;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --card-radius: 1rem;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            background: var(--bg-dark);
+            background-image: radial-gradient(ellipse at 20% 30%, rgba(139,92,246,0.05) 0%, transparent 50%);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans Myanmar', sans-serif;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* ===== HEADER ===== */
+        .live-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-radius: var(--card-radius);
+            border: 1px solid rgba(0,212,255,0.08);
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .live-header .title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .live-header .title i {
+            color: var(--rose);
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        .live-header .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .live-header .status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--emerald);
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+
+        /* ===== STATS BAR - HIDDEN FROM USERS ===== */
+        .stats-bar {
+            display: none; /* အရေအတွက်တွေကို Users မပြရန် */
+        }
+
+        /* ===== ORDERS CARDS ===== */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .order-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border-radius: var(--card-radius);
+            padding: 16px 18px;
+            border: 1px solid rgba(0,212,255,0.06);
+            transition: all var(--transition);
+            animation: fadeIn 0.3s ease;
+        }
+        .order-card:hover {
+            border-color: rgba(0,212,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .order-card .order-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .order-card .order-plan {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .order-card .order-plan .badge {
+            font-size: 0.55rem;
+            background: rgba(16,185,129,0.15);
+            color: var(--emerald);
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+        .order-card .order-time {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .order-card .order-middle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 0;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .order-card .order-phone {
+            font-size: 0.8rem;
+            font-family: monospace;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .order-card .order-phone i {
+            color: var(--cyan);
+        }
+        .order-card .order-price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--emerald);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .order-card .order-price small {
+            font-size: 0.55rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .order-card .order-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+        .order-card .order-bottom .payment {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .order-card .order-bottom .payment i {
+            color: var(--violet);
+        }
+        .order-card .order-bottom .expiry {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .order-card .order-bottom .expiry i {
+            color: var(--amber);
+        }
+        .order-card .order-bottom .expiry.expired i {
+            color: var(--rose);
+        }
+        .order-card .order-bottom .expiry.expired span {
+            color: var(--rose);
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            opacity: 0.2;
+            margin-bottom: 16px;
+        }
+        .empty-state h3 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+        .empty-state p {
+            font-size: 0.75rem;
+        }
+
+        /* ===== LOADING ===== */
+        .loading-text {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .loading-text i {
+            margin-right: 8px;
+            color: var(--cyan);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--emerald);
+            padding: 10px 24px;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            color: var(--text-primary);
+        }
+        .toast.error { border-color: var(--rose); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .live-header {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 12px 16px;
+            }
+            .live-header .title {
+                font-size: 1rem;
+            }
+            .order-card .order-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .order-card .order-middle {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .order-card .order-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        @media (max-width: 380px) {
+            .order-card {
+                padding: 12px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header - No Count Displayed -->
+        <div class="live-header">
+            <div class="title">
+                <i class="fas fa-circle"></i>
+                LIVE
+            </div>
+            <div class="status">
+                <span class="dot"></span>
+                <span id="statusText">Live</span>
+            </div>
+        </div>
+
+        <!-- Stats Bar - HIDDEN from users -->
+        <div class="stats-bar" id="statsBar">
+            <!-- Stats are hidden - only for admin reference -->
+        </div>
+
+        <!-- Orders List -->
+        <div id="ordersContainer">
+            <div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading approved orders...</div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ================================================================
+        //  LIVE - Approved Orders Viewer (No Counts Displayed)
+        // ================================================================
+
+        const API_BASE = window.location.origin;
+        let allApprovedOrders = [];
+        let refreshInterval = null;
+        let isFirstLoad = true;
+
+        // ================================================================
+        //  LOAD APPROVED ORDERS
+        // ================================================================
+        async function loadApprovedOrders() {
+            try {
+                const response = await fetch('/api/admin/orders', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load orders');
+                }
+                
+                const data = await response.json();
+                
+                if (data.success && data.orders) {
+                    // Filter only approved orders
+                    allApprovedOrders = data.orders.filter(o => o.status === 'Approved');
+                    
+                    // Sort by created_at (newest first)
+                    allApprovedOrders.sort((a, b) => 
+                        new Date(b.created_at) - new Date(a.created_at)
+                    );
+                    
+                    renderOrders(allApprovedOrders);
+                    
+                    if (isFirstLoad) {
+                        isFirstLoad = false;
+                        showToast('✅ Live data loaded');
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading approved orders:', error);
+                if (isFirstLoad) {
+                    document.getElementById('ordersContainer').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Failed to load data</h3>
+                            <p>Please refresh the page or check your connection.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // ================================================================
+        //  RENDER ORDERS (No Counts Displayed)
+        // ================================================================
+        function renderOrders(orders) {
+            const container = document.getElementById('ordersContainer');
+            
+            if (!orders.length) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h3>No Approved Orders</h3>
+                        <p>There are no approved orders yet. Check back later!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="orders-list">';
+            
+            for (const order of orders) {
+                const orderDate = new Date(order.created_at);
+                const now = new Date();
+                const isToday = orderDate.toDateString() === now.toDateString();
+                
+                // Calculate expiry
+                let expiryText = 'Not activated';
+                let expiryClass = '';
+                if (order.activated_at) {
+                    const activated = new Date(order.activated_at);
+                    const expiry = new Date(activated.getTime() + 30 * 24 * 60 * 60 * 1000);
+                    const daysLeft = Math.ceil((expiry - now) / (24 * 60 * 60 * 1000));
+                    
+                    if (daysLeft <= 0) {
+                        expiryText = '⚠️ Expired';
+                        expiryClass = 'expired';
+                    } else if (daysLeft <= 7) {
+                        expiryText = `⏳ ${daysLeft} days left`;
+                        expiryClass = 'expired';
+                    } else {
+                        expiryText = `✅ ${daysLeft} days left`;
+                    }
+                }
+
+                // Payment method icon
+                let paymentIcon = 'fa-university';
+                let paymentColor = '#1e88e5';
+                if (order.payment_method === 'wavepay') {
+                    paymentIcon = 'fa-wave-square';
+                    paymentColor = '#43a047';
+                } else if (order.payment_method === 'ayapay') {
+                    paymentIcon = 'fa-building';
+                    paymentColor = '#f9a825';
+                }
+
+                // Plan icon
+                let planIcon = '🔥';
+                if (order.plan.includes('VIP 1') || order.plan.includes('VIP LEVEL - 1')) planIcon = '🔥';
+                else if (order.plan.includes('VIP 2') || order.plan.includes('VIP LEVEL - 2')) planIcon = '⭐';
+                else if (order.plan.includes('VIP 3') || order.plan.includes('VIP LEVEL - 3')) planIcon = '💎';
+                else if (order.plan.includes('ULTRA') || order.plan.includes('VIP 4')) planIcon = '👑';
+
+                html += `
+                    <div class="order-card">
+                        <div class="order-top">
+                            <div class="order-plan">
+                                ${planIcon} ${escapeHtml(order.plan)}
+                                ${isToday ? '<span class="badge">🆕 Today</span>' : ''}
+                            </div>
+                            <div class="order-time">
+                                <i class="fas fa-calendar-alt"></i>
+                                ${orderDate.toLocaleDateString()}
+                                <span style="color:var(--text-secondary);margin:0 4px;">•</span>
+                                ${orderDate.toLocaleTimeString()}
+                            </div>
+                        </div>
+                        <div class="order-middle">
+                            <div class="order-phone">
+                                <i class="fas fa-phone-alt"></i>
+                                ${escapeHtml(maskPhone(order.phone))}
+                                <span style="font-size:0.55rem;color:var(--text-secondary);font-weight:400;">
+                                    ${order.sender_name ? '• ' + escapeHtml(order.sender_name) : ''}
+                                </span>
+                            </div>
+                            <div class="order-price">
+                                ${order.price.toLocaleString()} <small>MMK</small>
+                            </div>
+                        </div>
+                        <div class="order-bottom">
+                            <div class="payment">
+                                <i class="fas ${paymentIcon}" style="color:${paymentColor};"></i>
+                                ${order.payment_method || 'KBZ Pay'}
+                                ${order.last5_digits ? `• #${escapeHtml(order.last5_digits)}` : ''}
+                            </div>
+                            <div class="expiry ${expiryClass}">
+                                <i class="fas fa-clock"></i>
+                                <span>${expiryText}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // ================================================================
+        //  UTILITY FUNCTIONS
+        // ================================================================
+        function maskPhone(phone) {
+            if (!phone || phone.length < 8) return phone || '';
+            return phone.substring(0, 5) + '***' + phone.substring(phone.length - 3);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function showToast(msg, isError) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.style.display = 'block';
+            clearTimeout(toast._hideTimer);
+            toast._hideTimer = setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // ================================================================
+        //  AUTO REFRESH (Every 10 seconds)
+        // ================================================================
+        function startAutoRefresh() {
+            if (refreshInterval) {
+                clearInterval(refreshInterval);
+                refreshInterval = null;
+            }
+            
+            // Load immediately
+            loadApprovedOrders();
+            
+            // Then every 10 seconds
+            refreshInterval = setInterval(() => {
+                loadApprovedOrders();
+            }, 10000);
+            
+            console.log('🔄 Live auto-refresh started (every 10 seconds)');
+        }
+
+        // ================================================================
+        //  LISTEN FOR REAL-TIME UPDATES
+        // ================================================================
+        function listenForUpdates() {
+            // BroadcastChannel
+            if (typeof BroadcastChannel !== 'undefined') {
+                try {
+                    const channel = new BroadcastChannel('operator-updates');
+                    channel.onmessage = (event) => {
+                        if (event.data.type === 'pricesUpdated') {
+                            console.log('📦 Update detected, refreshing...');
+                            loadApprovedOrders();
+                        }
+                    };
+                } catch(e) {}
+            }
+
+            // localStorage
+            window.addEventListener('storage', (e) => {
+                if (e.key === '_operatorUpdateTimestamp' || e.key === 'planUpdateTimestamp') {
+                    console.log('📦 Storage update detected, refreshing...');
+                    loadApprovedOrders();
+                }
+            });
+
+            // postMessage
+            window.addEventListener('message', (event) => {
+                if (event.data && (event.data.type === 'operatorPlansUpdated' || event.data.type === 'planUpdated')) {
+                    console.log('📦 Iframe update detected, refreshing...');
+                    loadApprovedOrders();
+                }
+            });
+        }
+
+        // ================================================================
+        //  INIT
+        // ================================================================
+        function init() {
+            startAutoRefresh();
+            listenForUpdates();
+            
+            // Refresh when tab becomes visible
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    loadApprovedOrders();
+                }
+            });
+        }
+
+        // ================================================================
+        //  EXPOSE GLOBALS
+        // ================================================================
+        window.loadApprovedOrders = loadApprovedOrders;
+        window.renderOrders = renderOrders;
+
+        // ================================================================
+        //  START
+        // ================================================================
+        init();
+
+        console.log('📺 Live page loaded successfully (No counts shown to users)');
+        console.log('🔄 Auto-refresh every 10 seconds');
+    </script>
+</body>
+</html>
