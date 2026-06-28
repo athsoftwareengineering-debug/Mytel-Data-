@@ -1,5 +1,5 @@
 // ============================================================
-// server.js - Full Server with Admin API Routes
+// server.js - Full Server with Admin API Routes (FIXED)
 // ============================================================
 
 const express = require('express');
@@ -28,35 +28,31 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// ===== STORE DATA IN MEMORY =====
-// Initialize with default data
-if (!req.app.locals.salesHours) {
-    req.app.locals.salesHours = {
-        enabled: true,
-        startHour: 9,
-        endHour: 19,
-        mode: 'auto',
-        manualStatus: true
-    };
-}
+// ============================================================
+// STORE DATA IN MEMORY (Initialize after app is created)
+// ============================================================
 
-if (!req.app.locals.orders) {
-    req.app.locals.orders = [];
-}
+// Initialize app.locals with default data
+app.locals.salesHours = {
+    enabled: true,
+    startHour: 9,
+    endHour: 19,
+    mode: 'auto',
+    manualStatus: true
+};
 
-if (!req.app.locals.users) {
-    req.app.locals.users = [];
-}
+app.locals.orders = [];
+app.locals.users = [];
 
-// Load data from JSON file if exists
+// ===== LOAD DATA FROM FILE =====
 function loadDataFromFile() {
     try {
         const dataPath = path.join(__dirname, 'data.json');
         if (fs.existsSync(dataPath)) {
             const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-            if (data.orders) req.app.locals.orders = data.orders;
-            if (data.users) req.app.locals.users = data.users;
-            if (data.salesHours) req.app.locals.salesHours = data.salesHours;
+            if (data.orders) app.locals.orders = data.orders;
+            if (data.users) app.locals.users = data.users;
+            if (data.salesHours) app.locals.salesHours = data.salesHours;
             console.log('📁 Data loaded from file');
         }
     } catch (e) {
@@ -64,13 +60,13 @@ function loadDataFromFile() {
     }
 }
 
-// Save data to JSON file
+// ===== SAVE DATA TO FILE =====
 function saveDataToFile() {
     try {
         const data = {
-            orders: req.app.locals.orders || [],
-            users: req.app.locals.users || [],
-            salesHours: req.app.locals.salesHours || {}
+            orders: app.locals.orders || [],
+            users: app.locals.users || [],
+            salesHours: app.locals.salesHours || {}
         };
         fs.writeFileSync(path.join(__dirname, 'data.json'), JSON.stringify(data, null, 2));
     } catch (e) {
@@ -101,7 +97,7 @@ app.post('/api/user/register', (req, res) => {
         }
         
         // Check if user exists
-        let user = req.app.locals.users.find(u => u.phone === phone);
+        let user = app.locals.users.find(u => u.phone === phone);
         let isNewUser = false;
         
         if (!user) {
@@ -115,7 +111,7 @@ app.post('/api/user/register', (req, res) => {
                 suspect_flag: false,
                 created_at: new Date().toISOString()
             };
-            req.app.locals.users.push(user);
+            app.locals.users.push(user);
             isNewUser = true;
             saveDataToFile();
         }
@@ -139,7 +135,7 @@ app.post('/api/user/register', (req, res) => {
 // ===== GET USER DATA =====
 app.get('/api/user/:phone', (req, res) => {
     try {
-        const user = req.app.locals.users.find(u => u.phone === req.params.phone);
+        const user = app.locals.users.find(u => u.phone === req.params.phone);
         if (!user) {
             return res.status(404).json({ success: false, error: 'User not found' });
         }
@@ -185,10 +181,10 @@ app.post('/api/orders', (req, res) => {
             activated_at: null
         };
         
-        req.app.locals.orders.push(order);
+        app.locals.orders.push(order);
         
         // Update user's orders
-        const user = req.app.locals.users.find(u => u.phone === phone);
+        const user = app.locals.users.find(u => u.phone === phone);
         if (user) {
             if (!user.orders) user.orders = [];
             user.orders.push(order);
@@ -209,7 +205,7 @@ app.post('/api/orders', (req, res) => {
 // ===== GET USER ORDERS =====
 app.get('/api/orders/:phone', (req, res) => {
     try {
-        const orders = req.app.locals.orders.filter(o => o.phone === req.params.phone);
+        const orders = app.locals.orders.filter(o => o.phone === req.params.phone);
         res.json({ success: true, orders });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -224,7 +220,7 @@ app.get('/api/orders/:phone', (req, res) => {
 // GET - Get current sales hours
 app.get('/api/admin/sales-hours', (req, res) => {
     try {
-        const salesHours = req.app.locals.salesHours || {
+        const salesHours = app.locals.salesHours || {
             enabled: true,
             startHour: 9,
             endHour: 19,
@@ -241,7 +237,7 @@ app.get('/api/admin/sales-hours', (req, res) => {
 app.post('/api/admin/sales-hours', (req, res) => {
     try {
         const { enabled, startHour, endHour, mode, manualStatus } = req.body;
-        req.app.locals.salesHours = {
+        app.locals.salesHours = {
             enabled: enabled !== undefined ? enabled : true,
             startHour: startHour || 9,
             endHour: endHour || 19,
@@ -259,7 +255,7 @@ app.post('/api/admin/sales-hours', (req, res) => {
 // GET - Get current shop status
 app.get('/api/sales/status', (req, res) => {
     try {
-        const salesHours = req.app.locals.salesHours || {
+        const salesHours = app.locals.salesHours || {
             enabled: true,
             startHour: 9,
             endHour: 19,
@@ -307,7 +303,7 @@ app.get('/api/sales/status', (req, res) => {
 // GET - Get all orders (admin)
 app.get('/api/admin/orders', (req, res) => {
     try {
-        const orders = req.app.locals.orders || [];
+        const orders = app.locals.orders || [];
         res.json({ success: true, orders });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -317,7 +313,7 @@ app.get('/api/admin/orders', (req, res) => {
 // PUT - Approve order
 app.put('/api/admin/orders/:id/approve', (req, res) => {
     try {
-        const order = req.app.locals.orders.find(o => o.id === req.params.id);
+        const order = app.locals.orders.find(o => o.id === req.params.id);
         if (!order) {
             return res.status(404).json({ success: false, error: 'Order not found' });
         }
@@ -333,7 +329,7 @@ app.put('/api/admin/orders/:id/approve', (req, res) => {
 // PUT - Reject order
 app.put('/api/admin/orders/:id/reject', (req, res) => {
     try {
-        const order = req.app.locals.orders.find(o => o.id === req.params.id);
+        const order = app.locals.orders.find(o => o.id === req.params.id);
         if (!order) {
             return res.status(404).json({ success: false, error: 'Order not found' });
         }
@@ -348,11 +344,11 @@ app.put('/api/admin/orders/:id/reject', (req, res) => {
 // DELETE - Delete order
 app.delete('/api/admin/orders/:id', (req, res) => {
     try {
-        const index = req.app.locals.orders.findIndex(o => o.id === req.params.id);
+        const index = app.locals.orders.findIndex(o => o.id === req.params.id);
         if (index === -1) {
             return res.status(404).json({ success: false, error: 'Order not found' });
         }
-        req.app.locals.orders.splice(index, 1);
+        app.locals.orders.splice(index, 1);
         saveDataToFile();
         res.json({ success: true, message: 'Order deleted' });
     } catch (error) {
@@ -364,7 +360,7 @@ app.delete('/api/admin/orders/:id', (req, res) => {
 // GET - Get user statistics (admin)
 app.get('/api/admin/user-stats', (req, res) => {
     try {
-        const users = req.app.locals.users || [];
+        const users = app.locals.users || [];
         const stats = users.map(user => ({
             phone: user.phone || '',
             username: user.username || '',
@@ -392,6 +388,63 @@ app.post('/api/admin/login', (req, res) => {
         } else {
             res.status(401).json({ success: false, error: 'Invalid password' });
         }
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== CLEANUP OLD ORDERS =====
+app.post('/api/admin/cleanup-old', (req, res) => {
+    try {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const before = app.locals.orders.length;
+        app.locals.orders = app.locals.orders.filter(order => {
+            if (order.status === 'Approved') return true;
+            return new Date(order.created_at) > thirtyDaysAgo;
+        });
+        const after = app.locals.orders.length;
+        
+        saveDataToFile();
+        res.json({ 
+            success: true, 
+            message: `Cleaned up ${before - after} old orders`,
+            removed: before - after,
+            remaining: after
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== SYSTEM RESET =====
+app.post('/api/admin/system-reset', (req, res) => {
+    try {
+        const { confirm, keepProducts } = req.body;
+        
+        if (confirm !== 'RESET_ALL_DATA') {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Invalid confirmation' 
+            });
+        }
+        
+        app.locals.orders = [];
+        app.locals.users = [];
+        app.locals.salesHours = {
+            enabled: true,
+            startHour: 9,
+            endHour: 19,
+            mode: 'auto',
+            manualStatus: true
+        };
+        
+        saveDataToFile();
+        res.json({ 
+            success: true, 
+            message: 'System reset completed successfully' 
+        });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
