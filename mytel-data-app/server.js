@@ -1,5 +1,5 @@
 // ============================================================
-// server.js - Full Server with Admin API Routes
+// server.js - Full Server with Admin API Routes & Chat
 // ============================================================
 
 const express = require('express');
@@ -33,11 +33,35 @@ app.get('/admin.html', (req, res) => {
 });
 
 app.get('/operators', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'public', 'operators.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'operator.html'));
 });
 
 app.get('/operators.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'public', 'operators.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'operator.html'));
+});
+
+app.get('/operator.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'operator.html'));
+});
+
+app.get('/chat', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'chat.html'));
+});
+
+app.get('/chat.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'chat.html'));
+});
+
+app.get('/admin-chat.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'admin-chat.html'));
+});
+
+app.get('/live', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'live.html'));
+});
+
+app.get('/live.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'live.html'));
 });
 
 // ============================================================
@@ -56,6 +80,7 @@ app.locals.salesHours = {
 app.locals.orders = [];
 app.locals.users = [];
 app.locals.operatorPlans = [];
+app.locals.chatMessages = [];
 
 // ===== DEFAULT OPERATOR PLANS =====
 const DEFAULT_PLANS = [
@@ -129,6 +154,7 @@ function loadDataFromFile() {
             if (data.users) app.locals.users = data.users;
             if (data.salesHours) app.locals.salesHours = data.salesHours;
             if (data.operatorPlans) app.locals.operatorPlans = data.operatorPlans;
+            if (data.chatMessages) app.locals.chatMessages = data.chatMessages;
             console.log('📁 Data loaded from file');
         } else {
             // Create default data file
@@ -146,7 +172,8 @@ function saveDataToFile() {
             orders: app.locals.orders || [],
             users: app.locals.users || [],
             salesHours: app.locals.salesHours || {},
-            operatorPlans: app.locals.operatorPlans || DEFAULT_PLANS
+            operatorPlans: app.locals.operatorPlans || DEFAULT_PLANS,
+            chatMessages: app.locals.chatMessages || []
         };
         fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
         console.log('💾 Data saved to file');
@@ -316,7 +343,6 @@ app.post('/api/operator-plans', (req, res) => {
             });
         }
         
-        // Validate plans structure
         for (const op of plans) {
             if (!op.id || !op.plans || !Array.isArray(op.plans)) {
                 return res.status(400).json({ 
@@ -337,6 +363,77 @@ app.post('/api/operator-plans', (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+
+// ============================================================
+// CHAT API ROUTES
+// ============================================================
+
+// ===== GET ALL CHAT MESSAGES =====
+app.get('/api/chat/messages', (req, res) => {
+    try {
+        const messages = app.locals.chatMessages || [];
+        res.json({ success: true, messages });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== SEND A CHAT MESSAGE =====
+app.post('/api/chat/send', (req, res) => {
+    try {
+        const { user_id, username, phone, message } = req.body;
+        
+        if (!message) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Message is required' 
+            });
+        }
+        
+        const newMessage = {
+            id: 'MSG' + Date.now().toString().slice(-6),
+            user_id: user_id || phone || 'guest',
+            username: username || 'User',
+            phone: phone || '',
+            message: message,
+            type: user_id === 'admin' ? 'admin' : 'user',
+            created_at: new Date().toISOString()
+        };
+        
+        app.locals.chatMessages.push(newMessage);
+        
+        // Keep only last 500 messages
+        if (app.locals.chatMessages.length > 500) {
+            app.locals.chatMessages = app.locals.chatMessages.slice(-500);
+        }
+        
+        // Broadcast to other clients
+        broadcastChatUpdate(newMessage);
+        
+        saveDataToFile();
+        
+        res.json({ success: true, message: newMessage });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== BROADCAST CHAT UPDATE =====
+function broadcastChatUpdate(message) {
+    try {
+        if (typeof BroadcastChannel !== 'undefined') {
+            try {
+                const channel = new BroadcastChannel('chat-updates');
+                channel.postMessage({ type: 'newMessage', message });
+                channel.close();
+            } catch(e) {}
+        }
+        
+        localStorage.setItem('_chatUpdateTimestamp', Date.now().toString());
+    } catch(e) {
+        console.log('Chat broadcast not available');
+    }
+}
 
 // ============================================================
 // ADMIN API ROUTES
@@ -550,6 +647,7 @@ app.post('/api/admin/system-reset', (req, res) => {
         
         app.locals.orders = [];
         app.locals.users = [];
+        app.locals.chatMessages = [];
         app.locals.salesHours = {
             enabled: true,
             startHour: 9,
@@ -567,13 +665,6 @@ app.post('/api/admin/system-reset', (req, res) => {
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
-});
-
-// ============================================================
-// ADMIN CHAT
-// ============================================================
-app.get('/admin-chat.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'public', 'admin-chat.html'));
 });
 
 // ============================================================
