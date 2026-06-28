@@ -305,7 +305,7 @@
             color: var(--amber);
         }
 
-        /* ===== CHAT BODY (Messages + Input) ===== */
+        /* ===== CHAT BODY ===== */
         .chat-body {
             flex: 1;
             display: flex;
@@ -651,7 +651,7 @@
                 transform: translateX(-100%);
             }
             .chat-header .back-btn {
-                display: block;
+                display: block !important;
             }
             .chat-area {
                 padding-left: 0;
@@ -708,7 +708,7 @@
         <div class="modal-box">
             <div class="modal-icon"><i class="fas fa-trash-alt"></i></div>
             <h3 id="deleteModalTitle">Delete Conversation</h3>
-            <p id="deleteModalDesc">Are you sure you want to delete all messages with this user? This action cannot be undone.</p>
+            <p id="deleteModalDesc">Are you sure you want to delete all messages? This action cannot be undone.</p>
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
                 <button class="btn-confirm" onclick="confirmDelete()">Delete All</button>
@@ -747,7 +747,7 @@
         <div class="chat-area">
             <!-- Chat Header -->
             <div class="chat-header">
-                <button class="back-btn" onclick="toggleSidebar()">
+                <button class="back-btn" onclick="toggleSidebarMobile()">
                     <i class="fas fa-arrow-left"></i>
                 </button>
                 <div class="avatar" id="chatAvatar">
@@ -817,7 +817,7 @@
 
     <script>
         // ================================================================
-        //  ADMIN CHAT - PER USER CONVERSATION WITH MINIMIZE & COLLAPSE
+        //  ADMIN CHAT - PER USER CONVERSATION WITH DELETE
         // ================================================================
 
         const API_BASE = window.location.origin;
@@ -846,10 +846,18 @@
         }
 
         // ================================================================
-        //  SIDEBAR TOGGLE (Mobile)
+        //  SIDEBAR TOGGLE (Mobile - Back Button)
         // ================================================================
-        function toggleSidebar() {
-            document.getElementById('userSidebar').classList.toggle('hidden');
+        function toggleSidebarMobile() {
+            const sidebar = document.getElementById('userSidebar');
+            sidebar.classList.toggle('hidden');
+            
+            // If sidebar is hidden, show it when back button is clicked again
+            // But on mobile, it should toggle
+            if (window.innerWidth <= 768) {
+                // On mobile, back button toggles sidebar
+                // No additional action needed
+            }
         }
 
         // ================================================================
@@ -883,7 +891,6 @@
                 chatBody.classList.add('minimized');
                 banner.style.display = 'flex';
                 icon.className = 'fas fa-plus';
-                // Update banner with current user info
                 const user = users.find(u => u.id === selectedUserId);
                 if (user) {
                     document.getElementById('bannerName').textContent = user.username;
@@ -899,7 +906,6 @@
                 chatBody.classList.remove('minimized');
                 banner.style.display = 'none';
                 icon.className = 'fas fa-minus';
-                // Focus input
                 setTimeout(() => {
                     document.getElementById('messageInput').focus();
                 }, 300);
@@ -953,7 +959,6 @@
                     renderUserList();
                     if (selectedUserId) {
                         renderMessages(selectedUserId);
-                        // Update banner last message
                         const user = users.find(u => u.id === selectedUserId);
                         if (user && isMinimized) {
                             document.getElementById('bannerLastMsg').textContent = (user.lastMessage || 'No messages').substring(0, 50);
@@ -1075,7 +1080,6 @@
                 
                 user.unread = 0;
                 
-                // Update banner if minimized
                 if (isMinimized) {
                     document.getElementById('bannerName').textContent = user.username;
                     document.getElementById('bannerAvatar').textContent = user.username.charAt(0).toUpperCase() || 'U';
@@ -1086,6 +1090,7 @@
             renderUserList(document.getElementById('searchUsers').value);
             renderMessages(userId);
             
+            // On mobile, hide sidebar after selecting user
             if (window.innerWidth <= 768) {
                 document.getElementById('userSidebar').classList.add('hidden');
             }
@@ -1271,6 +1276,22 @@
                             document.getElementById('bannerAvatar').textContent = 'U';
                             document.getElementById('bannerLastMsg').textContent = 'Click to expand chat';
                         }
+                        document.getElementById('chatUserName').textContent = 'Select a customer';
+                        document.getElementById('chatUserStatus').innerHTML = `
+                            <span class="dot"></span>
+                            <span>Select a user to start chatting</span>
+                        `;
+                        document.getElementById('chatAvatar').innerHTML = '<i class="fas fa-user"></i>';
+                        document.getElementById('messageInput').disabled = true;
+                        document.getElementById('sendBtn').disabled = true;
+                        document.getElementById('deleteChatBtn').style.display = 'none';
+                        document.getElementById('messagesContainer').innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-comments"></i>
+                                <h3>All conversations deleted</h3>
+                                <p>Select a user from the sidebar to start chatting</p>
+                            </div>
+                        `;
                     } else {
                         allMessages = allMessages.filter(msg => 
                             msg.user_id !== deleteTargetUserId && 
@@ -1416,7 +1437,8 @@
             console.log('🔄 Auto-refresh every 3 seconds');
             console.log('⌨️ Ctrl+Enter to send, Escape to close');
             console.log('⌨️ Ctrl+M to minimize/expand');
-            console.log('🗑️ Delete conversations with trash icon');
+            console.log('🗑️ Delete single user or all conversations');
+            console.log('📱 Back button toggles sidebar on mobile');
         }
 
         // ================================================================
@@ -1430,7 +1452,7 @@
         window.showToast = showToast;
         window.selectUser = selectUser;
         window.filterUsers = filterUsers;
-        window.toggleSidebar = toggleSidebar;
+        window.toggleSidebarMobile = toggleSidebarMobile;
         window.toggleSidebarCollapse = toggleSidebarCollapse;
         window.toggleMinimize = toggleMinimize;
         window.showDeleteModal = showDeleteModal;
