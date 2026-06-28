@@ -6,6 +6,7 @@
     <title>ATH DIGITAL HUB - VIP Plans</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* ... your existing styles ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg-dark: #0a0c15;
@@ -645,6 +646,45 @@
         #supportModal .modal-card a:active {
             transform: scale(0.97);
         }
+
+        /* ===== MARKET CARD OPERATOR LOGOS ===== */
+        .operator-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .operator-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 1rem;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+        }
+        .operator-card:hover {
+            border-color: rgba(0,212,255,0.2);
+            transform: translateY(-2px);
+        }
+        .operator-card img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: white;
+            padding: 6px;
+        }
+        .operator-card .op-name {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .operator-card .op-desc {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -761,9 +801,6 @@
                 </div>
             </div>
             
-            <!-- AD CONTAINER - REMOVED -->
-            <!-- <div id="adContainer" style="margin: 16px 0;"></div> -->
-            
             <div style="background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(139,92,246,0.05)); border-radius: 1.5rem; padding: 20px; margin: 16px 0; text-align: center;">
                 <div style="font-size: 1.2rem;">🌤️ <span id="welcomeText">မင်္ဂလာပါ</span>, <span id="userName">User</span></div>
                 <div id="userPhoneDisplay" style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 4px;"></div>
@@ -816,13 +853,47 @@
             </div>
         </div>
 
-        <!-- Market Tab with Close Button -->
+        <!-- Market Tab with Operator Logos -->
         <div id="marketTab" class="tab-content">
             <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
                 <button class="market-close-btn" onclick="closeMarketTab()">
                     <i class="fas fa-times-circle"></i> Close Market
                 </button>
             </div>
+            
+            <!-- ===== OPERATOR LOGOS SECTION ===== -->
+            <div style="margin-bottom: 24px;">
+                <h4 style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-network-wired" style="color: var(--cyan);"></i> အော်ပရေတာများ / Operators
+                </h4>
+                <div class="operator-grid">
+                    <!-- ATOM -->
+                    <div class="operator-card">
+                        <img src="https://i.imgur.com/I5iRYm8.png" alt="ATOM" onerror="this.style.display='none'">
+                        <div class="op-name">ATOM</div>
+                        <div class="op-desc">လိုင်းပိုင်ရှင် အမှတ် ၁</div>
+                    </div>
+                    <!-- MYTEL -->
+                    <div class="operator-card">
+                        <img src="https://i.imgur.com/Xl3B5xF.jpeg" alt="MYTEL" onerror="this.style.display='none'">
+                        <div class="op-name">MYTEL</div>
+                        <div class="op-desc">မြန်မာ့လက်ရှိ အတွေ့အကြုံ</div>
+                    </div>
+                    <!-- OOREDOO -->
+                    <div class="operator-card">
+                        <img src="https://i.imgur.com/eNdLhsk.png" alt="OOREDOO" onerror="this.style.display='none'">
+                        <div class="op-name">OOREDOO</div>
+                        <div class="op-desc">အင်တာနက်အမြန်ဆုံး</div>
+                    </div>
+                    <!-- MPT -->
+                    <div class="operator-card">
+                        <img src="https://i.imgur.com/BNUZimj.png" alt="MPT" onerror="this.style.display='none'">
+                        <div class="op-name">MPT</div>
+                        <div class="op-desc">အခြေခံအကျဆုံး ဆက်သွယ်ရေး</div>
+                    </div>
+                </div>
+            </div>
+            
             <div id="marketContainer">
                 <div style="text-align:center; padding:40px;">
                     <i class="fas fa-spinner fa-pulse"></i> Loading market...
@@ -1819,7 +1890,6 @@
         
         // Update Drawer Menu
         const drawerLinks = document.querySelectorAll('.drawer-menu li a');
-        // ✅ FIXED: exportOrders နဲ့ support ကို မှန်ကန်အောင်ပြင်ထားတယ်
         const drawerTextKeys = ['home', 'plans', 'orders', 'live', 'market', 'profile', 'exportOrders', 'support', 'logout'];
         
         drawerLinks.forEach((link, index) => {
