@@ -18,6 +18,7 @@
             --emerald: #10b981;
             --rose: #f43f5e;
             --amber: #f59e0b;
+            --violet: #8b5cf6;
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --border-color: rgba(0,212,255,0.08);
@@ -35,18 +36,187 @@
             overflow: hidden;
         }
 
-        /* ===== HEADER ===== */
+        /* ===== LAYOUT ===== */
+        .chat-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ===== SIDEBAR - USER LIST ===== */
+        .user-sidebar {
+            width: 280px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .user-sidebar .sidebar-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .user-sidebar .sidebar-header h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .user-sidebar .sidebar-header h3 span {
+            font-size: 0.6rem;
+            background: rgba(16,185,129,0.15);
+            color: var(--emerald);
+            padding: 2px 8px;
+            border-radius: 40px;
+        }
+        .user-sidebar .sidebar-header .header-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .user-sidebar .sidebar-header .header-actions button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all var(--transition);
+            font-size: 0.85rem;
+        }
+        .user-sidebar .sidebar-header .header-actions button:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+        }
+        .user-sidebar .sidebar-header .header-actions button.danger:hover {
+            background: rgba(244,63,94,0.15);
+            color: var(--rose);
+        }
+        .user-sidebar .sidebar-search {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .user-sidebar .sidebar-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.2);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .user-sidebar .sidebar-search input:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(0,212,255,0.06);
+        }
+        .user-sidebar .user-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+        .user-sidebar .user-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+        .user-sidebar .user-item:hover {
+            background: rgba(0,212,255,0.04);
+        }
+        .user-sidebar .user-item:hover .user-delete-btn {
+            opacity: 1;
+        }
+        .user-sidebar .user-item.active {
+            background: rgba(0,212,255,0.06);
+            border-left-color: var(--cyan);
+        }
+        .user-sidebar .user-item .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--violet));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        .user-sidebar .user-item .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .user-sidebar .user-item .user-info .name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .user-sidebar .user-item .user-info .last-msg {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .user-sidebar .user-item .user-time {
+            font-size: 0.5rem;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        .user-sidebar .user-item .unread-badge {
+            background: var(--rose);
+            color: white;
+            font-size: 0.5rem;
+            padding: 2px 6px;
+            border-radius: 40px;
+            flex-shrink: 0;
+        }
+        .user-sidebar .user-item .user-delete-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: all var(--transition);
+            font-size: 0.7rem;
+        }
+        .user-sidebar .user-item .user-delete-btn:hover {
+            color: var(--rose);
+            background: rgba(244,63,94,0.1);
+        }
+
+        /* ===== CHAT AREA ===== */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        /* ===== CHAT HEADER ===== */
         .chat-header {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 18px;
+            padding: 12px 18px;
             background: var(--bg-card);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
         }
         .chat-header .back-btn {
+            display: none;
             background: none;
             border: none;
             color: var(--text-secondary);
@@ -59,14 +229,14 @@
             color: var(--text-primary);
         }
         .chat-header .avatar {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--cyan), #0891b2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             flex-shrink: 0;
         }
         .chat-header .info {
@@ -74,10 +244,10 @@
         }
         .chat-header .info .name {
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
         .chat-header .info .status {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-secondary);
             display: flex;
             align-items: center;
@@ -97,13 +267,13 @@
         }
         .chat-header .actions {
             display: flex;
-            gap: 6px;
+            gap: 4px;
         }
         .chat-header .actions button {
             background: none;
             border: none;
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             padding: 6px;
             border-radius: 50%;
@@ -112,6 +282,10 @@
         .chat-header .actions button:hover {
             background: rgba(255,255,255,0.05);
             color: var(--text-primary);
+        }
+        .chat-header .actions button.danger:hover {
+            background: rgba(244,63,94,0.15);
+            color: var(--rose);
         }
 
         /* ===== MESSAGES ===== */
@@ -150,7 +324,7 @@
             border-bottom-left-radius: 4px;
         }
         .chat-messages .message .sender-name {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--cyan);
             display: block;
             margin-bottom: 2px;
@@ -209,41 +383,13 @@
         .chat-messages .empty-state p {
             font-size: 0.7rem;
         }
-        .chat-messages .typing-indicator {
-            align-self: flex-start;
-            padding: 8px 14px;
-            background: var(--bg-card);
-            border-radius: 14px;
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--border-color);
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            display: none;
-        }
-        .chat-messages .typing-indicator .dots {
-            display: inline-flex;
-            gap: 4px;
-        }
-        .chat-messages .typing-indicator .dots span {
-            width: 6px;
-            height: 6px;
-            background: var(--text-secondary);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite;
-        }
-        .chat-messages .typing-indicator .dots span:nth-child(2) { animation-delay: 0.2s; }
-        .chat-messages .typing-indicator .dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-6px); }
-        }
 
         /* ===== INPUT ===== */
         .chat-input {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 16px;
+            padding: 10px 16px;
             background: var(--bg-card);
             backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-color);
@@ -264,17 +410,21 @@
             border-color: var(--cyan);
             box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.06);
         }
+        .chat-input input:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
         .chat-input input::placeholder {
             color: var(--text-secondary);
         }
         .chat-input .send-btn {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             border: none;
             background: linear-gradient(135deg, var(--cyan), #0891b2);
             color: #030712;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all var(--transition);
             display: flex;
@@ -282,7 +432,7 @@
             justify-content: center;
             flex-shrink: 0;
         }
-        .chat-input .send-btn:hover {
+        .chat-input .send-btn:hover:not(:disabled) {
             transform: scale(1.05);
             box-shadow: 0 4px 20px rgba(0, 212, 255, 0.25);
         }
@@ -290,6 +440,79 @@
             opacity: 0.4;
             cursor: not-allowed;
             transform: none;
+        }
+
+        /* ===== DELETE CONFIRM MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 420px;
+            width: 90%;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+        .modal-box .modal-icon {
+            font-size: 2.5rem;
+            color: var(--rose);
+            margin-bottom: 12px;
+        }
+        .modal-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .modal-box p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .modal-box .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .modal-box .modal-buttons button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            font-size: 0.85rem;
+        }
+        .modal-box .modal-buttons .btn-confirm {
+            background: var(--rose);
+            color: white;
+        }
+        .modal-box .modal-buttons .btn-confirm:hover {
+            background: #dc2626;
+            transform: scale(0.98);
+        }
+        .modal-box .modal-buttons .btn-cancel {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .modal-box .modal-buttons .btn-cancel:hover {
+            background: rgba(255,255,255,0.1);
         }
 
         /* ===== TOAST ===== */
@@ -315,6 +538,26 @@
         }
 
         /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .user-sidebar {
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                z-index: 10;
+                transition: transform 0.3s ease;
+            }
+            .user-sidebar.hidden {
+                transform: translateX(-100%);
+            }
+            .chat-header .back-btn {
+                display: block;
+            }
+            .chat-area {
+                padding-left: 0;
+            }
+        }
         @media (max-width: 480px) {
             .chat-header {
                 padding: 10px 14px;
@@ -342,6 +585,12 @@
                 height: 38px;
                 font-size: 0.95rem;
             }
+            .user-sidebar .user-item {
+                padding: 8px 12px;
+            }
+            .modal-box {
+                padding: 1.5rem;
+            }
         }
         @media (max-width: 380px) {
             .chat-header .info .status {
@@ -355,53 +604,90 @@
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <div class="chat-header">
-        <button class="back-btn" onclick="closeChat()">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-        <div class="avatar">
-            <i class="fas fa-headset"></i>
-        </div>
-        <div class="info">
-            <div class="name">Admin Support</div>
-            <div class="status">
-                <span class="dot"></span>
-                Online
+    <!-- ===== DELETE CONFIRM MODAL ===== -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <div class="modal-icon"><i class="fas fa-trash-alt"></i></div>
+            <h3 id="deleteModalTitle">Delete Conversation</h3>
+            <p id="deleteModalDesc">Are you sure you want to delete all messages with this user? This action cannot be undone.</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn-confirm" onclick="confirmDelete()">Delete All</button>
             </div>
         </div>
-        <div class="actions">
-            <button onclick="refreshChat()" title="Refresh">
-                <i class="fas fa-sync-alt"></i>
-            </button>
+    </div>
+
+    <!-- ===== CHAT CONTAINER ===== -->
+    <div class="chat-container">
+
+        <!-- ===== USER SIDEBAR ===== -->
+        <div class="user-sidebar" id="userSidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-users" style="color:var(--cyan);"></i> Customers <span id="userCount">0</span></h3>
+                <div class="header-actions">
+                    <button onclick="refreshChat()" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button onclick="showDeleteAllModal()" class="danger" title="Delete All Conversations">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="searchUsers" placeholder="🔍 Search users..." oninput="filterUsers()">
+            </div>
+            <div class="user-list" id="userList">
+                <!-- Users will be rendered here -->
+            </div>
         </div>
-    </div>
 
-    <!-- ===== MESSAGES ===== -->
-    <div class="chat-messages" id="messagesContainer">
-        <div class="empty-state">
-            <i class="fas fa-comments"></i>
-            <h3>No messages yet</h3>
-            <p>Start chatting with customers!</p>
+        <!-- ===== CHAT AREA ===== -->
+        <div class="chat-area">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <button class="back-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="avatar" id="chatAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="info">
+                    <div class="name" id="chatUserName">Select a customer</div>
+                    <div class="status" id="chatUserStatus">
+                        <span class="dot"></span>
+                        <span>Select a user to start chatting</span>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button onclick="refreshCurrentChat()" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button onclick="deleteCurrentChat()" class="danger" title="Delete this conversation" id="deleteChatBtn" style="display:none;">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button onclick="closeChat()" title="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages -->
+            <div class="chat-messages" id="messagesContainer">
+                <div class="empty-state">
+                    <i class="fas fa-comments"></i>
+                    <h3>Select a customer</h3>
+                    <p>Choose a user from the sidebar to start chatting</p>
+                </div>
+            </div>
+
+            <!-- Input -->
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()" disabled>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
         </div>
-    </div>
-
-    <!-- ===== TYPING INDICATOR ===== -->
-    <div class="typing-indicator" id="typingIndicator">
-        <span>Customer is typing</span>
-        <span class="dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </span>
-    </div>
-
-    <!-- ===== INPUT ===== -->
-    <div class="chat-input">
-        <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
-        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
-            <i class="fas fa-paper-plane"></i>
-        </button>
     </div>
 
     <!-- ===== TOAST ===== -->
@@ -409,16 +695,17 @@
 
     <script>
         // ================================================================
-        //  ADMIN CHAT - Full Script
+        //  ADMIN CHAT - PER USER CONVERSATION WITH DELETE
         // ================================================================
 
         const API_BASE = window.location.origin;
         let adminId = 'admin';
         let adminName = 'Admin Support';
-        let messages = [];
+        let allMessages = [];
+        let users = [];
+        let selectedUserId = null;
         let chatInterval = null;
-        let typingTimeout = null;
-        let lastMessageCount = 0;
+        let deleteTargetUserId = null;
 
         // ================================================================
         //  TOAST
@@ -432,6 +719,13 @@
             toast._hideTimer = setTimeout(() => {
                 toast.style.display = 'none';
             }, 3000);
+        }
+
+        // ================================================================
+        //  SIDEBAR TOGGLE (Mobile)
+        // ================================================================
+        function toggleSidebar() {
+            document.getElementById('userSidebar').classList.toggle('hidden');
         }
 
         // ================================================================
@@ -457,6 +751,10 @@
             showToast('🔄 Refreshed');
         }
 
+        function refreshCurrentChat() {
+            loadMessages();
+        }
+
         // ================================================================
         //  LOAD MESSAGES
         // ================================================================
@@ -472,20 +770,12 @@
 
                 const data = await response.json();
                 if (data.success && data.messages) {
-                    const newMessages = data.messages;
-                    
-                    // Check if new messages arrived
-                    if (newMessages.length > lastMessageCount) {
-                        // Check if last message is from user (not admin)
-                        const lastMsg = newMessages[newMessages.length - 1];
-                        if (lastMsg && lastMsg.user_id !== adminId && lastMsg.user_id !== 'admin') {
-                            showToast('📩 New message from customer!');
-                        }
+                    allMessages = data.messages;
+                    updateUsers();
+                    renderUserList();
+                    if (selectedUserId) {
+                        renderMessages(selectedUserId);
                     }
-                    
-                    messages = newMessages;
-                    lastMessageCount = messages.length;
-                    renderMessages();
                 }
             } catch (error) {
                 console.error('Error loading messages:', error);
@@ -493,17 +783,149 @@
         }
 
         // ================================================================
-        //  RENDER MESSAGES
+        //  UPDATE USERS LIST
         // ================================================================
-        function renderMessages() {
-            const container = document.getElementById('messagesContainer');
+        function updateUsers() {
+            const userMap = new Map();
+            
+            for (const msg of allMessages) {
+                if (msg.type === 'system') continue;
+                const userId = msg.user_id;
+                if (userId === adminId || userId === 'admin') continue;
+                
+                if (!userMap.has(userId)) {
+                    userMap.set(userId, {
+                        id: userId,
+                        username: msg.username || userId,
+                        phone: msg.phone || '',
+                        lastMessage: msg.message,
+                        lastTime: msg.created_at,
+                        unread: 0
+                    });
+                } else {
+                    const user = userMap.get(userId);
+                    user.lastMessage = msg.message;
+                    user.lastTime = msg.created_at;
+                    // Count unread messages (messages not from admin)
+                    if (msg.user_id !== adminId && msg.user_id !== 'admin') {
+                        user.unread = (user.unread || 0) + 1;
+                    }
+                }
+            }
+            
+            users = Array.from(userMap.values());
+            // Sort by last message time (newest first)
+            users.sort((a, b) => new Date(b.lastTime) - new Date(a.lastTime));
+            document.getElementById('userCount').textContent = users.length;
+        }
 
-            if (!messages.length) {
+        // ================================================================
+        //  RENDER USER LIST
+        // ================================================================
+        function renderUserList(filter = '') {
+            const container = document.getElementById('userList');
+            const filteredUsers = users.filter(u => 
+                u.username.toLowerCase().includes(filter.toLowerCase()) ||
+                u.id.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (!filteredUsers.length) {
+                container.innerHTML = `
+                    <div style="text-align:center;padding:30px;color:var(--text-secondary);font-size:0.75rem;">
+                        <i class="fas fa-user-slash" style="font-size:1.2rem;display:block;margin-bottom:8px;"></i>
+                        ${filter ? 'No users found' : 'No customers yet'}
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            for (const user of filteredUsers) {
+                const isActive = user.id === selectedUserId;
+                const lastMsg = user.lastMessage || 'No messages';
+                const time = user.lastTime ? new Date(user.lastTime).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+                const avatarLetter = user.username.charAt(0).toUpperCase() || 'U';
+                
+                html += `
+                    <div class="user-item ${isActive ? 'active' : ''}" onclick="selectUser('${user.id}')">
+                        <div class="user-avatar">${avatarLetter}</div>
+                        <div class="user-info">
+                            <div class="name">${escapeHtml(user.username)}</div>
+                            <div class="last-msg">${escapeHtml(lastMsg.substring(0, 40))}</div>
+                        </div>
+                        <div class="user-time">${time}</div>
+                        ${user.unread > 0 ? `<span class="unread-badge">${user.unread}</span>` : ''}
+                        <button class="user-delete-btn" onclick="event.stopPropagation(); showDeleteModal('${user.id}')" title="Delete conversation">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        // ================================================================
+        //  FILTER USERS
+        // ================================================================
+        function filterUsers() {
+            const input = document.getElementById('searchUsers');
+            renderUserList(input.value);
+        }
+
+        // ================================================================
+        //  SELECT USER
+        // ================================================================
+        function selectUser(userId) {
+            selectedUserId = userId;
+            const user = users.find(u => u.id === userId);
+            
+            if (user) {
+                document.getElementById('chatUserName').textContent = user.username;
+                document.getElementById('chatUserStatus').innerHTML = `
+                    <span class="dot"></span>
+                    <span>${user.phone || 'Customer'}</span>
+                `;
+                document.getElementById('chatAvatar').innerHTML = user.username.charAt(0).toUpperCase() || 'U';
+                
+                // Enable input
+                document.getElementById('messageInput').disabled = false;
+                document.getElementById('sendBtn').disabled = false;
+                document.getElementById('messageInput').placeholder = `Message ${user.username}...`;
+                document.getElementById('deleteChatBtn').style.display = 'block';
+                
+                // Reset unread count
+                user.unread = 0;
+            }
+            
+            renderUserList(document.getElementById('searchUsers').value);
+            renderMessages(userId);
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                document.getElementById('userSidebar').classList.add('hidden');
+            }
+            
+            // Focus input
+            document.getElementById('messageInput').focus();
+        }
+
+        // ================================================================
+        //  RENDER MESSAGES FOR SELECTED USER
+        // ================================================================
+        function renderMessages(userId) {
+            const container = document.getElementById('messagesContainer');
+            const userMessages = allMessages.filter(msg => 
+                msg.user_id === userId || 
+                (msg.user_id === adminId && msg.phone === userId) ||
+                (msg.type === 'system' && msg.message.includes(userId))
+            );
+
+            if (!userMessages.length) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-comments"></i>
+                        <i class="fas fa-comment-dots"></i>
                         <h3>No messages yet</h3>
-                        <p>Start chatting with customers!</p>
+                        <p>Start the conversation with this customer</p>
                     </div>
                 `;
                 return;
@@ -512,7 +934,7 @@
             let html = '';
             let lastDate = '';
 
-            for (const msg of messages) {
+            for (const msg of userMessages) {
                 const msgDate = new Date(msg.created_at);
                 const dateStr = msgDate.toLocaleDateString('my-MM', {
                     weekday: 'short',
@@ -557,7 +979,13 @@
             const sendBtn = document.getElementById('sendBtn');
             const message = input.value.trim();
 
-            if (!message) return;
+            if (!message || !selectedUserId) return;
+
+            const user = users.find(u => u.id === selectedUserId);
+            if (!user) {
+                showToast('❌ User not found', true);
+                return;
+            }
 
             sendBtn.disabled = true;
             input.disabled = true;
@@ -569,7 +997,7 @@
                     body: JSON.stringify({
                         user_id: adminId,
                         username: adminName,
-                        phone: '',
+                        phone: user.phone || selectedUserId,
                         message: message
                     }),
                     credentials: 'include'
@@ -579,8 +1007,9 @@
 
                 if (data.success) {
                     input.value = '';
-                    showToast('✅ Message sent');
+                    showToast(`✅ Message sent to ${user.username}`);
                     await loadMessages();
+                    renderMessages(selectedUserId);
                 } else {
                     showToast('❌ Failed to send message: ' + (data.error || 'Unknown error'), true);
                 }
@@ -595,6 +1024,104 @@
         }
 
         // ================================================================
+        //  DELETE CONVERSATION (Single User)
+        // ================================================================
+        function showDeleteModal(userId) {
+            deleteTargetUserId = userId;
+            const user = users.find(u => u.id === userId);
+            document.getElementById('deleteModalTitle').textContent = `Delete Conversation`;
+            document.getElementById('deleteModalDesc').textContent = `Are you sure you want to delete all messages with "${user ? user.username : 'this user'}"? This action cannot be undone.`;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function showDeleteAllModal() {
+            deleteTargetUserId = 'all';
+            document.getElementById('deleteModalTitle').textContent = `Delete All Conversations`;
+            document.getElementById('deleteModalDesc').textContent = `Are you sure you want to delete ALL conversations with ALL users? This action cannot be undone.`;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        function deleteCurrentChat() {
+            if (selectedUserId) {
+                showDeleteModal(selectedUserId);
+            }
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            deleteTargetUserId = null;
+        }
+
+        async function confirmDelete() {
+            if (!deleteTargetUserId) {
+                closeDeleteModal();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/chat/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        user_id: deleteTargetUserId,
+                        admin_id: adminId 
+                    }),
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const count = data.deleted || 0;
+                    const msg = deleteTargetUserId === 'all' 
+                        ? `🗑 Deleted all conversations (${count} messages)`
+                        : `🗑 Deleted conversation (${count} messages)`;
+                    showToast(msg);
+                    
+                    // Clear messages
+                    if (deleteTargetUserId === 'all') {
+                        allMessages = [];
+                        users = [];
+                        selectedUserId = null;
+                    } else {
+                        allMessages = allMessages.filter(msg => 
+                            msg.user_id !== deleteTargetUserId && 
+                            !(msg.user_id === adminId && msg.phone === deleteTargetUserId)
+                        );
+                        if (selectedUserId === deleteTargetUserId) {
+                            selectedUserId = null;
+                            document.getElementById('chatUserName').textContent = 'Select a customer';
+                            document.getElementById('chatUserStatus').innerHTML = `
+                                <span class="dot"></span>
+                                <span>Select a user to start chatting</span>
+                            `;
+                            document.getElementById('chatAvatar').innerHTML = '<i class="fas fa-user"></i>';
+                            document.getElementById('messageInput').disabled = true;
+                            document.getElementById('sendBtn').disabled = true;
+                            document.getElementById('deleteChatBtn').style.display = 'none';
+                            document.getElementById('messagesContainer').innerHTML = `
+                                <div class="empty-state">
+                                    <i class="fas fa-comments"></i>
+                                    <h3>Conversation deleted</h3>
+                                    <p>Select another user from the sidebar</p>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    updateUsers();
+                    renderUserList();
+                    closeDeleteModal();
+                } else {
+                    showToast('❌ Failed to delete: ' + (data.error || 'Unknown error'), true);
+                }
+            } catch (error) {
+                console.error('Error deleting messages:', error);
+                showToast('❌ Failed to delete conversation', true);
+            }
+        }
+
+        // ================================================================
         //  AUTO REFRESH
         // ================================================================
         function startAutoRefresh() {
@@ -606,7 +1133,7 @@
             loadMessages();
             chatInterval = setInterval(() => {
                 loadMessages();
-            }, 3000); // 3 seconds for admin (faster response)
+            }, 3000);
 
             console.log('🔄 Admin chat auto-refresh started (every 3 seconds)');
         }
@@ -615,14 +1142,16 @@
         //  KEYBOARD SHORTCUTS
         // ================================================================
         document.addEventListener('keydown', function(e) {
-            // Ctrl+Enter to send
             if (e.ctrlKey && e.key === 'Enter') {
                 e.preventDefault();
                 sendMessage();
             }
-            // Escape to close
             if (e.key === 'Escape') {
-                closeChat();
+                if (document.getElementById('deleteModal').classList.contains('active')) {
+                    closeDeleteModal();
+                } else {
+                    closeChat();
+                }
             }
         });
 
@@ -643,20 +1172,18 @@
         //  LISTEN FOR UPDATES
         // ================================================================
         function listenForUpdates() {
-            // BroadcastChannel
             if (typeof BroadcastChannel !== 'undefined') {
                 try {
                     const channel = new BroadcastChannel('chat-updates');
                     channel.onmessage = (event) => {
                         if (event.data.type === 'newMessage') {
-                            console.log('📦 New message received via BroadcastChannel');
+                            console.log('📦 New message received');
                             loadMessages();
                         }
                     };
                 } catch (e) {}
             }
 
-            // localStorage
             window.addEventListener('storage', (e) => {
                 if (e.key === '_chatUpdateTimestamp') {
                     console.log('📦 Storage update detected');
@@ -664,7 +1191,6 @@
                 }
             });
 
-            // postMessage
             window.addEventListener('message', (event) => {
                 if (event.data && event.data.type === 'newChatMessage') {
                     console.log('📦 Iframe update detected');
@@ -674,23 +1200,23 @@
         }
 
         // ================================================================
-        //  FOCUS INPUT ON LOAD
-        // ================================================================
-        window.addEventListener('load', function() {
-            document.getElementById('messageInput').focus();
-        });
-
-        // ================================================================
         //  INIT
         // ================================================================
         function init() {
             startAutoRefresh();
             listenForUpdates();
-            document.getElementById('messageInput').focus();
-            console.log('💬 Admin Chat loaded successfully');
+            
+            setTimeout(() => {
+                if (users.length > 0 && !selectedUserId) {
+                    selectUser(users[0].id);
+                }
+            }, 500);
+            
+            console.log('💬 Admin Chat (Per User) loaded successfully');
             console.log('👤 Admin ID:', adminId);
             console.log('🔄 Auto-refresh every 3 seconds');
-            console.log('⌨️ Keyboard shortcuts: Ctrl+Enter to send, Escape to close');
+            console.log('⌨️ Ctrl+Enter to send, Escape to close');
+            console.log('🗑️ Delete conversations with trash icon');
         }
 
         // ================================================================
@@ -698,9 +1224,18 @@
         // ================================================================
         window.closeChat = closeChat;
         window.refreshChat = refreshChat;
+        window.refreshCurrentChat = refreshCurrentChat;
         window.sendMessage = sendMessage;
         window.loadMessages = loadMessages;
         window.showToast = showToast;
+        window.selectUser = selectUser;
+        window.filterUsers = filterUsers;
+        window.toggleSidebar = toggleSidebar;
+        window.showDeleteModal = showDeleteModal;
+        window.showDeleteAllModal = showDeleteAllModal;
+        window.deleteCurrentChat = deleteCurrentChat;
+        window.confirmDelete = confirmDelete;
+        window.closeDeleteModal = closeDeleteModal;
 
         // ================================================================
         //  START
