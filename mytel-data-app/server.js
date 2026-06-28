@@ -11,6 +11,12 @@ const PORT = process.env.PORT || 10000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ===== SERVE STATIC FILES FROM frontend/public =====
+const publicPath = path.join(__dirname, 'frontend', 'public');
+app.use(express.static(publicPath));
+
+// ===== ALSO SERVE FROM ROOT FOR BACKWARD COMPATIBILITY =====
 app.use(express.static(__dirname));
 
 // ===== MULTER SETUP FOR FILE UPLOADS =====
@@ -30,7 +36,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
     storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+    limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: function (req, file, cb) {
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         if (allowedTypes.includes(file.mimetype)) {
@@ -96,7 +102,6 @@ app.post('/api/user/register', (req, res) => {
         });
     }
     
-    // Validate phone number (Myanmar format)
     const phoneRegex = /^(09|\+?959)\d{7,9}$/;
     if (!phoneRegex.test(phone)) {
         return res.status(400).json({
@@ -106,9 +111,8 @@ app.post('/api/user/register', (req, res) => {
     }
     
     let users = readJSONFile(USERS_FILE);
-    
-    // Check if user exists
     const existingUser = users.find(u => u.phone === phone);
+    
     if (existingUser) {
         return res.json({
             success: true,
@@ -117,7 +121,6 @@ app.post('/api/user/register', (req, res) => {
         });
     }
     
-    // Create new user
     const newUser = {
         user_id: generateUserId(),
         phone: phone,
@@ -150,7 +153,6 @@ app.get('/api/user/:phone', (req, res) => {
         });
     }
     
-    // Update last login
     user.lastLogin = new Date().toISOString();
     writeJSONFile(USERS_FILE, users);
     
@@ -175,7 +177,6 @@ app.post('/api/orders', upload.single('slip'), (req, res) => {
             });
         }
         
-        // Validate phone number
         const phoneRegex = /^(09|\+?959)\d{7,9}$/;
         if (!phoneRegex.test(phone)) {
             return res.status(400).json({
@@ -185,8 +186,6 @@ app.post('/api/orders', upload.single('slip'), (req, res) => {
         }
         
         const orderId = generateOrderId();
-        
-        // Handle slip file upload
         let slipUrl = null;
         if (req.file) {
             slipUrl = '/uploads/' + req.file.filename;
@@ -230,10 +229,7 @@ app.get('/api/orders/:phone', (req, res) => {
     const phone = req.params.phone;
     const orders = readJSONFile(ORDERS_FILE);
     const userOrders = orders.filter(o => o.phone === phone);
-    
-    // Sort by created_at descending (newest first)
     userOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    
     res.json({ orders: userOrders });
 });
 
@@ -282,13 +278,11 @@ app.put('/api/orders/:orderId', (req, res) => {
 app.get('/api/sales/status', (req, res) => {
     let status = readJSONFile(SALES_STATUS_FILE);
     
-    // Check time-based auto close
     const now = new Date();
     const hour = now.getHours();
     const minutes = now.getMinutes();
     const currentTime = hour + minutes / 60;
     
-    // Check if current time is within business hours
     const isOpen = status.isOpen && 
                    currentTime >= status.startHour && 
                    currentTime < status.endHour;
@@ -327,23 +321,25 @@ app.post('/api/sales/status', (req, res) => {
 
 // ===== SERVE HTML FILES =====
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    // Try to serve index.html from frontend/public first
+    const indexPath = path.join(publicPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        // Fallback to root directory
+        res.sendFile(path.join(__dirname, 'index.html'));
+    }
 });
 
-app.get('/plans-widget.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'plans-widget.html'));
-});
-
-app.get('/live.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'live.html'));
-});
-
-app.get('/chat.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'chat.html'));
-});
-
-app.get('/market.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'market.html'));
+// Serve specific HTML files from frontend/public
+app.get('/:page.html', (req, res) => {
+    const page = req.params.page;
+    const filePath = path.join(publicPath, page + '.html');
+    if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
+    } else {
+        res.status(404).send('Page not found');
+    }
 });
 
 // ===== SERVE UPLOADED FILES =====
