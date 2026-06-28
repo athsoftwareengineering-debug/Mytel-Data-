@@ -418,6 +418,49 @@ app.post('/api/chat/send', (req, res) => {
     }
 });
 
+// ===== DELETE CHAT MESSAGES =====
+app.post('/api/chat/delete', (req, res) => {
+    try {
+        const { user_id, admin_id } = req.body;
+        
+        if (!user_id) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'User ID is required' 
+            });
+        }
+        
+        let deletedCount = 0;
+        
+        if (user_id === 'all') {
+            // Delete all messages except admin's own messages
+            const before = app.locals.chatMessages.length;
+            app.locals.chatMessages = app.locals.chatMessages.filter(msg => 
+                msg.user_id === admin_id || msg.user_id === 'admin'
+            );
+            deletedCount = before - app.locals.chatMessages.length;
+        } else {
+            // Delete messages with specific user
+            const before = app.locals.chatMessages.length;
+            app.locals.chatMessages = app.locals.chatMessages.filter(msg => 
+                msg.user_id !== user_id && 
+                !(msg.user_id === admin_id && msg.phone === user_id)
+            );
+            deletedCount = before - app.locals.chatMessages.length;
+        }
+        
+        saveDataToFile();
+        
+        res.json({ 
+            success: true, 
+            message: `Deleted ${deletedCount} messages`,
+            deleted: deletedCount
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // ===== BROADCAST CHAT UPDATE =====
 function broadcastChatUpdate(message) {
     try {
