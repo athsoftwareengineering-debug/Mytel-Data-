@@ -1,5 +1,5 @@
 // ============================================================
-// server.js - Full Server with Admin API Routes (FIXED)
+// server.js - Full Server with Admin API Routes
 // ============================================================
 
 const express = require('express');
@@ -28,8 +28,12 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+app.get('/admin.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 // ============================================================
-// STORE DATA IN MEMORY (Initialize after app is created)
+// STORE DATA IN MEMORY
 // ============================================================
 
 // Initialize app.locals with default data
@@ -69,6 +73,7 @@ function saveDataToFile() {
             salesHours: app.locals.salesHours || {}
         };
         fs.writeFileSync(path.join(__dirname, 'data.json'), JSON.stringify(data, null, 2));
+        console.log('💾 Data saved to file');
     } catch (e) {
         console.error('Error saving data:', e);
     }
@@ -158,7 +163,7 @@ app.get('/api/user/:phone', (req, res) => {
 // ===== CREATE ORDER =====
 app.post('/api/orders', (req, res) => {
     try {
-        const { phone, plan, price, payment_method, slip, sender_name, last5_digits } = req.body;
+        const { phone, plan, price, payment_method, sender_name, last5_digits } = req.body;
         
         if (!phone || !plan || !price) {
             return res.status(400).json({ 
@@ -175,7 +180,7 @@ app.post('/api/orders', (req, res) => {
             payment_method: payment_method || 'kpay',
             sender_name: sender_name || '',
             last5_digits: last5_digits || '',
-            slip_url: slip || null,
+            slip_url: null,
             status: 'Pending',
             created_at: new Date().toISOString(),
             activated_at: null
