@@ -303,11 +303,6 @@
             </div>
         </div>
 
-        <!-- Stats Bar - HIDDEN from users -->
-        <div class="stats-bar" id="statsBar">
-            <!-- Stats are hidden - only for admin reference -->
-        </div>
-
         <!-- Orders List -->
         <div id="ordersContainer">
             <div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading approved orders...</div>
@@ -320,13 +315,15 @@
     <script>
         // ================================================================
         //  LIVE - Approved Orders Viewer (No Counts Displayed)
-        //  FIXED: No redeclaration of API_BASE
+        //  FIXED: No redeclaration of API_BASE - Using var with check
         // ================================================================
 
-        // Check if API_BASE is already defined (from parent)
+        // Use var with a check to avoid redeclaration errors
         if (typeof API_BASE === 'undefined') {
             var API_BASE = window.location.origin;
         }
+        // If API_BASE is already defined, use the existing one
+        // This prevents the "Identifier has already been declared" error
 
         let allApprovedOrders = [];
         let refreshInterval = null;
