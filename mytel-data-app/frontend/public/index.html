@@ -1277,7 +1277,9 @@
     </div>
 </div>
 
-<!-- Payment Modal -->
+<!-- ============================================================ -->
+<!-- PAYMENT MODAL - Auto-filled with selected plan -->
+<!-- ============================================================ -->
 <div id="paymentModal" class="modal-overlay">
     <div class="modal-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
@@ -1473,6 +1475,10 @@
     let userChatWidgetOpen = false;
     let isShopOpen = true;
     let salesStatusInterval = null;
+    
+    // ===== Store selected plan from operators page =====
+    let selectedPlanFromOperators = null;
+    let selectedPlanPriceFromOperators = null;
 
     // ===== UTILITY FUNCTIONS =====
     function maskPhone(phone) {
@@ -2032,10 +2038,16 @@
         document.getElementById('screenshotTabBtn').classList.remove('active');
     }
     
+    // ===== OPEN RENEW MODAL WITH AUTO-SELECTED PLAN =====
     function openRenewModal(mode) {
         currentRenewMode = mode;
+        
+        // Set phone number based on mode
         if (mode === 'self') {
-            if (!currentUser) { showToast("ကျေးဇူးပြု၍ အကောင့်ဝင်ပါ", true); return; }
+            if (!currentUser) { 
+                showToast("ကျေးဇူးပြု၍ အကောင့်ဝင်ပါ", true); 
+                return; 
+            }
             document.getElementById('orderPhone').value = currentUser;
             document.getElementById('orderPhone').readOnly = true;
             document.getElementById('orderPhoneText').value = currentUser;
@@ -2050,27 +2062,61 @@
             document.getElementById('phoneNote').innerHTML = "※ လက်ခံမည့်သူ၏ ဖုန်းနံပါတ်";
             document.getElementById('phoneNoteText').innerHTML = "※ လက်ခံမည့်သူ၏ ဖုန်းနံပါတ်";
         }
+        
+        // ===== AUTO-SELECT PLAN FROM OPERATORS PAGE =====
+        if (selectedPlanFromOperators) {
+            // Find and select the matching plan in dropdown
+            const select = document.getElementById('planSelect');
+            let found = false;
+            for (let i = 0; i < select.options.length; i++) {
+                const opt = select.options[i];
+                if (opt.value.startsWith(selectedPlanFromOperators)) {
+                    select.selectedIndex = i;
+                    found = true;
+                    break;
+                }
+            }
+            // If not found, try to select by price
+            if (!found && selectedPlanPriceFromOperators) {
+                for (let i = 0; i < select.options.length; i++) {
+                    const opt = select.options[i];
+                    if (opt.value.includes(`|${selectedPlanPriceFromOperators}|`)) {
+                        select.selectedIndex = i;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            // Update display
+            updatePlanDisplay();
+            
+            // Show toast notification
+            showToast(`✅ "${selectedPlanFromOperators}" ကို ရွေးထားပါသည်။ ပြောင်းလိုပါက ပြန်ရွေးနိုင်ပါသည်။`);
+        } else {
+            // Default: select VIP LEVEL - 1
+            const select = document.getElementById('planSelect');
+            select.selectedIndex = 0;
+            updatePlanDisplay();
+        }
+        
+        // Reset form fields
         document.getElementById('slipImage').value = '';
         document.getElementById('fileNameDisplay').innerHTML = '';
         document.getElementById('senderName').value = '';
         document.getElementById('last5Digits').value = '';
         switchToScreenshot();
+        
+        // Open modal
         document.getElementById('paymentModal').classList.add('active');
-        // Update plan display when modal opens
-        updatePlanDisplay();
     }
     
+    // ===== OPEN PAYMENT MODAL FROM PLAN (called from operators page) =====
     function openPaymentModalFromPlan(plan, price) {
-        // Find matching plan in dropdown
-        const select = document.getElementById('planSelect');
-        for (let i = 0; i < select.options.length; i++) {
-            const opt = select.options[i];
-            if (opt.value.startsWith(plan)) {
-                select.selectedIndex = i;
-                break;
-            }
-        }
-        updatePlanDisplay();
+        // Store selected plan
+        selectedPlanFromOperators = plan;
+        selectedPlanPriceFromOperators = price;
+        
+        // Open renew modal with 'other' mode
         openRenewModal('other');
     }
     
@@ -2130,6 +2176,9 @@
             if (data.success) {
                 showToast(`✅ အော်ဒါအောင်မြင်ပါပြီ။ Order ID: ${data.orderId}`);
                 closePaymentModal();
+                // Clear selected plan after successful order
+                selectedPlanFromOperators = null;
+                selectedPlanPriceFromOperators = null;
                 if (currentUser === phone) {
                     await loadUserOrders();
                     if (document.getElementById('ordersTab').classList.contains('active')) renderMyOrders();
@@ -2286,6 +2335,15 @@
             showToast("📞 ဖုန်းနံပါတ် ကူးယူပြီးပါပြီ");
         });
     }
+
+    // ===== LISTEN FOR PLAN SELECTION FROM OPERATORS PAGE =====
+    window.addEventListener('message', (event) => {
+        if (event.data && event.data.type === 'planSelected') {
+            selectedPlanFromOperators = event.data.plan;
+            selectedPlanPriceFromOperators = event.data.price;
+            console.log('📦 Plan received from operators page:', selectedPlanFromOperators, selectedPlanPriceFromOperators);
+        }
+    });
 
     // ===== INIT =====
     const savedPhone = localStorage.getItem('userPhone');
