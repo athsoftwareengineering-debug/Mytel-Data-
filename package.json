@@ -1,12 +1,28 @@
 {
   "name": "mytel-data",
   "version": "1.0.0",
-  "description": "Telecom VIP Plans",
-  "main": "index.html",
+  "description": "Telecom VIP Plans - ATH Digital Hub",
+  "main": "frontend/public/index.html",
   "scripts": {
-    "start": "serve ."
+    "start": "serve frontend/public",
+    "dev": "serve frontend/public",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "serve": "^14.2.0"
+  },
+  "devDependencies": {},
+  "keywords": [
+    "telecom",
+    "vip-plans",
+    "mytel",
+    "atom",
+    "ooredoo",
+    "mpt"
+  ],
+  "author": "AUNG THU HTWE",
+  "license": "ISC",
+  "engines": {
+    "node": ">=14.0.0"
   }
 }
