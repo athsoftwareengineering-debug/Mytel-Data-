@@ -1853,19 +1853,38 @@
             const response = await fetch('/live.html');
             if (!response.ok) throw new Error('Failed to load live');
             const html = await response.text();
-            container.innerHTML = html;
+            
+            // Parse HTML and extract scripts
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+            
+            // Get scripts before removing them
+            const scripts = tempDiv.querySelectorAll('script');
+            
+            // Remove scripts from content
+            scripts.forEach(script => script.remove());
+            
+            // Set HTML content (without scripts)
+            container.innerHTML = tempDiv.innerHTML;
             liveLoaded = true;
             
-            const scripts = container.querySelectorAll('script');
+            // Execute scripts with proper variable handling
             scripts.forEach(script => {
                 const newScript = document.createElement('script');
                 if (script.src) {
                     newScript.src = script.src;
                 } else {
-                    newScript.textContent = script.textContent;
+                    let content = script.textContent;
+                    // Replace const/let with var to avoid redeclaration errors
+                    content = content.replace(/const API_BASE/g, 'var API_BASE');
+                    content = content.replace(/let API_BASE/g, 'var API_BASE');
+                    // Add check at beginning
+                    content = `if (typeof API_BASE === 'undefined') { var API_BASE = window.location.origin; }\n` + content;
+                    newScript.textContent = content;
                 }
                 document.body.appendChild(newScript);
             });
+            
         } catch (error) {
             console.error('Error loading live:', error);
             container.innerHTML = `<div style="text-align:center; padding:40px; color:var(--rose);">
