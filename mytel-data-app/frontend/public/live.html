@@ -315,10 +315,11 @@
     <script>
         // ================================================================
         //  LIVE - Approved Orders Viewer (No Counts Displayed)
-        //  FIXED: No redeclaration of API_BASE - Using var with check
+        //  FIXED: No redeclaration of API_BASE
         // ================================================================
 
-        // Check if API_BASE is already defined (from parent)
+        // IMPORTANT: Use var with check to avoid redeclaration errors
+        // This prevents "Identifier 'API_BASE' has already been declared"
         if (typeof API_BASE === 'undefined') {
             var API_BASE = window.location.origin;
         }
