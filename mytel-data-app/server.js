@@ -1,174 +1,168 @@
+// ============================================================
+// server.js - Full Server with Admin API Routes
+// ============================================================
+
 const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const multer = require('multer');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
 // ===== MIDDLEWARE =====
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// ===== SERVE STATIC FILES FROM frontend/public =====
-const publicPath = path.join(__dirname, 'frontend', 'public');
-app.use(express.static(publicPath));
-
-// ===== ALSO SERVE FROM ROOT FOR BACKWARD COMPATIBILITY =====
-app.use(express.static(__dirname));
-
-// ===== MULTER SETUP FOR FILE UPLOADS =====
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const uploadDir = path.join(__dirname, 'uploads');
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        cb(null, uploadDir);
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, 'slip-' + uniqueSuffix + path.extname(file.originalname));
-    }
+// ===== SERVE HTML FILES =====
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const upload = multer({ 
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
-    fileFilter: function (req, file, cb) {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (allowedTypes.includes(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only image files are allowed'));
-        }
-    }
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// ===== DATA FILES INITIALIZATION =====
-const USERS_FILE = path.join(__dirname, 'users.json');
-const ORDERS_FILE = path.join(__dirname, 'orders.json');
-const SALES_STATUS_FILE = path.join(__dirname, 'sales-status.json');
-
-// Initialize files if they don't exist
-if (!fs.existsSync(USERS_FILE)) {
-    fs.writeFileSync(USERS_FILE, JSON.stringify([], null, 2));
-}
-if (!fs.existsSync(ORDERS_FILE)) {
-    fs.writeFileSync(ORDERS_FILE, JSON.stringify([], null, 2));
-}
-if (!fs.existsSync(SALES_STATUS_FILE)) {
-    const defaultStatus = {
-        isOpen: true,
+// ===== STORE DATA IN MEMORY =====
+// Initialize with default data
+if (!req.app.locals.salesHours) {
+    req.app.locals.salesHours = {
+        enabled: true,
         startHour: 9,
         endHour: 19,
-        message: 'ဆိုင်ဖွင့်ထားပါသည်'
+        mode: 'auto',
+        manualStatus: true
     };
-    fs.writeFileSync(SALES_STATUS_FILE, JSON.stringify(defaultStatus, null, 2));
 }
 
-// ===== HELPER FUNCTIONS =====
-function readJSONFile(filePath) {
+if (!req.app.locals.orders) {
+    req.app.locals.orders = [];
+}
+
+if (!req.app.locals.users) {
+    req.app.locals.users = [];
+}
+
+// Load data from JSON file if exists
+function loadDataFromFile() {
     try {
-        const data = fs.readFileSync(filePath, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        return [];
+        const dataPath = path.join(__dirname, 'data.json');
+        if (fs.existsSync(dataPath)) {
+            const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+            if (data.orders) req.app.locals.orders = data.orders;
+            if (data.users) req.app.locals.users = data.users;
+            if (data.salesHours) req.app.locals.salesHours = data.salesHours;
+            console.log('📁 Data loaded from file');
+        }
+    } catch (e) {
+        console.error('Error loading data:', e);
     }
 }
 
-function writeJSONFile(filePath, data) {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+// Save data to JSON file
+function saveDataToFile() {
+    try {
+        const data = {
+            orders: req.app.locals.orders || [],
+            users: req.app.locals.users || [],
+            salesHours: req.app.locals.salesHours || {}
+        };
+        fs.writeFileSync(path.join(__dirname, 'data.json'), JSON.stringify(data, null, 2));
+    } catch (e) {
+        console.error('Error saving data:', e);
+    }
 }
 
-function generateUserId() {
-    return 'ATH' + Date.now().toString().slice(-6) + Math.random().toString(36).substring(2, 5).toUpperCase();
-}
+// Load data on startup
+loadDataFromFile();
 
-function generateOrderId() {
-    return 'ORD' + Date.now().toString().slice(-8);
-}
+// Save data every 30 seconds
+setInterval(saveDataToFile, 30000);
 
-// ===== USER REGISTER API =====
+// ============================================================
+// USER API ROUTES
+// ============================================================
+
+// ===== REGISTER / LOGIN USER =====
 app.post('/api/user/register', (req, res) => {
-    const { phone, username } = req.body;
-    
-    if (!phone || !username) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Phone and username are required' 
-        });
-    }
-    
-    const phoneRegex = /^(09|\+?959)\d{7,9}$/;
-    if (!phoneRegex.test(phone)) {
-        return res.status(400).json({
-            success: false,
-            error: 'Invalid phone number format. Please use Myanmar phone number (09xxxxxxxxx)'
-        });
-    }
-    
-    let users = readJSONFile(USERS_FILE);
-    const existingUser = users.find(u => u.phone === phone);
-    
-    if (existingUser) {
-        return res.json({
+    try {
+        const { phone, username } = req.body;
+        
+        if (!phone || !username) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Phone and username are required' 
+            });
+        }
+        
+        // Check if user exists
+        let user = req.app.locals.users.find(u => u.phone === phone);
+        let isNewUser = false;
+        
+        if (!user) {
+            // Create new user
+            user = {
+                phone,
+                username,
+                user_id: 'ATH' + Date.now().toString().slice(-6),
+                orders: [],
+                blocked: false,
+                suspect_flag: false,
+                created_at: new Date().toISOString()
+            };
+            req.app.locals.users.push(user);
+            isNewUser = true;
+            saveDataToFile();
+        }
+        
+        res.json({
             success: true,
-            user: existingUser,
-            isNewUser: false
+            user: {
+                phone: user.phone,
+                username: user.username,
+                user_id: user.user_id,
+                blocked: user.blocked,
+                suspect_flag: user.suspect_flag
+            },
+            isNewUser
         });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
-    
-    const newUser = {
-        user_id: generateUserId(),
-        phone: phone,
-        username: username.trim(),
-        blocked: false,
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString()
-    };
-    
-    users.push(newUser);
-    writeJSONFile(USERS_FILE, users);
-    
-    res.json({
-        success: true,
-        user: newUser,
-        isNewUser: true
-    });
 });
 
 // ===== GET USER DATA =====
 app.get('/api/user/:phone', (req, res) => {
-    const phone = req.params.phone;
-    const users = readJSONFile(USERS_FILE);
-    const user = users.find(u => u.phone === phone);
-    
-    if (!user) {
-        return res.status(404).json({ 
-            success: false, 
-            error: 'User not found' 
+    try {
+        const user = req.app.locals.users.find(u => u.phone === req.params.phone);
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        res.json({
+            success: true,
+            user: {
+                phone: user.phone,
+                username: user.username,
+                user_id: user.user_id,
+                blocked: user.blocked,
+                suspect_flag: user.suspect_flag,
+                created_at: user.created_at
+            }
         });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
-    
-    user.lastLogin = new Date().toISOString();
-    writeJSONFile(USERS_FILE, users);
-    
-    res.json({ success: true, user });
-});
-
-// ===== GET ALL USERS (Admin) =====
-app.get('/api/users', (req, res) => {
-    const users = readJSONFile(USERS_FILE);
-    res.json({ success: true, users });
 });
 
 // ===== CREATE ORDER =====
-app.post('/api/orders', upload.single('slip'), (req, res) => {
+app.post('/api/orders', (req, res) => {
     try {
-        const { phone, plan, price, payment_method, sender_name, last5_digits } = req.body;
+        const { phone, plan, price, payment_method, slip, sender_name, last5_digits } = req.body;
         
         if (!phone || !plan || !price) {
             return res.status(400).json({ 
@@ -177,198 +171,243 @@ app.post('/api/orders', upload.single('slip'), (req, res) => {
             });
         }
         
-        const phoneRegex = /^(09|\+?959)\d{7,9}$/;
-        if (!phoneRegex.test(phone)) {
-            return res.status(400).json({
-                success: false,
-                error: 'Invalid phone number format'
-            });
-        }
-        
-        const orderId = generateOrderId();
-        let slipUrl = null;
-        if (req.file) {
-            slipUrl = '/uploads/' + req.file.filename;
-        }
-        
-        const newOrder = {
-            id: orderId,
-            phone: phone,
-            plan: plan,
+        const order = {
+            id: 'ORD' + Date.now().toString().slice(-6),
+            phone,
+            plan,
             price: parseInt(price),
-            status: 'Pending',
             payment_method: payment_method || 'kpay',
             sender_name: sender_name || '',
             last5_digits: last5_digits || '',
-            slip_url: slipUrl,
+            slip_url: slip || null,
+            status: 'Pending',
             created_at: new Date().toISOString(),
             activated_at: null
         };
         
-        let orders = readJSONFile(ORDERS_FILE);
-        orders.push(newOrder);
-        writeJSONFile(ORDERS_FILE, orders);
+        req.app.locals.orders.push(order);
+        
+        // Update user's orders
+        const user = req.app.locals.users.find(u => u.phone === phone);
+        if (user) {
+            if (!user.orders) user.orders = [];
+            user.orders.push(order);
+        }
+        
+        saveDataToFile();
         
         res.json({
             success: true,
-            orderId: orderId,
-            order: newOrder
+            orderId: order.id,
+            order
         });
-        
     } catch (error) {
-        console.error('Error creating order:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Server error while creating order' 
-        });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// ===== GET ORDERS BY PHONE =====
+// ===== GET USER ORDERS =====
 app.get('/api/orders/:phone', (req, res) => {
-    const phone = req.params.phone;
-    const orders = readJSONFile(ORDERS_FILE);
-    const userOrders = orders.filter(o => o.phone === phone);
-    userOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    res.json({ orders: userOrders });
+    try {
+        const orders = req.app.locals.orders.filter(o => o.phone === req.params.phone);
+        res.json({ success: true, orders });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
-// ===== GET ALL ORDERS (Admin) =====
-app.get('/api/orders', (req, res) => {
-    const orders = readJSONFile(ORDERS_FILE);
-    res.json({ orders });
+// ============================================================
+// ADMIN API ROUTES
+// ============================================================
+
+// ===== SALES HOURS =====
+// GET - Get current sales hours
+app.get('/api/admin/sales-hours', (req, res) => {
+    try {
+        const salesHours = req.app.locals.salesHours || {
+            enabled: true,
+            startHour: 9,
+            endHour: 19,
+            mode: 'auto',
+            manualStatus: true
+        };
+        res.json({ success: true, salesHours });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
-// ===== UPDATE ORDER STATUS (Admin) =====
-app.put('/api/orders/:orderId', (req, res) => {
-    const { orderId } = req.params;
-    const { status, activated_at } = req.body;
-    
-    if (!status) {
-        return res.status(400).json({
-            success: false,
-            error: 'Status is required'
-        });
+// POST - Update sales hours
+app.post('/api/admin/sales-hours', (req, res) => {
+    try {
+        const { enabled, startHour, endHour, mode, manualStatus } = req.body;
+        req.app.locals.salesHours = {
+            enabled: enabled !== undefined ? enabled : true,
+            startHour: startHour || 9,
+            endHour: endHour || 19,
+            mode: mode || 'auto',
+            manualStatus: manualStatus !== undefined ? manualStatus : true
+        };
+        saveDataToFile();
+        res.json({ success: true, message: 'Sales hours updated' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
-    
-    let orders = readJSONFile(ORDERS_FILE);
-    const orderIndex = orders.findIndex(o => o.id === orderId);
-    
-    if (orderIndex === -1) {
-        return res.status(404).json({
-            success: false,
-            error: 'Order not found'
-        });
-    }
-    
-    orders[orderIndex].status = status;
-    if (status === 'Approved' && !orders[orderIndex].activated_at) {
-        orders[orderIndex].activated_at = activated_at || new Date().toISOString();
-    }
-    
-    writeJSONFile(ORDERS_FILE, orders);
-    
-    res.json({
-        success: true,
-        order: orders[orderIndex]
-    });
 });
 
-// ===== SALES STATUS API =====
+// ===== SALES STATUS =====
+// GET - Get current shop status
 app.get('/api/sales/status', (req, res) => {
-    let status = readJSONFile(SALES_STATUS_FILE);
-    
-    const now = new Date();
-    const hour = now.getHours();
-    const minutes = now.getMinutes();
-    const currentTime = hour + minutes / 60;
-    
-    const isOpen = status.isOpen && 
-                   currentTime >= status.startHour && 
-                   currentTime < status.endHour;
-    
-    let message = status.isOpen ? 'ဆိုင်ဖွင့်ထားပါသည်' : 'ဆိုင်ပိတ်ထားပါသည်';
-    if (!isOpen && status.isOpen) {
-        message = `ဆိုင်ပိတ်ထားပါသည်။ မနက် ${status.startHour}:00 မှ ညနေ ${status.endHour}:00 အတွင်း ဝယ်ယူနိုင်ပါသည်။`;
-    }
-    
-    res.json({
-        isOpen: isOpen,
-        startHour: status.startHour,
-        endHour: status.endHour,
-        message: message
-    });
-});
-
-// ===== UPDATE SALES STATUS (Admin) =====
-app.post('/api/sales/status', (req, res) => {
-    const { isOpen, startHour, endHour } = req.body;
-    
-    const status = {
-        isOpen: isOpen !== undefined ? isOpen : true,
-        startHour: startHour || 9,
-        endHour: endHour || 19,
-        updatedAt: new Date().toISOString()
-    };
-    
-    writeJSONFile(SALES_STATUS_FILE, status);
-    
-    res.json({
-        success: true,
-        status: status
-    });
-});
-
-// ===== SERVE HTML FILES =====
-app.get('/', (req, res) => {
-    // Try to serve index.html from frontend/public first
-    const indexPath = path.join(publicPath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
-    } else {
-        // Fallback to root directory
-        res.sendFile(path.join(__dirname, 'index.html'));
-    }
-});
-
-// Serve specific HTML files from frontend/public
-app.get('/:page.html', (req, res) => {
-    const page = req.params.page;
-    const filePath = path.join(publicPath, page + '.html');
-    if (fs.existsSync(filePath)) {
-        res.sendFile(filePath);
-    } else {
-        res.status(404).send('Page not found');
-    }
-});
-
-// ===== SERVE UPLOADED FILES =====
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// ===== ERROR HANDLING =====
-app.use((err, req, res, next) => {
-    if (err instanceof multer.MulterError) {
-        if (err.code === 'FILE_TOO_LARGE') {
-            return res.status(400).json({
-                success: false,
-                error: 'File too large. Maximum size is 5MB'
-            });
+    try {
+        const salesHours = req.app.locals.salesHours || {
+            enabled: true,
+            startHour: 9,
+            endHour: 19,
+            mode: 'auto',
+            manualStatus: true
+        };
+        
+        let isOpen = true;
+        let message = '🟢 ဆိုင်ဖွင့်ထားပါသည်';
+        
+        if (salesHours.mode === 'auto') {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const start = salesHours.startHour || 9;
+            const end = salesHours.endHour || 19;
+            
+            if (!salesHours.enabled) {
+                isOpen = false;
+                message = '🔴 ဆိုင်ပိတ်ထားပါသည် (Admin မှပိတ်ထား)';
+            } else if (currentHour >= start && currentHour < end) {
+                isOpen = true;
+                message = `🟢 ဆိုင်ဖွင့်ထားပါသည် (${start}:00 - ${end}:00)`;
+            } else {
+                isOpen = false;
+                message = `🔴 ဆိုင်ပိတ်ထားပါသည် (${start}:00 - ${end}:00)`;
+            }
+        } else {
+            isOpen = salesHours.manualStatus !== false;
+            message = isOpen ? '🟢 ဆိုင်ဖွင့်ထားပါသည် (Manual)' : '🔴 ဆိုင်ပိတ်ထားပါသည် (Manual)';
         }
-        return res.status(400).json({
-            success: false,
-            error: err.message
+        
+        res.json({ 
+            success: true, 
+            isOpen, 
+            message,
+            startHour: salesHours.startHour,
+            endHour: salesHours.endHour
         });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
     }
-    
-    console.error('Server error:', err);
-    res.status(500).json({
-        success: false,
-        error: 'Internal server error'
-    });
 });
 
-// ===== START SERVER =====
-app.listen(PORT, '0.0.0.0', () => {
+// ===== ORDERS =====
+// GET - Get all orders (admin)
+app.get('/api/admin/orders', (req, res) => {
+    try {
+        const orders = req.app.locals.orders || [];
+        res.json({ success: true, orders });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// PUT - Approve order
+app.put('/api/admin/orders/:id/approve', (req, res) => {
+    try {
+        const order = req.app.locals.orders.find(o => o.id === req.params.id);
+        if (!order) {
+            return res.status(404).json({ success: false, error: 'Order not found' });
+        }
+        order.status = 'Approved';
+        order.activated_at = new Date().toISOString();
+        saveDataToFile();
+        res.json({ success: true, order });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// PUT - Reject order
+app.put('/api/admin/orders/:id/reject', (req, res) => {
+    try {
+        const order = req.app.locals.orders.find(o => o.id === req.params.id);
+        if (!order) {
+            return res.status(404).json({ success: false, error: 'Order not found' });
+        }
+        order.status = 'Rejected';
+        saveDataToFile();
+        res.json({ success: true, order });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// DELETE - Delete order
+app.delete('/api/admin/orders/:id', (req, res) => {
+    try {
+        const index = req.app.locals.orders.findIndex(o => o.id === req.params.id);
+        if (index === -1) {
+            return res.status(404).json({ success: false, error: 'Order not found' });
+        }
+        req.app.locals.orders.splice(index, 1);
+        saveDataToFile();
+        res.json({ success: true, message: 'Order deleted' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== USER STATS =====
+// GET - Get user statistics (admin)
+app.get('/api/admin/user-stats', (req, res) => {
+    try {
+        const users = req.app.locals.users || [];
+        const stats = users.map(user => ({
+            phone: user.phone || '',
+            username: user.username || '',
+            user_id: user.user_id || '',
+            order_count: (user.orders || []).length,
+            reject_count: (user.orders || []).filter(o => o.status === 'Rejected').length,
+            blocked: user.blocked || false,
+            suspect_flag: user.suspect_flag || false,
+            created_at: user.created_at || new Date().toISOString()
+        }));
+        res.json({ success: true, stats });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== ADMIN LOGIN (Simple) =====
+app.post('/api/admin/login', (req, res) => {
+    try {
+        const { password } = req.body;
+        const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+        
+        if (password === ADMIN_PASSWORD) {
+            res.json({ success: true, message: 'Login successful' });
+        } else {
+            res.status(401).json({ success: false, error: 'Invalid password' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ============================================================
+// SERVE ADMIN CHAT
+// ============================================================
+app.get('/admin-chat.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin-chat.html'));
+});
+
+// ============================================================
+// START SERVER
+// ============================================================
+app.listen(PORT, () => {
     console.log('╔══════════════════════════════════════════╗');
     console.log('║  🚀 Server is running!                  ║');
     console.log(`║  📡 Port: ${PORT}                          ║`);
@@ -377,15 +416,4 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`║  ⏰ Started: ${new Date().toLocaleString()}  ║`);
     console.log('║  Press Ctrl+C to stop the server        ║');
     console.log('╚══════════════════════════════════════════╝');
-});
-
-// ===== GRACEFUL SHUTDOWN =====
-process.on('SIGTERM', () => {
-    console.log('SIGTERM signal received: closing HTTP server');
-    process.exit(0);
-});
-
-process.on('SIGINT', () => {
-    console.log('SIGINT signal received: closing HTTP server');
-    process.exit(0);
 });
