@@ -79,7 +79,7 @@
 
         /* ===== STATS BAR - HIDDEN FROM USERS ===== */
         .stats-bar {
-            display: none; /* အရေအတွက်တွေကို Users မပြရန် */
+            display: none;
         }
 
         /* ===== ORDERS CARDS ===== */
@@ -320,9 +320,14 @@
     <script>
         // ================================================================
         //  LIVE - Approved Orders Viewer (No Counts Displayed)
+        //  FIXED: No redeclaration of API_BASE
         // ================================================================
 
-        const API_BASE = window.location.origin;
+        // Check if API_BASE is already defined (from parent)
+        if (typeof API_BASE === 'undefined') {
+            var API_BASE = window.location.origin;
+        }
+
         let allApprovedOrders = [];
         let refreshInterval = null;
         let isFirstLoad = true;
