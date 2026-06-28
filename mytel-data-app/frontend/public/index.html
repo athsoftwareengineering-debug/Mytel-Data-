@@ -928,6 +928,91 @@
         /* ===== NOTE TEXT ===== */
         .note-text { font-size: 0.55rem; color: var(--text-secondary); margin-top: 6px; }
         
+        /* ===== PLAN SELECT DROPDOWN ===== */
+        .plan-select-wrapper {
+            margin: 12px 0 16px 0;
+        }
+        .plan-select-wrapper select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 60px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            transition: all var(--transition);
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+        }
+        .plan-select-wrapper select:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 0 4px rgba(0,212,255,0.08);
+        }
+        .plan-select-wrapper select option {
+            background: #1a1d2e;
+            padding: 8px;
+        }
+        
+        /* ===== PLAN DISPLAY CARD ===== */
+        .plan-display-card {
+            margin: 8px 0 16px 0;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(139,92,246,0.04));
+            border-radius: 14px;
+            border: 1px solid rgba(0,212,255,0.08);
+            transition: all var(--transition);
+        }
+        .plan-display-card .plan-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .plan-display-card .plan-details {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            line-height: 1.6;
+        }
+        .plan-display-card .plan-details i {
+            color: var(--cyan);
+            margin-right: 4px;
+        }
+        .plan-display-card .plan-price {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--emerald);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .plan-display-card .plan-price small {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+        .plan-display-card .plan-features {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .plan-display-card .plan-features span {
+            background: rgba(0,212,255,0.06);
+            padding: 2px 10px;
+            border-radius: 40px;
+            font-size: 0.55rem;
+            color: var(--text-secondary);
+            border: 1px solid rgba(0,212,255,0.04);
+        }
+        
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .container { padding: 0 10px; }
@@ -951,6 +1036,8 @@
             .login-box { padding: 1.5rem; }
             .login-box input { padding: 12px 16px; font-size: 0.85rem; }
             .toast { bottom: 70px; padding: 10px 18px; font-size: 0.7rem; }
+            .plan-display-card .plan-name { font-size: 0.85rem; }
+            .plan-display-card .plan-price { font-size: 0.9rem; }
         }
         @media (max-width: 380px) {
             .order-phone-price { flex-direction: column; align-items: flex-start; }
@@ -1162,6 +1249,51 @@
             <div class="info-row"><span>ဖုန်းနံပါတ်</span><span id="accountPhone" style="cursor:pointer;">09789999368 📋</span></div>
         </div>
         
+        <!-- ===== PLAN SELECT DROPDOWN ===== -->
+        <div class="plan-select-wrapper">
+            <label style="font-size:0.75rem;font-weight:600;display:block;margin-bottom:4px;">🎯 Plan ရွေးရန် *</label>
+            <select id="planSelect" onchange="updatePlanDisplay()">
+                <option value="VIP LEVEL - 1|15000|🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS|22 GB အမြန်နှုန်းမြင့်ဒေတာ,8,000 မိနစ် (ကွန်ရက်တွင်း),5,000 SMS">
+                    VIP LEVEL - 1 (15,000 MMK)
+                </option>
+                <option value="VIP LEVEL - 2|20000|⭐ 40 GB အာထရာဒေတာ • 250 မိနစ် (ကွန်ရက်တွင်း) • 25 မိနစ် (အခြားကွန်ရက်)|40 GB အာထရာဒေတာ,250 မိနစ် (ကွန်ရက်တွင်း),25 မိနစ် (အခြားကွန်ရက်)">
+                    VIP LEVEL - 2 (20,000 MMK)
+                </option>
+                <option value="VIP LEVEL - 3|25000|💎 40 GB အမြန်နှုန်း + အပို • 1,400 မိနစ် (ကွန်ရက်တွင်း) • 8,000 SMS|40 GB အမြန်နှုန်း + အပို,1,400 မိနစ် (ကွန်ရက်တွင်း),8,000 SMS">
+                    VIP LEVEL - 3 (25,000 MMK)
+                </option>
+                <option value="VIP LEVEL - 4 (ULTRA)|30000|👑 120 GB ဂိမ်းဒေတာ • အကန့်အသတ်မရှိ Streaming • ဦးစားပေး ပံ့ပိုးမှု|120 GB ဂိမ်းဒေတာ,အကန့်အသတ်မရှိ Streaming,ဦးစားပေး ပံ့ပိုးမှု">
+                    VIP LEVEL - 4 (ULTRA) (30,000 MMK)
+                </option>
+            </select>
+        </div>
+        
+        <!-- ===== PLAN DISPLAY CARD ===== -->
+        <div class="plan-display-card" id="planDisplayCard">
+            <div class="plan-name" id="selectedPlanName">
+                <i class="fas fa-tag" style="color:var(--cyan);"></i> 
+                <span id="planNameDisplay">VIP LEVEL - 1</span>
+            </div>
+            <div class="plan-details" id="planDetailsDisplay">
+                <i class="fas fa-info-circle"></i> 
+                <span id="planDetailsText">🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS</span>
+            </div>
+            <div class="plan-features" id="planFeaturesDisplay">
+                <span>22 GB အမြန်နှုန်းမြင့်ဒေတာ</span>
+                <span>8,000 မိနစ် (ကွန်ရက်တွင်း)</span>
+                <span>5,000 SMS</span>
+            </div>
+            <div class="plan-price">
+                <i class="fas fa-coins"></i> 
+                <span id="planPriceDisplay">15,000</span> 
+                <small>MMK</small>
+            </div>
+        </div>
+        
+        <!-- Hidden inputs for selected plan -->
+        <input type="hidden" id="orderPlan" value="VIP LEVEL - 1">
+        <input type="hidden" id="orderPrice" value="15000">
+        
         <div style="display: flex; gap: 10px; margin: 16px 0;">
             <button id="screenshotTabBtn" class="proof-tab-btn screenshot-tab active" onclick="switchToScreenshot()">📸 Screenshot</button>
             <button id="textTabBtn" class="proof-tab-btn text-tab" onclick="switchToText()">✏️ စာသားဖြည့်</button>
@@ -1199,24 +1331,6 @@
                 <div class="note-text">※ ငွေလွှဲပြေစာအမှတ်ရဲ့ နောက်ဆုံးဂဏန်း ၅ လုံး</div>
             </div>
         </div>
-        
-        <!-- Plan Display - Dynamically loaded from Admin DB -->
-        <div id="planDisplayContainer" style="margin: 8px 0 16px 0; padding: 10px 14px; background: rgba(0,212,255,0.06); border-radius: 12px; border: 1px solid rgba(0,212,255,0.08);">
-            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
-                <span style="color: var(--text-secondary);"><i class="fas fa-tag"></i> <span id="planLabel">ရွေးချယ်ထားသော Plan</span></span>
-                <span id="planNameDisplay" style="font-weight: 700; color: var(--cyan);">VIP LEVEL - 1</span>
-            </div>
-            <div id="planDetailsDisplay" style="font-size: 0.6rem; color: var(--text-secondary); margin-top: 4px;">
-                🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS
-            </div>
-            <div style="font-size: 0.6rem; color: var(--emerald); margin-top: 4px; font-weight: 600;">
-                💰 <span id="planPriceDisplay">15,000</span> MMK
-            </div>
-        </div>
-        
-        <!-- Hidden inputs for plan data -->
-        <input type="hidden" id="orderPlan" value="VIP LEVEL - 1">
-        <input type="hidden" id="orderPrice" value="15000">
         
         <button class="submit-payment" onclick="submitOrder()">✅ အော်ဒါတင်မည်</button>
     </div>
@@ -1289,7 +1403,7 @@
 
 <script>
     // ================================================================
-    //  MAIN APPLICATION SCRIPT WITH ADMIN DB CONNECTION
+    //  MAIN APPLICATION SCRIPT
     // ================================================================
 
     const API_BASE = window.location.origin;
@@ -1302,14 +1416,6 @@
     let userChatWidgetOpen = false;
     let isShopOpen = true;
     let salesStatusInterval = null;
-    
-    // ===== PLAN DATA FROM ADMIN DB =====
-    let currentPlanData = {
-        name: "VIP LEVEL - 1",
-        price: 15000,
-        details: "🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS",
-        features: ["22 GB အမြန်နှုန်းမြင့်", "8,000 မိနစ် (ကွန်ရက်တွင်း)", "5,000 SMS"]
-    };
 
     // ===== UTILITY FUNCTIONS =====
     function maskPhone(phone) {
@@ -1377,69 +1483,49 @@
         document.getElementById('screenshotModal').classList.remove('active');
     }
 
-    // ===== LOAD PLAN FROM ADMIN DB =====
-    async function loadPlanFromAdmin() {
-        try {
-            const response = await fetch(`${API_BASE}/api/admin/current-plan`, {
-                credentials: 'include'
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success && data.plan) {
-                    currentPlanData = data.plan;
-                    updatePlanDisplay();
-                    return true;
-                }
-            }
-            
-            // Fallback: Try to load from localStorage
-            const saved = localStorage.getItem('currentPlanData');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    currentPlanData = parsed;
-                    updatePlanDisplay();
-                    return true;
-                } catch(e) {}
-            }
-            
-            return false;
-        } catch(e) {
-            console.error('Error loading plan from admin:', e);
-            // Try localStorage fallback
-            const saved = localStorage.getItem('currentPlanData');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    currentPlanData = parsed;
-                    updatePlanDisplay();
-                } catch(e) {}
-            }
-            return false;
-        }
-    }
-
-    // ===== UPDATE PLAN DISPLAY IN MODAL =====
+    // ===== UPDATE PLAN DISPLAY =====
     function updatePlanDisplay() {
-        const nameEl = document.getElementById('planNameDisplay');
-        const detailsEl = document.getElementById('planDetailsDisplay');
-        const priceEl = document.getElementById('planPriceDisplay');
-        const planHidden = document.getElementById('orderPlan');
-        const priceHidden = document.getElementById('orderPrice');
+        const select = document.getElementById('planSelect');
+        const selectedValue = select.value;
         
-        if (nameEl) nameEl.textContent = currentPlanData.name || "VIP LEVEL - 1";
-        if (detailsEl) detailsEl.textContent = currentPlanData.details || "🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS";
-        if (priceEl) priceEl.textContent = (currentPlanData.price || 15000).toLocaleString();
-        if (planHidden) planHidden.value = currentPlanData.name || "VIP LEVEL - 1";
-        if (priceHidden) priceHidden.value = currentPlanData.price || 15000;
-    }
-
-    // ===== SAVE PLAN TO LOCAL STORAGE (for offline fallback) =====
-    function savePlanToLocalStorage() {
-        try {
-            localStorage.setItem('currentPlanData', JSON.stringify(currentPlanData));
-        } catch(e) {}
+        if (!selectedValue) return;
+        
+        const parts = selectedValue.split('|');
+        const name = parts[0] || 'VIP LEVEL - 1';
+        const price = parts[1] || '15000';
+        const details = parts[2] || '🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS';
+        const features = parts[3] ? parts[3].split(',') : ['22 GB အမြန်နှုန်းမြင့်ဒေတာ', '8,000 မိနစ် (ကွန်ရက်တွင်း)', '5,000 SMS'];
+        
+        // Update display
+        document.getElementById('planNameDisplay').textContent = name;
+        document.getElementById('planDetailsText').textContent = details;
+        document.getElementById('planPriceDisplay').textContent = parseInt(price).toLocaleString();
+        
+        // Update features
+        const featuresContainer = document.getElementById('planFeaturesDisplay');
+        featuresContainer.innerHTML = features.map(f => `<span>${escapeHtml(f.trim())}</span>`).join('');
+        
+        // Update hidden inputs
+        document.getElementById('orderPlan').value = name;
+        document.getElementById('orderPrice').value = price;
+        
+        // Update plan icon based on name
+        const iconEl = document.querySelector('#planNameDisplay').parentElement.querySelector('i');
+        if (iconEl) {
+            if (name.includes('VIP 1') || name.includes('VIP LEVEL - 1')) {
+                iconEl.className = 'fas fa-fire';
+                iconEl.style.color = '#f59e0b';
+            } else if (name.includes('VIP 2') || name.includes('VIP LEVEL - 2')) {
+                iconEl.className = 'fas fa-star';
+                iconEl.style.color = '#8b5cf6';
+            } else if (name.includes('VIP 3') || name.includes('VIP LEVEL - 3')) {
+                iconEl.className = 'fas fa-gem';
+                iconEl.style.color = '#00d4ff';
+            } else if (name.includes('ULTRA') || name.includes('VIP 4')) {
+                iconEl.className = 'fas fa-crown';
+                iconEl.style.color = '#f59e0b';
+            }
+        }
     }
 
     // ===== UPDATE BUY BUTTONS =====
@@ -1619,7 +1705,6 @@
             
             await loadUserOrders();
             await renderProfile();
-            await loadPlanFromAdmin();
             startSalesStatusPolling();
             
         } catch(e) {
@@ -1654,7 +1739,6 @@
         
         await loadUserOrders();
         await loadSalesStatus();
-        await loadPlanFromAdmin();
         
         if (currentTab === 'orders') renderMyOrders();
         if (currentTab === 'profile') await renderProfile();
@@ -1915,13 +1999,22 @@
         document.getElementById('last5Digits').value = '';
         switchToScreenshot();
         document.getElementById('paymentModal').classList.add('active');
+        // Update plan display when modal opens
+        updatePlanDisplay();
     }
     
     function openPaymentModalFromPlan(plan, price) {
-        // Load latest plan from admin before opening modal
-        loadPlanFromAdmin().then(() => {
-            openRenewModal('other');
-        });
+        // Find matching plan in dropdown
+        const select = document.getElementById('planSelect');
+        for (let i = 0; i < select.options.length; i++) {
+            const opt = select.options[i];
+            if (opt.value.startsWith(plan)) {
+                select.selectedIndex = i;
+                break;
+            }
+        }
+        updatePlanDisplay();
+        openRenewModal('other');
     }
     
     function closePaymentModal() {
@@ -1958,7 +2051,7 @@
             if (!last5 || last5.length !== 5) { showToast("ငွေလွှဲပြေစာအမှတ် နောက်ဆုံး ၅ လုံး အတိအကျ ထည့်ပါ", true); return; }
         }
         
-        // Get plan from hidden inputs (loaded from admin)
+        // Get selected plan from hidden inputs
         const plan = document.getElementById('orderPlan').value || "VIP LEVEL - 1";
         const price = parseInt(document.getElementById('orderPrice').value) || 15000;
         
@@ -2137,20 +2230,6 @@
         });
     }
 
-    // ===== LISTEN FOR ADMIN UPDATES =====
-    window.addEventListener('message', (event) => {
-        if (event.data && event.data.type === 'planUpdated') {
-            console.log('📦 Plan updated by admin, reloading...');
-            loadPlanFromAdmin().then(() => {
-                showToast('✅ Plan updated successfully!');
-            });
-        }
-        if (event.data && event.data.type === 'shopStatus') {
-            isShopOpen = event.data.isOpen;
-            updateBuyButtonsBasedOnShopStatus(isShopOpen);
-        }
-    });
-
     // ===== INIT =====
     const savedPhone = localStorage.getItem('userPhone');
     const savedName = localStorage.getItem('userName');
@@ -2172,7 +2251,6 @@
         
         loadUserOrders();
         renderProfile();
-        loadPlanFromAdmin();
         startSalesStatusPolling();
         
         if (!savedId) {
@@ -2221,7 +2299,6 @@
     window.closeUserChatWidget = closeUserChatWidget;
     window.loadSalesStatus = loadSalesStatus;
     window.startSalesStatusPolling = startSalesStatusPolling;
-    window.loadPlanFromAdmin = loadPlanFromAdmin;
     window.updatePlanDisplay = updatePlanDisplay;
 </script>
 
