@@ -1,0 +1,14 @@
+cat > package.json << 'EOF'
+{
+  "name": "mytel-data",
+  "version": "1.0.0",
+  "description": "Telecom VIP Plans",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}
+EOF
