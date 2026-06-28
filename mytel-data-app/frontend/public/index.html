@@ -1200,14 +1200,17 @@
             </div>
         </div>
         
-        <div style="margin: 16px 0;">
-            <label style="font-size:0.75rem;font-weight:600;">🎯 Plan ရွေးရန် *</label>
-            <select id="orderPlan" class="form-control">
-                <option value="VIP LEVEL - 1">VIP - 1 (15,000 MMK) {22 GB, 8000 MINS, 5000 SMS}</option>
-                <option value="VIP LEVEL - 2">VIP - 2 (20,000 MMK) {40 GB, 250 ON-NET, ANY-NET 25}</option>
-                <option value="VIP LEVEL - 3">VIP - 3 (25,000 MMK) {40 GB, 1400 ON-NET, 8000 SMS}</option>
-                <option value="VIP LEVEL - 4 (ULTRA)">VIP - 4 (ULTRA) (30,000 MMK) {120 GB}</option>
-            </select>
+        <!-- REMOVED: Plan Selection Dropdown - Now using fixed plan "VIP LEVEL - 1" -->
+        <!-- Hidden input to store the fixed plan -->
+        <input type="hidden" id="orderPlan" value="VIP LEVEL - 1">
+        <div style="margin: 8px 0 16px 0; padding: 10px 14px; background: rgba(0,212,255,0.06); border-radius: 12px; border: 1px solid rgba(0,212,255,0.08);">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+                <span style="color: var(--text-secondary);"><i class="fas fa-tag"></i> ရွေးချယ်ထားသော Plan</span>
+                <span style="font-weight: 700; color: var(--cyan);">VIP LEVEL - 1 (15,000 MMK)</span>
+            </div>
+            <div style="font-size: 0.6rem; color: var(--text-secondary); margin-top: 4px;">
+                🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS
+            </div>
         </div>
         
         <button class="submit-payment" onclick="submitOrder()">✅ အော်ဒါတင်မည်</button>
@@ -1835,7 +1838,7 @@
     }
     
     function openPaymentModalFromPlan(plan, price) {
-        document.getElementById('orderPlan').value = plan;
+        // Fixed plan is "VIP LEVEL - 1" - ignore plan parameter
         openRenewModal('other');
     }
     
@@ -1872,12 +1875,10 @@
             if (!sender) { showToast("ငွေလွှဲသူအမည် ထည့်ပါ", true); return; }
             if (!last5 || last5.length !== 5) { showToast("ငွေလွှဲပြေစာအမှတ် နောက်ဆုံး ၅ လုံး အတိအကျ ထည့်ပါ", true); return; }
         }
-        const plan = document.getElementById('orderPlan').value;
-        let price = 0;
-        if (plan === 'VIP LEVEL - 1') price = 15000;
-        else if (plan === 'VIP LEVEL - 2') price = 20000;
-        else if (plan === 'VIP LEVEL - 3') price = 25000;
-        else if (plan === 'VIP LEVEL - 4 (ULTRA)') price = 30000;
+        
+        // FIXED PLAN: VIP LEVEL - 1 with price 15000
+        const plan = "VIP LEVEL - 1";
+        const price = 15000;
         
         const submitBtn = document.querySelector('.submit-payment');
         submitBtn.disabled = true;
