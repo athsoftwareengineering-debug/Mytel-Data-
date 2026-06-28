@@ -1,4 +1,3 @@
-<!-- ===== operators.html (User View Only - No Admin Button) ===== -->
 <!DOCTYPE html>
 <html lang="my">
 <head>
@@ -180,6 +179,32 @@
             margin-right: 8px;
         }
         
+        /* ===== UPDATE NOTIFICATION ===== */
+        .update-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,212,255,0.15);
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 60px;
+            padding: 10px 24px;
+            font-size: 0.75rem;
+            color: #e2e8f0;
+            z-index: 1000;
+            display: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        .update-notification.show {
+            display: block;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
         @media (max-width: 480px) {
             .tab-btn {
                 padding: 8px 12px;
@@ -203,6 +228,11 @@
             .plan-card .plan-price {
                 font-size: 0.95rem;
             }
+            .update-notification {
+                padding: 8px 16px;
+                font-size: 0.65rem;
+                bottom: 12px;
+            }
         }
         @media (max-width: 380px) {
             .operator-plans {
@@ -224,18 +254,36 @@
     </style>
 </head>
 <body>
+    <!-- ===== UPDATE NOTIFICATION ===== -->
+    <div class="update-notification" id="updateNotification">
+        <i class="fas fa-sync-alt fa-spin"></i>
+        <span id="updateMessage">Prices updated! Refreshing...</span>
+    </div>
+
+    <!-- ===== USER VIEW ===== -->
     <div id="app">
         <div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading operators...</div>
     </div>
 
     <script>
-        // ============================================================
-        // OPERATORS DATA - VIP PLANS
-        // ============================================================
+        // ================================================================
+        //  OPERATORS - USER SIDE WITH REAL-TIME SYNC
+        // ================================================================
+
+        const API_BASE = window.location.origin;
+        let isShopOpen = true;
+        let activeTab = 'atom';
+        let shopStatusInterval = null;
+        let syncInterval = null;
+
+        // ================================================================
+        //  OPERATORS DATA - WILL BE UPDATED FROM SERVER
+        // ================================================================
         let operatorsData = [{
             id: 'atom',
             name: 'ATOM',
             logo: 'https://i.imgur.com/I5iRYm8.png',
+            icon: '📱',
             status: 'active',
             plans: [
                 { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
@@ -247,6 +295,7 @@
             id: 'mytel',
             name: 'MYTEL',
             logo: 'https://i.imgur.com/Xl3B5xF.jpeg',
+            icon: '📶',
             status: 'active',
             plans: [
                 { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
@@ -258,6 +307,7 @@
             id: 'ooredoo',
             name: 'OOREDOO',
             logo: 'https://i.imgur.com/eNdLhsk.png',
+            icon: '🚀',
             status: 'active',
             plans: [
                 { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
@@ -269,6 +319,7 @@
             id: 'mpt',
             name: 'MPT',
             logo: 'https://i.imgur.com/BNUZimj.png',
+            icon: '🌟',
             status: 'active',
             plans: [
                 { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
@@ -278,16 +329,9 @@
             ]
         }];
 
-        // ============================================================
-        // STATE
-        // ============================================================
-        let isShopOpen = true;
-        let activeTab = 'atom';
-        let shopStatusInterval = null;
-
-        // ============================================================
-        // LOAD FROM LOCAL STORAGE
-        // ============================================================
+        // ================================================================
+        //  LOAD FROM LOCAL STORAGE (FALLBACK)
+        // ================================================================
         function loadPricesFromStorage() {
             try {
                 const saved = localStorage.getItem('operatorPrices');
@@ -309,9 +353,73 @@
             }
         }
 
-        // ============================================================
-        // RENDER TABS
-        // ============================================================
+        // ================================================================
+        //  LOAD FROM SERVER (REAL-TIME SYNC)
+        // ================================================================
+        async function loadPlansFromServer() {
+            try {
+                const response = await fetch('/api/operator-plans', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.plans) {
+                        let updated = false;
+                        for (const serverOp of data.plans) {
+                            const localOp = operatorsData.find(o => o.id === serverOp.id);
+                            if (localOp) {
+                                // Check if prices changed
+                                let priceChanged = false;
+                                for (let i = 0; i < localOp.plans.length; i++) {
+                                    if (serverOp.plans[i] && localOp.plans[i].price !== serverOp.plans[i].price) {
+                                        priceChanged = true;
+                                    }
+                                    if (serverOp.plans[i]) {
+                                        localOp.plans[i].price = serverOp.plans[i].price;
+                                        localOp.plans[i].name = serverOp.plans[i].name || localOp.plans[i].name;
+                                        localOp.plans[i].details = serverOp.plans[i].details || localOp.plans[i].details || [];
+                                    }
+                                }
+                                if (priceChanged) updated = true;
+                            }
+                        }
+                        
+                        // Save to localStorage as backup
+                        savePricesToStorage();
+                        
+                        if (updated) {
+                            showUpdateNotification('🔄 Prices updated by admin!');
+                            renderTabs();
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            } catch (e) {
+                console.error('Error loading plans from server:', e);
+                return false;
+            }
+        }
+
+        // ================================================================
+        //  SAVE TO LOCAL STORAGE
+        // ================================================================
+        function savePricesToStorage() {
+            try {
+                const dataToSave = operatorsData.map(op => ({
+                    id: op.id,
+                    plans: op.plans.map(p => ({ price: p.price }))
+                }));
+                localStorage.setItem('operatorPrices', JSON.stringify(dataToSave));
+            } catch (e) {
+                console.error('Error saving prices to localStorage:', e);
+            }
+        }
+
+        // ================================================================
+        //  RENDER TABS
+        // ================================================================
         function renderTabs() {
             const app = document.getElementById('app');
 
@@ -386,9 +494,27 @@
             updateButtonsStatus();
         }
 
-        // ============================================================
-        // SWITCH TAB
-        // ============================================================
+        // ================================================================
+        //  SHOW UPDATE NOTIFICATION
+        // ================================================================
+        let notificationTimeout = null;
+
+        function showUpdateNotification(message) {
+            const el = document.getElementById('updateNotification');
+            const msgEl = document.getElementById('updateMessage');
+            if (el && msgEl) {
+                msgEl.textContent = message;
+                el.classList.add('show');
+                clearTimeout(notificationTimeout);
+                notificationTimeout = setTimeout(() => {
+                    el.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // ================================================================
+        //  SWITCH TAB
+        // ================================================================
         function switchTab(tabId) {
             activeTab = tabId;
 
@@ -413,9 +539,9 @@
             });
         }
 
-        // ============================================================
-        // UPDATE BUTTONS
-        // ============================================================
+        // ================================================================
+        //  UPDATE BUTTONS
+        // ================================================================
         function updateButtonsStatus() {
             const buyButtons = document.querySelectorAll('.plan-buy-btn');
             buyButtons.forEach(btn => {
@@ -433,12 +559,12 @@
             });
         }
 
-        // ============================================================
-        // HANDLE BUY
-        // ============================================================
+        // ================================================================
+        //  HANDLE BUY
+        // ================================================================
         function handleBuy(operatorName, planName, planPrice) {
             if (!isShopOpen) {
-                alert("ဆိုင်ပိတ်ချိန်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ နံနက် ၉ နာရီမှ ညနေ ၇ နာရီအတွင်းမှသာ ဝယ်ယူနိုင်ပါသည်။");
+                showNotification("ဆိုင်ပိတ်ချိန်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ နံနက် ၉ နာရီမှ ညနေ ၇ နာရီအတွင်းမှသာ ဝယ်ယူနိုင်ပါသည်။", true);
                 return;
             }
 
@@ -450,9 +576,17 @@
             }
         }
 
-        // ============================================================
-        // CHECK SHOP STATUS
-        // ============================================================
+        function showNotification(message, isError = false) {
+            if (window.parent && window.parent.showToast) {
+                window.parent.showToast(message, isError);
+            } else {
+                alert(message);
+            }
+        }
+
+        // ================================================================
+        //  CHECK SHOP STATUS
+        // ================================================================
         async function checkShopStatus() {
             try {
                 const response = await fetch('/api/sales/status');
@@ -474,45 +608,112 @@
             console.log('🔄 Shop status polling started (every 5 seconds)');
         }
 
-        // ============================================================
-        // LISTEN FOR PARENT MESSAGES
-        // ============================================================
-        window.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'shopStatus') {
-                isShopOpen = event.data.isOpen;
-                updateButtonsStatus();
+        // ================================================================
+        //  REAL-TIME SYNC - LISTEN FOR UPDATES
+        // ================================================================
+        function listenForUpdates() {
+            // ===== BroadcastChannel =====
+            if (typeof BroadcastChannel !== 'undefined') {
+                try {
+                    const channel = new BroadcastChannel('operator-updates');
+                    channel.onmessage = (event) => {
+                        if (event.data.type === 'pricesUpdated') {
+                            console.log('📦 Received update from admin (BroadcastChannel)');
+                            showUpdateNotification('🔄 Prices updated by admin!');
+                            loadPlansFromServer().then(() => {
+                                renderTabs();
+                            });
+                        }
+                    };
+                } catch(e) {
+                    console.log('BroadcastChannel not available');
+                }
             }
-        });
 
-        // ============================================================
-        // INIT
-        // ============================================================
+            // ===== localStorage =====
+            window.addEventListener('storage', (e) => {
+                if (e.key === '_operatorUpdateTimestamp') {
+                    console.log('📦 Storage update detected');
+                    showUpdateNotification('🔄 Prices updated!');
+                    loadPlansFromServer().then(() => {
+                        renderTabs();
+                    });
+                }
+            });
+
+            // ===== postMessage (iframes) =====
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'operatorPlansUpdated') {
+                    console.log('📦 Plan update from iframe');
+                    const data = event.data.data;
+                    if (data) {
+                        for (const serverOp of data) {
+                            const localOp = operatorsData.find(o => o.id === serverOp.id);
+                            if (localOp) {
+                                localOp.plans = serverOp.plans;
+                            }
+                        }
+                        savePricesToStorage();
+                        renderTabs();
+                        showUpdateNotification('✅ Plans updated successfully!');
+                    }
+                }
+            });
+
+            console.log('📡 Listening for real-time updates...');
+        }
+
+        // ================================================================
+        //  PERIODIC SYNC (Every 10 seconds)
+        // ================================================================
+        function startPeriodicSync() {
+            if (syncInterval) {
+                clearInterval(syncInterval);
+                syncInterval = null;
+            }
+            syncInterval = setInterval(() => {
+                loadPlansFromServer();
+            }, 10000);
+            console.log('🔄 Periodic sync started (every 10 seconds)');
+        }
+
+        // ================================================================
+        //  INIT
+        // ================================================================
         function init() {
             const app = document.getElementById('app');
             app.innerHTML = '<div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading operators...</div>';
 
+            // Load saved prices from localStorage first
             loadPricesFromStorage();
 
-            setTimeout(() => {
+            // Then try to load from server
+            loadPlansFromServer().then(() => {
                 renderTabs();
                 startShopStatusPolling();
-            }, 500);
+                startPeriodicSync();
+                listenForUpdates();
+            });
         }
 
-        // ============================================================
-        // EXPOSE GLOBALS
-        // ============================================================
+        // ================================================================
+        //  EXPOSE GLOBALS
+        // ================================================================
         window.switchTab = switchTab;
         window.handleBuy = handleBuy;
         window.updateButtonsStatus = updateButtonsStatus;
         window.renderTabs = renderTabs;
         window.checkShopStatus = checkShopStatus;
         window.startShopStatusPolling = startShopStatusPolling;
+        window.loadPlansFromServer = loadPlansFromServer;
+        window.showUpdateNotification = showUpdateNotification;
 
-        // ============================================================
-        // START
-        // ============================================================
+        // ================================================================
+        //  START
+        // ================================================================
         init();
+
+        console.log('📱 Operators page loaded with real-time sync');
     </script>
 </body>
 </html>
