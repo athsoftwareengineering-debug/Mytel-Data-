@@ -1,4 +1,3 @@
-cat > package.json << 'EOF'
 {
   "name": "mytel-data",
   "version": "1.0.0",
@@ -11,4 +10,3 @@ cat > package.json << 'EOF'
     "serve": "^14.2.0"
   }
 }
-EOF
