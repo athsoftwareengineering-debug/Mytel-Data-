@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#0a0c15">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Admin Panel Pro | ATH DIGITAL HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -445,6 +446,9 @@
             .operator-price-grid { grid-template-columns: 1fr; }
             .btn-group { flex-direction: column; }
             .btn-group .btn { width: 100%; justify-content: center; }
+            /* Bottom Nav Mobile */
+            .bottom-nav .nav-item { padding: 4px 6px; font-size: 0.5rem; min-width: 40px; }
+            .bottom-nav .nav-item i { font-size: 1rem; }
         }
         @media (max-width: 480px) {
             .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -457,11 +461,62 @@
             .status-bar { flex-direction: column; align-items: stretch; }
             .status-bar .status-right { justify-content: stretch; }
             .status-bar .status-right .btn { flex: 1; justify-content: center; }
+            .bottom-nav .nav-item { padding: 4px 8px; font-size: 0.5rem; min-width: 40px; }
+            .bottom-nav .nav-item i { font-size: 1rem; }
         }
         @media (max-width: 380px) {
             .stats-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
             .stat-card .stat-number { font-size: 1rem; }
             .stat-card .stat-label { font-size: 0.55rem; }
+            .bottom-nav .nav-item { padding: 2px 4px; font-size: 0.4rem; min-width: 32px; }
+            .bottom-nav .nav-item i { font-size: 0.85rem; }
+        }
+
+        /* ===== BOTTOM NAVIGATION ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 8px;
+            padding-bottom: env(safe-area-inset-bottom, 10px);
+            z-index: 100;
+            transition: background 0.3s;
+        }
+
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            transition: all 0.2s;
+            min-width: 48px;
+            touch-action: manipulation;
+        }
+        .bottom-nav .nav-item i {
+            font-size: 1.2rem;
+        }
+        .bottom-nav .nav-item.active {
+            color: var(--cyan);
+            background: rgba(0,212,255,0.1);
+        }
+        .bottom-nav .nav-item:hover {
+            background: rgba(0,212,255,0.05);
+        }
+        .bottom-nav .nav-item:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -743,6 +798,30 @@
         </section>
     </main>
 
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="nav-item active" data-tab="dashboard" onclick="switchSection('dashboard')">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="nav-item" data-tab="orders" onclick="switchSection('orders')">
+            <i class="fas fa-list-ul"></i>
+            <span>Orders</span>
+        </button>
+        <button class="nav-item" data-tab="users" onclick="switchSection('users')">
+            <i class="fas fa-users"></i>
+            <span>Users</span>
+        </button>
+        <button class="nav-item" data-tab="menu" onclick="switchSection('plans')">
+            <i class="fas fa-sim-card"></i>
+            <span>Menu</span>
+        </button>
+        <button class="nav-item" data-tab="chat" onclick="openAdminChatWidget()">
+            <i class="fas fa-comments"></i>
+            <span>Chat</span>
+        </button>
+    </nav>
+
     <!-- ===== TOAST CONTAINER ===== -->
     <div class="toast-container" id="toastContainer"></div>
 
@@ -757,6 +836,7 @@
         let userStats = [];
         let currentSection = 'dashboard';
         let isShopOpen = true;
+        let adminChatWidgetOpen = false;
 
         // ===== OPERATORS DATA WITH FULL PLAN CONFIGURATION =====
         let operatorsData = [{
@@ -869,6 +949,15 @@
             };
             document.getElementById('pageTitle').textContent = titles[section] || section;
             
+            // Update bottom nav
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.tab === section || 
+                    (section === 'plans' && item.dataset.tab === 'menu')) {
+                    item.classList.add('active');
+                }
+            });
+            
             if (section === 'orders') loadOrders();
             if (section === 'users') loadUsers();
             if (section === 'plans') renderAllOperatorPlans();
@@ -902,6 +991,59 @@
             setTimeout(() => {
                 if (toast.parentElement) toast.remove();
             }, 4000);
+        }
+
+        // ================================================================
+        //  ADMIN CHAT WIDGET
+        // ================================================================
+        function openAdminChatWidget() {
+            if (adminChatWidgetOpen) {
+                // If already open, bring to front or focus
+                const iframe = document.getElementById('adminChatIframe');
+                if (iframe) {
+                    iframe.style.display = 'block';
+                    iframe.focus();
+                }
+                return;
+            }
+            
+            const iframe = document.createElement('iframe');
+            iframe.src = '/admin-chat.html';
+            iframe.style.cssText = `
+                position: fixed;
+                bottom: 70px;
+                right: 16px;
+                width: 380px;
+                height: 520px;
+                border: none;
+                border-radius: 1.2rem;
+                z-index: 999;
+                background: transparent;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            `;
+            iframe.id = 'adminChatIframe';
+            document.body.appendChild(iframe);
+            adminChatWidgetOpen = true;
+            
+            // Close chat when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeChatOutside(e) {
+                    const chatIframe = document.getElementById('adminChatIframe');
+                    if (chatIframe && !chatIframe.contains(e.target) && 
+                        !e.target.closest('.nav-item[data-tab="chat"]') &&
+                        !e.target.closest('.sidebar-nav .nav-item')) {
+                        // Don't close automatically, let user close manually
+                    }
+                });
+            }, 100);
+        }
+
+        function closeAdminChatWidget() {
+            const iframe = document.getElementById('adminChatIframe');
+            if (iframe) {
+                iframe.remove();
+                adminChatWidgetOpen = false;
+            }
         }
 
         // ================================================================
@@ -1070,7 +1212,6 @@
             
             op.plans = plans;
             saveOperatorPlansToStorage();
-            // Also save to server for real-time sync
             saveOperatorPlansToServer();
             showToast(`✅ ${op.name} plans saved successfully!`);
         }
@@ -1174,7 +1315,7 @@
         }
 
         // ================================================================
-        //  OPERATOR PLANS - SERVER SYNC (REAL-TIME)
+        //  OPERATOR PLANS - SERVER SYNC
         // ================================================================
         async function saveOperatorPlansToServer() {
             try {
@@ -1197,7 +1338,6 @@
                 
                 if (res.ok) {
                     console.log('📤 Plans synced to server');
-                    // Broadcast to other tabs
                     broadcastUpdate();
                 }
             } catch (e) {
@@ -1237,13 +1377,12 @@
         }
 
         // ================================================================
-        //  BROADCAST UPDATE (Real-time to other tabs)
+        //  BROADCAST UPDATE
         // ================================================================
         function broadcastUpdate() {
             try {
                 localStorage.setItem('_operatorUpdateTimestamp', Date.now().toString());
                 
-                // BroadcastChannel for same origin
                 if (typeof BroadcastChannel !== 'undefined') {
                     try {
                         const channel = new BroadcastChannel('operator-updates');
@@ -1252,7 +1391,6 @@
                     } catch(e) {}
                 }
                 
-                // Post to iframes
                 document.querySelectorAll('iframe').forEach(iframe => {
                     try {
                         iframe.contentWindow.postMessage({ 
@@ -1368,7 +1506,6 @@
         //  PUSH TO USERS
         // ================================================================
         function pushToUsers() {
-            // Save all plans first
             for (const op of operatorsData) {
                 const plans = collectOperatorPlanData(op.id);
                 if (plans) {
@@ -1691,10 +1828,9 @@
         }
 
         // ================================================================
-        //  LISTEN FOR UPDATES FROM OTHER TABS
+        //  LISTEN FOR UPDATES
         // ================================================================
         function listenForUpdates() {
-            // Listen for BroadcastChannel messages
             if (typeof BroadcastChannel !== 'undefined') {
                 try {
                     const channel = new BroadcastChannel('operator-updates');
@@ -1710,7 +1846,6 @@
                 } catch(e) {}
             }
             
-            // Listen for localStorage changes (cross-tab)
             window.addEventListener('storage', (e) => {
                 if (e.key === '_operatorUpdateTimestamp') {
                     console.log('📦 Storage update detected');
@@ -1720,7 +1855,6 @@
                 }
             });
             
-            // Listen for postMessage (iframes)
             window.addEventListener('message', (event) => {
                 if (event.data && event.data.type === 'operatorPlansUpdated') {
                     console.log('📦 Iframe update detected');
@@ -1735,7 +1869,6 @@
         //  INIT
         // ================================================================
         async function init() {
-            // Load from server first
             await loadOperatorPlansFromServer();
             loadOperatorPrices();
             await loadOrders();
@@ -1745,8 +1878,23 @@
             renderAllOperatorPlans();
             listenForUpdates();
             
+            // Bottom nav click handlers
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tab = this.dataset.tab;
+                    if (tab === 'chat') {
+                        openAdminChatWidget();
+                    } else if (tab === 'menu') {
+                        switchSection('plans');
+                    } else {
+                        switchSection(tab);
+                    }
+                });
+            });
+            
             console.log('🛠️ Admin Panel loaded with Server Sync');
             console.log('📦 Real-time updates enabled');
+            console.log('📱 Bottom nav: Home | Orders | Users | Menu | Chat');
         }
 
         // ================================================================
@@ -1775,6 +1923,8 @@
         window.escapeHtml = escapeHtml;
         window.loadOrders = loadOrders;
         window.loadUsers = loadUsers;
+        window.openAdminChatWidget = openAdminChatWidget;
+        window.closeAdminChatWidget = closeAdminChatWidget;
 
         // Start
         init();
