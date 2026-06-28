@@ -1,3 +1,4 @@
+<!-- ===== operators.html (User View Only - No Admin Button) ===== -->
 <!DOCTYPE html>
 <html lang="my">
 <head>
@@ -16,203 +17,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans Myanmar', sans-serif;
             padding: 0;
             margin: 0;
-        }
-        
-        /* ===== ADMIN TOGGLE ===== */
-        .admin-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: linear-gradient(135deg, #f59e0b, #ea580c);
-            border: none;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            color: white;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .admin-toggle:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 35px rgba(245, 158, 11, 0.5);
-        }
-        .admin-toggle.active {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
-        }
-        
-        /* ===== ADMIN PANEL ===== */
-        .admin-panel {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 9998;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .admin-panel.open {
-            display: block;
-        }
-        .admin-panel-content {
-            max-width: 800px;
-            margin: 20px auto;
-            background: linear-gradient(145deg, #1a1d2e, #0f111a);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            border: 1px solid rgba(0, 212, 255, 0.15);
-        }
-        .admin-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-        .admin-panel-header h2 {
-            color: #e2e8f0;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .admin-panel-header h2 i {
-            color: #f59e0b;
-        }
-        .admin-close-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            padding: 8px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.8rem;
-        }
-        .admin-close-btn:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: #ef4444;
-            color: #ef4444;
-        }
-        
-        .admin-operator-group {
-            margin-bottom: 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 20px;
-        }
-        .admin-operator-group:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .admin-operator-title {
-            color: #00d4ff;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .admin-operator-title img {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            object-fit: cover;
-        }
-        .admin-plan-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            margin-bottom: 8px;
-        }
-        .admin-plan-row .plan-label {
-            flex: 1;
-            font-size: 0.8rem;
-            color: #94a3b8;
-        }
-        .admin-plan-row .price-input {
-            width: 120px;
-            padding: 6px 12px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.3);
-            color: #e2e8f0;
-            font-size: 0.85rem;
-            text-align: right;
-        }
-        .admin-plan-row .price-input:focus {
-            outline: none;
-            border-color: #00d4ff;
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
-        }
-        .admin-plan-row .price-input::placeholder {
-            color: #4a5568;
-        }
-        .admin-plan-row .currency-label {
-            color: #10b981;
-            font-size: 0.7rem;
-            font-weight: 600;
-            min-width: 35px;
-        }
-        
-        .admin-save-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
-            border-radius: 60px;
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .admin-save-btn:hover {
-            transform: scale(0.98);
-            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);
-        }
-        .admin-save-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .admin-status-msg {
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            margin-top: 12px;
-            display: none;
-        }
-        .admin-status-msg.success {
-            display: block;
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-        .admin-status-msg.error {
-            display: block;
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
         }
         
         /* ===== TABS ===== */
@@ -399,25 +203,6 @@
             .plan-card .plan-price {
                 font-size: 0.95rem;
             }
-            .admin-panel-content {
-                padding: 1rem;
-                margin: 10px;
-            }
-            .admin-plan-row {
-                flex-wrap: wrap;
-                gap: 6px;
-            }
-            .admin-plan-row .price-input {
-                width: 100px;
-                font-size: 0.75rem;
-            }
-            .admin-toggle {
-                width: 45px;
-                height: 45px;
-                font-size: 1rem;
-                bottom: 15px;
-                right: 15px;
-            }
         }
         @media (max-width: 380px) {
             .operator-plans {
@@ -439,38 +224,13 @@
     </style>
 </head>
 <body>
-    <!-- ===== USER VIEW ===== -->
     <div id="app">
         <div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading operators...</div>
     </div>
 
-    <!-- ===== ADMIN TOGGLE BUTTON ===== -->
-    <button class="admin-toggle" id="adminToggle" onclick="toggleAdminPanel()" title="Admin Panel">
-        <i class="fas fa-cog"></i>
-    </button>
-
-    <!-- ===== ADMIN PANEL ===== -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="admin-panel-content">
-            <div class="admin-panel-header">
-                <h2><i class="fas fa-cog"></i> ဈေးနှုန်းများ ပြင်ဆင်ရန်</h2>
-                <button class="admin-close-btn" onclick="toggleAdminPanel()">
-                    <i class="fas fa-times"></i> ပိတ်မည်
-                </button>
-            </div>
-            
-            <div id="adminForm"></div>
-            
-            <button class="admin-save-btn" id="adminSaveBtn" onclick="savePrices()">
-                <i class="fas fa-save"></i> သိမ်းဆည်းမည်
-            </button>
-            <div class="admin-status-msg" id="adminStatusMsg"></div>
-        </div>
-    </div>
-
     <script>
         // ============================================================
-        // OPERATORS DATA (with prices)
+        // OPERATORS DATA - VIP PLANS
         // ============================================================
         let operatorsData = [{
             id: 'atom',
@@ -478,10 +238,10 @@
             logo: 'https://i.imgur.com/I5iRYm8.png',
             status: 'active',
             plans: [
-                { name: 'ဒေတာ 5GB', price: 5000, details: ['📶 5GB အမြန်ဒေတာ', '⏳ 7 ရက်'] },
-                { name: 'ဒေတာ 15GB', price: 12000, details: ['📶 15GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 30GB', price: 20000, details: ['📶 30GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 50GB', price: 30000, details: ['📶 50GB အမြန်ဒေတာ', '⏳ 30 ရက်'] }
+                { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+                { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+                { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
             ]
         }, {
             id: 'mytel',
@@ -489,10 +249,10 @@
             logo: 'https://i.imgur.com/Xl3B5xF.jpeg',
             status: 'active',
             plans: [
-                { name: 'ဒေတာ 6GB', price: 6000, details: ['📶 6GB အမြန်ဒေတာ', '⏳ 7 ရက်'] },
-                { name: 'ဒေတာ 20GB', price: 15000, details: ['📶 20GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 50GB', price: 28000, details: ['📶 50GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 100GB', price: 45000, details: ['📶 100GB အမြန်ဒေတာ', '⏳ 30 ရက်'] }
+                { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+                { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+                { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
             ]
         }, {
             id: 'ooredoo',
@@ -500,10 +260,10 @@
             logo: 'https://i.imgur.com/eNdLhsk.png',
             status: 'active',
             plans: [
-                { name: 'ဒေတာ 4GB', price: 4500, details: ['📶 4GB အမြန်ဒေတာ', '⏳ 7 ရက်'] },
-                { name: 'ဒေတာ 12GB', price: 10000, details: ['📶 12GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 25GB', price: 18000, details: ['📶 25GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 60GB', price: 35000, details: ['📶 60GB အမြန်ဒေတာ', '⏳ 30 ရက်'] }
+                { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+                { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+                { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
             ]
         }, {
             id: 'mpt',
@@ -511,10 +271,10 @@
             logo: 'https://i.imgur.com/BNUZimj.png',
             status: 'active',
             plans: [
-                { name: 'ဒေတာ 3GB', price: 4000, details: ['📶 3GB အမြန်ဒေတာ', '⏳ 7 ရက်'] },
-                { name: 'ဒေတာ 10GB', price: 9000, details: ['📶 10GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 20GB', price: 15000, details: ['📶 20GB အမြန်ဒေတာ', '⏳ 30 ရက်'] },
-                { name: 'ဒေတာ 40GB', price: 25000, details: ['📶 40GB အမြန်ဒေတာ', '⏳ 30 ရက်'] }
+                { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+                { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+                { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
             ]
         }];
 
@@ -524,7 +284,6 @@
         let isShopOpen = true;
         let activeTab = 'atom';
         let shopStatusInterval = null;
-        let isAdminOpen = false;
 
         // ============================================================
         // LOAD FROM LOCAL STORAGE
@@ -534,12 +293,11 @@
                 const saved = localStorage.getItem('operatorPrices');
                 if (saved) {
                     const savedData = JSON.parse(saved);
-                    // Update prices only
                     for (let i = 0; i < operatorsData.length; i++) {
                         const savedOp = savedData.find(op => op.id === operatorsData[i].id);
                         if (savedOp) {
                             for (let j = 0; j < operatorsData[i].plans.length; j++) {
-                                if (savedOp.plans[j]) {
+                                if (savedOp.plans && savedOp.plans[j]) {
                                     operatorsData[i].plans[j].price = savedOp.plans[j].price;
                                 }
                             }
@@ -552,22 +310,7 @@
         }
 
         // ============================================================
-        // SAVE TO LOCAL STORAGE
-        // ============================================================
-        function savePricesToStorage() {
-            try {
-                const dataToSave = operatorsData.map(op => ({
-                    id: op.id,
-                    plans: op.plans.map(p => ({ price: p.price }))
-                }));
-                localStorage.setItem('operatorPrices', JSON.stringify(dataToSave));
-            } catch (e) {
-                console.error('Error saving prices to localStorage:', e);
-            }
-        }
-
-        // ============================================================
-        // RENDER TABS (User View)
+        // RENDER TABS
         // ============================================================
         function renderTabs() {
             const app = document.getElementById('app');
@@ -604,12 +347,21 @@
                     const priceFormatted = plan.price.toLocaleString();
                     let detailsHtml = '';
                     for (const detail of plan.details) {
-                        detailsHtml += `<div>${detail}</div>`;
+                        detailsHtml += `<div><i class="fas fa-check-circle" style="color:#00d4ff;"></i> ${detail}</div>`;
                     }
+
+                    let planIcon = '🔥';
+                    if (plan.name.includes('VIP 1') || plan.name.includes('VIP LEVEL - 1')) planIcon = '🔥';
+                    else if (plan.name.includes('VIP 2') || plan.name.includes('VIP LEVEL - 2')) planIcon = '⭐';
+                    else if (plan.name.includes('VIP 3') || plan.name.includes('VIP LEVEL - 3')) planIcon = '💎';
+                    else if (plan.name.includes('ULTRA') || plan.name.includes('VIP 4')) planIcon = '👑';
 
                     tabsHtml += `
                         <div class="plan-card">
-                            <div class="plan-name">${plan.name}</div>
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                                <span style="font-size:1.2rem;">${planIcon}</span>
+                                <div class="plan-name">${plan.name}</div>
+                            </div>
                             <div class="plan-details">${detailsHtml}</div>
                             <div class="plan-price">${priceFormatted} <small>MMK</small></div>
                             <button class="plan-buy-btn" onclick="handleBuy('${op.name}', '${plan.name}', ${plan.price})" ${!isShopOpen ? 'disabled' : ''}>
@@ -632,112 +384,6 @@
 
             app.innerHTML = tabsHtml;
             updateButtonsStatus();
-        }
-
-        // ============================================================
-        // RENDER ADMIN PANEL
-        // ============================================================
-        function renderAdminPanel() {
-            const form = document.getElementById('adminForm');
-            let html = '';
-
-            for (const op of operatorsData) {
-                html += `
-                    <div class="admin-operator-group">
-                        <div class="admin-operator-title">
-                            <img src="${op.logo}" alt="${op.name}" onerror="this.style.display='none'">
-                            ${op.name}
-                        </div>
-                `;
-
-                for (let i = 0; i < op.plans.length; i++) {
-                    const plan = op.plans[i];
-                    html += `
-                        <div class="admin-plan-row">
-                            <span class="plan-label">${plan.name}</span>
-                            <span class="currency-label">MMK</span>
-                            <input type="number" class="price-input" id="price-${op.id}-${i}" value="${plan.price}" min="0" step="100" placeholder="ဈေးနှုန်း">
-                        </div>
-                    `;
-                }
-
-                html += `</div>`;
-            }
-
-            form.innerHTML = html;
-        }
-
-        // ============================================================
-        // TOGGLE ADMIN PANEL
-        // ============================================================
-        function toggleAdminPanel() {
-            isAdminOpen = !isAdminOpen;
-            const panel = document.getElementById('adminPanel');
-            const toggleBtn = document.getElementById('adminToggle');
-
-            if (isAdminOpen) {
-                panel.classList.add('open');
-                toggleBtn.classList.add('active');
-                toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
-                renderAdminPanel();
-                // Clear any previous status message
-                document.getElementById('adminStatusMsg').className = 'admin-status-msg';
-                document.getElementById('adminStatusMsg').textContent = '';
-            } else {
-                panel.classList.remove('open');
-                toggleBtn.classList.remove('active');
-                toggleBtn.innerHTML = '<i class="fas fa-cog"></i>';
-            }
-        }
-
-        // ============================================================
-        // SAVE PRICES FROM ADMIN PANEL
-        // ============================================================
-        function savePrices() {
-            const statusMsg = document.getElementById('adminStatusMsg');
-            const saveBtn = document.getElementById('adminSaveBtn');
-            saveBtn.disabled = true;
-            statusMsg.className = 'admin-status-msg';
-            statusMsg.textContent = '';
-
-            try {
-                // Read values from inputs
-                for (const op of operatorsData) {
-                    for (let i = 0; i < op.plans.length; i++) {
-                        const input = document.getElementById(`price-${op.id}-${i}`);
-                        if (input) {
-                            const newPrice = parseInt(input.value);
-                            if (!isNaN(newPrice) && newPrice >= 0) {
-                                op.plans[i].price = newPrice;
-                            } else {
-                                throw new Error(`"${op.plans[i].name}" အတွက် မှန်ကန်သော ဈေးနှုန်းထည့်ပါ။`);
-                            }
-                        }
-                    }
-                }
-
-                // Save to localStorage
-                savePricesToStorage();
-
-                // Re-render user view
-                renderTabs();
-
-                statusMsg.className = 'admin-status-msg success';
-                statusMsg.textContent = '✅ ဈေးနှုန်းများ အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ။';
-                saveBtn.disabled = false;
-
-                // Auto close after 2 seconds
-                setTimeout(() => {
-                    if (isAdminOpen) {
-                        toggleAdminPanel();
-                    }
-                }, 1500);
-
-            } catch (e) {
-                statusMsg.className = 'admin-status-msg error';
-                statusMsg.textContent = `❌ ${e.message}`;
-                saveBtn.disabled = false;
-            }
         }
 
         // ============================================================
@@ -792,7 +438,7 @@
         // ============================================================
         function handleBuy(operatorName, planName, planPrice) {
             if (!isShopOpen) {
-                showNotification("ဆိုင်ပိတ်ချိန်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ နံနက် ၉ နာရီမှ ညနေ ၇ နာရီအတွင်းမှသာ ဝယ်ယူနိုင်ပါသည်။", true);
+                alert("ဆိုင်ပိတ်ချိန်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ နံနက် ၉ နာရီမှ ညနေ ၇ နာရီအတွင်းမှသာ ဝယ်ယူနိုင်ပါသည်။");
                 return;
             }
 
@@ -801,14 +447,6 @@
                 window.parent.openPaymentModalFromPlan(fullPlanName, planPrice);
             } else {
                 alert(`🛒 ${fullPlanName} - ${planPrice.toLocaleString()} MMK ဝယ်ယူရန်`);
-            }
-        }
-
-        function showNotification(message, isError = false) {
-            if (window.parent && window.parent.showToast) {
-                window.parent.showToast(message, isError);
-            } else {
-                alert(message);
             }
         }
 
@@ -853,7 +491,6 @@
             const app = document.getElementById('app');
             app.innerHTML = '<div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading operators...</div>';
 
-            // Load saved prices
             loadPricesFromStorage();
 
             setTimeout(() => {
@@ -871,8 +508,6 @@
         window.renderTabs = renderTabs;
         window.checkShopStatus = checkShopStatus;
         window.startShopStatusPolling = startShopStatusPolling;
-        window.toggleAdminPanel = toggleAdminPanel;
-        window.savePrices = savePrices;
 
         // ============================================================
         // START
