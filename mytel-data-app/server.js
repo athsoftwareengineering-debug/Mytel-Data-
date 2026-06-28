@@ -5,8 +5,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ===== Middleware =====
-// Static files တွေကို Serve လုပ်ပါ
-app.use(express.static(__dirname));
+// Static files တွေကို frontend/public/ ကနေ Serve လုပ်ပါ
+app.use(express.static(path.join(__dirname, 'frontend/public')));
 
 // Request လာတာကို Log ထုတ်ပါ (Debug အတွက်)
 app.use((req, res, next) => {
@@ -16,26 +16,26 @@ app.use((req, res, next) => {
 
 // ===== Routes =====
 
-// Default route - index.html ကိုပြပါ
+// Default route - frontend/public/index.html ကိုပြပါ
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'frontend/public/index.html'));
 });
 
 // HTML ဖိုင်တွေအတွက် Route
 app.get('/atom.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'atom.html'));
+    res.sendFile(path.join(__dirname, 'frontend/public/atom.html'));
 });
 
 app.get('/mytel.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'mytel.html'));
+    res.sendFile(path.join(__dirname, 'frontend/public/mytel.html'));
 });
 
 app.get('/ooredoo.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'ooredoo.html'));
+    res.sendFile(path.join(__dirname, 'frontend/public/ooredoo.html'));
 });
 
 app.get('/mpt.html', (req, res) => {
-    res.sendFile(path.join(__dirname, 'mpt.html'));
+    res.sendFile(path.join(__dirname, 'frontend/public/mpt.html'));
 });
 
 // ===== 404 Error Handler =====
