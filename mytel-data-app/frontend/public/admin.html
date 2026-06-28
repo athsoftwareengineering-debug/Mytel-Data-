@@ -67,7 +67,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -521,7 +521,7 @@
         }
 
         /* ============================================================
-           PLAN CARD
+           PLAN CARD - OPERATOR SPECIFIC
            ============================================================ */
         .plan-card {
             background: var(--bg-card);
@@ -535,6 +535,38 @@
 
         .plan-card:hover {
             border-color: var(--border-hover);
+        }
+
+        .plan-card .operator-plan-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .plan-card .operator-plan-header img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .plan-card .operator-plan-header .op-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        .plan-card .operator-plan-header .op-badge {
+            font-size: 0.55rem;
+            padding: 2px 10px;
+            border-radius: 40px;
+            background: rgba(0,212,255,0.1);
+            color: var(--cyan);
+            border: 1px solid rgba(0,212,255,0.1);
+            margin-left: auto;
         }
 
         .form-grid {
@@ -582,7 +614,7 @@
         }
 
         .form-group textarea {
-            min-height: 70px;
+            min-height: 60px;
             resize: vertical;
         }
 
@@ -1190,7 +1222,7 @@
                     </div>
                     <div class="btn-group" style="margin-top:0;">
                         <button class="btn btn-primary" onclick="switchSection('plans')">
-                            <i class="fas fa-edit"></i> Edit Plan
+                            <i class="fas fa-edit"></i> Edit Plans
                         </button>
                         <button class="btn btn-success" onclick="switchSection('operators')">
                             <i class="fas fa-dollar-sign"></i> Prices
@@ -1217,46 +1249,25 @@
         </section>
 
         <!-- ============================================================
-           PLANS SECTION
+           PLANS SECTION - OPERATOR SPECIFIC
            ============================================================ -->
         <section class="content-section" id="section-plans">
             <div class="section-header">
                 <h2><i class="fas fa-sim-card"></i> Plan Settings</h2>
-                <span class="subtitle">Configure your VIP plans</span>
+                <span class="subtitle">Configure VIP plans for each operator</span>
             </div>
 
-            <div class="plan-card">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Plan Name <span class="required">*</span></label>
-                        <input type="text" id="planName" placeholder="e.g., VIP LEVEL - 1">
-                    </div>
-                    <div class="form-group">
-                        <label>Price (MMK) <span class="required">*</span></label>
-                        <input type="number" id="planPrice" placeholder="15000" min="0" step="100">
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Plan Details</label>
-                        <textarea id="planDetails" placeholder="e.g., 🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS"></textarea>
-                        <div class="helper">💡 Short description shown in the payment modal</div>
-                    </div>
-                    <div class="form-group full-width">
-                        <label>Features</label>
-                        <div id="featuresContainer" class="features-list"></div>
-                        <button class="add-feature-btn" onclick="addFeature()">
-                            <i class="fas fa-plus"></i> Add Feature
-                        </button>
-                    </div>
-                </div>
+            <div id="operatorPlansContainer">
+                <!-- Will be rendered by JavaScript -->
+            </div>
 
-                <div class="btn-group">
-                    <button class="btn btn-primary" onclick="savePlan()">
-                        <i class="fas fa-save"></i> Save Plan
-                    </button>
-                    <button class="btn btn-secondary" onclick="resetToDefault()">
-                        <i class="fas fa-undo"></i> Reset Default
-                    </button>
-                </div>
+            <div class="btn-group" style="margin-top:8px;">
+                <button class="btn btn-success" onclick="saveAllOperatorPlans()">
+                    <i class="fas fa-save"></i> Save All Plans
+                </button>
+                <button class="btn btn-secondary" onclick="loadAllOperatorPlans()">
+                    <i class="fas fa-undo"></i> Reload All
+                </button>
             </div>
         </section>
 
@@ -1421,12 +1432,10 @@
 
     <script>
         // ================================================================
-        //  PROFESSIONAL ADMIN PANEL - FULL SCRIPT
-        //  Merged with operators.html functionality
+        //  PROFESSIONAL ADMIN PANEL - OPERATOR SPECIFIC PLANS
         // ================================================================
 
         const API_BASE = window.location.origin;
-        let currentFeatures = [];
         let isSaving = false;
         let allOrders = [];
         let userStats = [];
@@ -1434,56 +1443,132 @@
         let isShopOpen = true;
         let shopStatusInterval = null;
 
-        // ===== OPERATORS DATA =====
+        // ===== OPERATORS DATA WITH FULL PLAN CONFIGURATION =====
         let operatorsData = [{
             id: 'atom',
             name: 'ATOM',
             logo: 'https://i.imgur.com/I5iRYm8.png',
+            icon: '📱',
             plans: [
-                { name: 'VIP LEVEL - 1', price: 15000 },
-                { name: 'VIP LEVEL - 2', price: 20000 },
-                { name: 'VIP LEVEL - 3', price: 25000 },
-                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000 }
+                { 
+                    name: 'VIP LEVEL - 1', 
+                    price: 15000, 
+                    details: '🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS',
+                    features: ['22 GB အမြန်နှုန်းမြင့်ဒေတာ', '8,000 မိနစ် (ကွန်ရက်တွင်း)', '5,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 2', 
+                    price: 20000, 
+                    details: '⭐ 40 GB အာထရာဒေတာ • 250 မိနစ် (ကွန်ရက်တွင်း) • 25 မိနစ် (အခြားကွန်ရက်)',
+                    features: ['40 GB အာထရာဒေတာ', '250 မိနစ် (ကွန်ရက်တွင်း)', '25 မိနစ် (အခြားကွန်ရက်)']
+                },
+                { 
+                    name: 'VIP LEVEL - 3', 
+                    price: 25000, 
+                    details: '💎 40 GB အမြန်နှုန်း + အပို • 1,400 မိနစ် (ကွန်ရက်တွင်း) • 8,000 SMS',
+                    features: ['40 GB အမြန်နှုန်း + အပို', '1,400 မိနစ် (ကွန်ရက်တွင်း)', '8,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 4 (ULTRA)', 
+                    price: 30000, 
+                    details: '👑 120 GB ဂိမ်းဒေတာ • အကန့်အသတ်မရှိ Streaming • ဦးစားပေး ပံ့ပိုးမှု',
+                    features: ['120 GB ဂိမ်းဒေတာ', 'အကန့်အသတ်မရှိ Streaming', 'ဦးစားပေး ပံ့ပိုးမှု']
+                }
             ]
         }, {
             id: 'mytel',
             name: 'MYTEL',
             logo: 'https://i.imgur.com/Xl3B5xF.jpeg',
+            icon: '📶',
             plans: [
-                { name: 'VIP LEVEL - 1', price: 15000 },
-                { name: 'VIP LEVEL - 2', price: 20000 },
-                { name: 'VIP LEVEL - 3', price: 25000 },
-                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000 }
+                { 
+                    name: 'VIP LEVEL - 1', 
+                    price: 15000, 
+                    details: '🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS',
+                    features: ['22 GB အမြန်နှုန်းမြင့်ဒေတာ', '8,000 မိနစ် (ကွန်ရက်တွင်း)', '5,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 2', 
+                    price: 20000, 
+                    details: '⭐ 40 GB အာထရာဒေတာ • 250 မိနစ် (ကွန်ရက်တွင်း) • 25 မိနစ် (အခြားကွန်ရက်)',
+                    features: ['40 GB အာထရာဒေတာ', '250 မိနစ် (ကွန်ရက်တွင်း)', '25 မိနစ် (အခြားကွန်ရက်)']
+                },
+                { 
+                    name: 'VIP LEVEL - 3', 
+                    price: 25000, 
+                    details: '💎 40 GB အမြန်နှုန်း + အပို • 1,400 မိနစ် (ကွန်ရက်တွင်း) • 8,000 SMS',
+                    features: ['40 GB အမြန်နှုန်း + အပို', '1,400 မိနစ် (ကွန်ရက်တွင်း)', '8,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 4 (ULTRA)', 
+                    price: 30000, 
+                    details: '👑 120 GB ဂိမ်းဒေတာ • အကန့်အသတ်မရှိ Streaming • ဦးစားပေး ပံ့ပိုးမှု',
+                    features: ['120 GB ဂိမ်းဒေတာ', 'အကန့်အသတ်မရှိ Streaming', 'ဦးစားပေး ပံ့ပိုးမှု']
+                }
             ]
         }, {
             id: 'ooredoo',
             name: 'OOREDOO',
             logo: 'https://i.imgur.com/eNdLhsk.png',
+            icon: '🚀',
             plans: [
-                { name: 'VIP LEVEL - 1', price: 15000 },
-                { name: 'VIP LEVEL - 2', price: 20000 },
-                { name: 'VIP LEVEL - 3', price: 25000 },
-                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000 }
+                { 
+                    name: 'VIP LEVEL - 1', 
+                    price: 15000, 
+                    details: '🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS',
+                    features: ['22 GB အမြန်နှုန်းမြင့်ဒေတာ', '8,000 မိနစ် (ကွန်ရက်တွင်း)', '5,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 2', 
+                    price: 20000, 
+                    details: '⭐ 40 GB အာထရာဒေတာ • 250 မိနစ် (ကွန်ရက်တွင်း) • 25 မိနစ် (အခြားကွန်ရက်)',
+                    features: ['40 GB အာထရာဒေတာ', '250 မိနစ် (ကွန်ရက်တွင်း)', '25 မိနစ် (အခြားကွန်ရက်)']
+                },
+                { 
+                    name: 'VIP LEVEL - 3', 
+                    price: 25000, 
+                    details: '💎 40 GB အမြန်နှုန်း + အပို • 1,400 မိနစ် (ကွန်ရက်တွင်း) • 8,000 SMS',
+                    features: ['40 GB အမြန်နှုန်း + အပို', '1,400 မိနစ် (ကွန်ရက်တွင်း)', '8,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 4 (ULTRA)', 
+                    price: 30000, 
+                    details: '👑 120 GB ဂိမ်းဒေတာ • အကန့်အသတ်မရှိ Streaming • ဦးစားပေး ပံ့ပိုးမှု',
+                    features: ['120 GB ဂိမ်းဒေတာ', 'အကန့်အသတ်မရှိ Streaming', 'ဦးစားပေး ပံ့ပိုးမှု']
+                }
             ]
         }, {
             id: 'mpt',
             name: 'MPT',
             logo: 'https://i.imgur.com/BNUZimj.png',
+            icon: '🌟',
             plans: [
-                { name: 'VIP LEVEL - 1', price: 15000 },
-                { name: 'VIP LEVEL - 2', price: 20000 },
-                { name: 'VIP LEVEL - 3', price: 25000 },
-                { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000 }
+                { 
+                    name: 'VIP LEVEL - 1', 
+                    price: 15000, 
+                    details: '🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS',
+                    features: ['22 GB အမြန်နှုန်းမြင့်ဒေတာ', '8,000 မိနစ် (ကွန်ရက်တွင်း)', '5,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 2', 
+                    price: 20000, 
+                    details: '⭐ 40 GB အာထရာဒေတာ • 250 မိနစ် (ကွန်ရက်တွင်း) • 25 မိနစ် (အခြားကွန်ရက်)',
+                    features: ['40 GB အာထရာဒေတာ', '250 မိနစ် (ကွန်ရက်တွင်း)', '25 မိနစ် (အခြားကွန်ရက်)']
+                },
+                { 
+                    name: 'VIP LEVEL - 3', 
+                    price: 25000, 
+                    details: '💎 40 GB အမြန်နှုန်း + အပို • 1,400 မိနစ် (ကွန်ရက်တွင်း) • 8,000 SMS',
+                    features: ['40 GB အမြန်နှုန်း + အပို', '1,400 မိနစ် (ကွန်ရက်တွင်း)', '8,000 SMS']
+                },
+                { 
+                    name: 'VIP LEVEL - 4 (ULTRA)', 
+                    price: 30000, 
+                    details: '👑 120 GB ဂိမ်းဒေတာ • အကန့်အသတ်မရှိ Streaming • ဦးစားပေး ပံ့ပိုးမှု',
+                    features: ['120 GB ဂိမ်းဒေတာ', 'အကန့်အသတ်မရှိ Streaming', 'ဦးစားပေး ပံ့ပိုးမှု']
+                }
             ]
         }];
-
-        // ===== DEFAULT PLAN =====
-        const DEFAULT_PLAN = {
-            name: "VIP LEVEL - 1",
-            price: 15000,
-            details: "🔥 22 GB မြန်နှုန်းမြင့်ဒေတာ • 8,000 မိနစ် (ကွန်ရက်တွင်း) • 5,000 SMS",
-            features: ["22 GB အမြန်နှုန်းမြင့်ဒေတာ", "8,000 မိနစ် (ကွန်ရက်တွင်း)", "5,000 SMS"]
-        };
 
         // ================================================================
         //  THEME TOGGLE
@@ -1552,6 +1637,7 @@
             if (section === 'orders') loadOrders();
             if (section === 'users') loadUsers();
             if (section === 'sales') loadSalesHours();
+            if (section === 'plans') renderAllOperatorPlans();
             
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('sidebarOverlay').classList.remove('open');
@@ -1583,112 +1669,276 @@
         }
 
         // ================================================================
-        //  PLAN MANAGEMENT
+        //  OPERATOR PLANS - RENDER
         // ================================================================
-        function loadPlan() {
-            try {
-                const saved = localStorage.getItem('adminPlanData');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    populateForm(parsed);
-                    return;
+        function renderAllOperatorPlans() {
+            const container = document.getElementById('operatorPlansContainer');
+            let html = '';
+            
+            for (const op of operatorsData) {
+                html += `
+                    <div class="plan-card" id="plan-card-${op.id}">
+                        <div class="operator-plan-header">
+                            <img src="${op.logo}" onerror="this.style.display='none'">
+                            <span class="op-name">${op.name}</span>
+                            <span class="op-badge"><i class="fas fa-check-circle"></i> ${op.plans.length} Plans</span>
+                        </div>
+                `;
+                
+                for (let p = 0; p < op.plans.length; p++) {
+                    const plan = op.plans[p];
+                    const features = plan.features || [];
+                    
+                    html += `
+                        <div style="margin-bottom:16px;padding:12px;background:rgba(0,0,0,0.1);border-radius:10px;border:1px solid var(--border-color);">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Plan Name</label>
+                                    <input type="text" class="plan-name-input" data-op="${op.id}" data-index="${p}" value="${escapeHtml(plan.name)}" placeholder="Plan Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Price (MMK)</label>
+                                    <input type="number" class="plan-price-input" data-op="${op.id}" data-index="${p}" value="${plan.price}" min="0" step="100" placeholder="Price">
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Plan Details</label>
+                                    <textarea class="plan-details-input" data-op="${op.id}" data-index="${p}" rows="2" placeholder="Plan details">${escapeHtml(plan.details || '')}</textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Features</label>
+                                    <div class="features-list" id="features-${op.id}-${p}">
+                                        ${features.map((f, fi) => `
+                                            <div class="feature-item">
+                                                <input type="text" class="feature-input" data-op="${op.id}" data-plan="${p}" data-feature="${fi}" value="${escapeHtml(f)}" placeholder="Feature ${fi + 1}">
+                                                <button class="remove-feature" onclick="removeOperatorFeature('${op.id}', ${p}, ${fi})">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <button class="add-feature-btn" onclick="addOperatorFeature('${op.id}', ${p})">
+                                        <i class="fas fa-plus"></i> Add Feature
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 }
-            } catch(e) {}
-            populateForm(DEFAULT_PLAN);
-        }
-
-        function populateForm(plan) {
-            document.getElementById('planName').value = plan.name || '';
-            document.getElementById('planPrice').value = plan.price || '';
-            document.getElementById('planDetails').value = plan.details || '';
-            currentFeatures = plan.features || [];
-            renderFeatures();
-        }
-
-        function renderFeatures() {
-            const container = document.getElementById('featuresContainer');
-            if (!currentFeatures.length) {
-                container.innerHTML = `
-                    <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:0.7rem;background:rgba(0,0,0,0.1);border-radius:10px;border:1px dashed var(--border-color);">
-                        <i class="fas fa-info-circle"></i> No features added
+                
+                html += `
+                        <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+                            <button class="btn btn-primary btn-sm" onclick="saveOperatorPlan('${op.id}')">
+                                <i class="fas fa-save"></i> Save ${op.name} Plans
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="resetOperatorPlan('${op.id}')">
+                                <i class="fas fa-undo"></i> Reset ${op.name}
+                            </button>
+                        </div>
                     </div>
                 `;
-                return;
             }
             
-            let html = '';
-            currentFeatures.forEach((feature, index) => {
-                html += `
-                    <div class="feature-item">
-                        <input type="text" value="${escapeHtml(feature)}" 
-                               onchange="updateFeature(${index}, this.value)"
-                               placeholder="Feature ${index + 1}">
-                        <button class="remove-feature" onclick="removeFeature(${index})">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
-            });
             container.innerHTML = html;
         }
 
-        function addFeature() {
-            currentFeatures.push('New feature');
-            renderFeatures();
-            const inputs = document.querySelectorAll('.feature-item input');
-            if (inputs.length) {
-                inputs[inputs.length - 1].focus();
-                inputs[inputs.length - 1].select();
-            }
-        }
-
-        function removeFeature(index) {
-            currentFeatures.splice(index, 1);
-            renderFeatures();
-        }
-
-        function updateFeature(index, value) {
-            currentFeatures[index] = value;
-        }
-
-        function savePlan() {
-            if (isSaving) return;
+        // ================================================================
+        //  OPERATOR PLANS - CRUD
+        // ================================================================
+        function addOperatorFeature(opId, planIndex) {
+            const container = document.getElementById(`features-${opId}-${planIndex}`);
+            const count = container.querySelectorAll('.feature-item').length;
             
-            const name = document.getElementById('planName').value.trim();
-            const price = parseInt(document.getElementById('planPrice').value);
-            const details = document.getElementById('planDetails').value.trim();
-            const features = currentFeatures.filter(f => f.trim() !== '');
+            const item = document.createElement('div');
+            item.className = 'feature-item';
+            item.innerHTML = `
+                <input type="text" class="feature-input" data-op="${opId}" data-plan="${planIndex}" data-feature="${count}" placeholder="Feature ${count + 1}">
+                <button class="remove-feature" onclick="removeOperatorFeature('${opId}', ${planIndex}, ${count})">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            container.appendChild(item);
             
-            if (!name) {
-                showToast('Please enter a plan name', 'error');
-                document.getElementById('planName').focus();
-                return;
-            }
-            if (!price || price < 0) {
-                showToast('Please enter a valid price', 'error');
-                document.getElementById('planPrice').focus();
-                return;
-            }
-            if (!features.length) {
-                showToast('Please add at least one feature', 'error');
+            // Focus the new input
+            const input = item.querySelector('input');
+            input.focus();
+            input.select();
+        }
+
+        function removeOperatorFeature(opId, planIndex, featureIndex) {
+            const container = document.getElementById(`features-${opId}-${planIndex}`);
+            const items = container.querySelectorAll('.feature-item');
+            if (items.length <= 1) {
+                showToast('Cannot remove last feature', 'error');
                 return;
             }
             
-            const planData = { name, price, details, features };
-            localStorage.setItem('adminPlanData', JSON.stringify(planData));
-            broadcastPlanUpdate(planData);
-            showToast('✅ Plan saved successfully!');
+            const item = items[featureIndex];
+            if (item) item.remove();
+            
+            // Re-index remaining features
+            const remaining = container.querySelectorAll('.feature-item input');
+            remaining.forEach((input, i) => {
+                input.dataset.feature = i;
+                input.placeholder = `Feature ${i + 1}`;
+            });
         }
 
-        function resetToDefault() {
-            if (!confirm('Reset to default plan?')) return;
-            populateForm(DEFAULT_PLAN);
-            localStorage.removeItem('adminPlanData');
-            showToast('↩️ Reset to default', 'warning');
+        function collectOperatorPlanData(opId) {
+            const card = document.getElementById(`plan-card-${opId}`);
+            const op = operatorsData.find(o => o.id === opId);
+            if (!op) return null;
+            
+            const planNames = card.querySelectorAll('.plan-name-input');
+            const planPrices = card.querySelectorAll('.plan-price-input');
+            const planDetails = card.querySelectorAll('.plan-details-input');
+            
+            const plans = [];
+            for (let i = 0; i < planNames.length; i++) {
+                const features = [];
+                const featureInputs = card.querySelectorAll(`.feature-input[data-op="${opId}"][data-plan="${i}"]`);
+                featureInputs.forEach(input => {
+                    const val = input.value.trim();
+                    if (val) features.push(val);
+                });
+                
+                plans.push({
+                    name: planNames[i].value.trim() || `VIP LEVEL - ${i + 1}`,
+                    price: parseInt(planPrices[i].value) || 0,
+                    details: planDetails[i].value.trim() || '',
+                    features: features.length ? features : ['Feature 1', 'Feature 2', 'Feature 3']
+                });
+            }
+            
+            return plans;
+        }
+
+        function saveOperatorPlan(opId) {
+            const plans = collectOperatorPlanData(opId);
+            if (!plans) return;
+            
+            const op = operatorsData.find(o => o.id === opId);
+            if (!op) return;
+            
+            // Validate
+            for (const plan of plans) {
+                if (!plan.name) {
+                    showToast(`Please enter a name for all plans of ${op.name}`, 'error');
+                    return;
+                }
+                if (plan.price <= 0) {
+                    showToast(`Please enter a valid price for all plans of ${op.name}`, 'error');
+                    return;
+                }
+                if (!plan.features.length) {
+                    showToast(`Please add at least one feature for all plans of ${op.name}`, 'error');
+                    return;
+                }
+            }
+            
+            op.plans = plans;
+            saveOperatorPlansToStorage();
+            showToast(`✅ ${op.name} plans saved successfully!`);
+        }
+
+        function saveAllOperatorPlans() {
+            let successCount = 0;
+            let errorCount = 0;
+            
+            for (const op of operatorsData) {
+                const plans = collectOperatorPlanData(op.id);
+                if (plans) {
+                    let valid = true;
+                    for (const plan of plans) {
+                        if (!plan.name || plan.price <= 0 || !plan.features.length) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                    if (valid) {
+                        op.plans = plans;
+                        successCount++;
+                    } else {
+                        errorCount++;
+                    }
+                }
+            }
+            
+            if (successCount > 0) {
+                saveOperatorPlansToStorage();
+                showToast(`✅ ${successCount} operators saved${errorCount > 0 ? `, ${errorCount} had errors` : ''}`);
+            } else {
+                showToast('❌ No operators saved. Please check your data.', 'error');
+            }
+        }
+
+        function resetOperatorPlan(opId) {
+            if (!confirm(`Reset ${opId} plans to default?`)) return;
+            
+            const op = operatorsData.find(o => o.id === opId);
+            if (!op) return;
+            
+            // Reset to default based on first operator's data
+            const defaultOp = operatorsData[0];
+            op.plans = JSON.parse(JSON.stringify(defaultOp.plans));
+            saveOperatorPlansToStorage();
+            renderAllOperatorPlans();
+            showToast(`↩️ ${op.name} plans reset to default`);
+        }
+
+        function loadAllOperatorPlans() {
+            loadOperatorPlansFromStorage();
+            renderAllOperatorPlans();
+            showToast('✅ All plans reloaded');
         }
 
         // ================================================================
-        //  OPERATOR PRICES
+        //  OPERATOR PLANS - STORAGE
+        // ================================================================
+        function saveOperatorPlansToStorage() {
+            try {
+                const dataToSave = operatorsData.map(op => ({
+                    id: op.id,
+                    plans: op.plans.map(p => ({
+                        name: p.name,
+                        price: p.price,
+                        details: p.details || '',
+                        features: p.features || []
+                    }))
+                }));
+                localStorage.setItem('operatorPlans', JSON.stringify(dataToSave));
+            } catch (e) {
+                console.error('Error saving operator plans:', e);
+            }
+        }
+
+        function loadOperatorPlansFromStorage() {
+            try {
+                const saved = localStorage.getItem('operatorPlans');
+                if (saved) {
+                    const savedData = JSON.parse(saved);
+                    for (let i = 0; i < operatorsData.length; i++) {
+                        const savedOp = savedData.find(op => op.id === operatorsData[i].id);
+                        if (savedOp && savedOp.plans) {
+                            // Preserve plan count
+                            const planCount = operatorsData[i].plans.length;
+                            for (let j = 0; j < planCount; j++) {
+                                if (savedOp.plans[j]) {
+                                    operatorsData[i].plans[j].name = savedOp.plans[j].name || operatorsData[i].plans[j].name;
+                                    operatorsData[i].plans[j].price = savedOp.plans[j].price || operatorsData[i].plans[j].price;
+                                    operatorsData[i].plans[j].details = savedOp.plans[j].details || operatorsData[i].plans[j].details || '';
+                                    operatorsData[i].plans[j].features = savedOp.plans[j].features || operatorsData[i].plans[j].features || [];
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading operator plans:', e);
+            }
+        }
+
+        // ================================================================
+        //  OPERATOR PRICES (Legacy - kept for compatibility)
         // ================================================================
         function loadOperatorPrices() {
             try {
@@ -1773,7 +2023,7 @@
                     plans: op.plans.map(p => ({ price: p.price }))
                 }));
                 localStorage.setItem('operatorPrices', JSON.stringify(dataToSave));
-                broadcastOperatorUpdate(dataToSave);
+                saveOperatorPlansToStorage();
                 showToast('✅ Operator prices saved!');
                 
             } catch (e) {
@@ -1784,44 +2034,42 @@
         // ================================================================
         //  BROADCAST
         // ================================================================
-        function broadcastPlanUpdate(planData) {
-            try {
-                localStorage.setItem('planUpdateTimestamp', Date.now().toString());
-                document.querySelectorAll('iframe').forEach(iframe => {
-                    try {
-                        iframe.contentWindow.postMessage({ type: 'planUpdated', plan: planData }, '*');
-                    } catch(e) {}
-                });
-            } catch(e) {}
-        }
-
-        function broadcastOperatorUpdate(operatorData) {
-            try {
-                localStorage.setItem('operatorUpdateTimestamp', Date.now().toString());
-            } catch(e) {}
-        }
-
         function pushToUsers() {
-            const name = document.getElementById('planName').value.trim();
-            const price = parseInt(document.getElementById('planPrice').value);
-            const details = document.getElementById('planDetails').value.trim();
-            const features = currentFeatures.filter(f => f.trim() !== '');
-            
-            if (!name || !price || !features.length) {
-                showToast('Please save the plan first', 'error');
-                return;
+            // Save all plans first
+            for (const op of operatorsData) {
+                const plans = collectOperatorPlanData(op.id);
+                if (plans) {
+                    let valid = true;
+                    for (const plan of plans) {
+                        if (!plan.name || plan.price <= 0 || !plan.features.length) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                    if (valid) {
+                        op.plans = plans;
+                    }
+                }
             }
             
-            const planData = { name, price, details, features };
-            broadcastPlanUpdate(planData);
+            saveOperatorPlansToStorage();
             
-            const opData = operatorsData.map(op => ({
+            const planData = operatorsData.map(op => ({
                 id: op.id,
-                plans: op.plans.map(p => ({ price: p.price }))
+                name: op.name,
+                plans: op.plans
             }));
-            broadcastOperatorUpdate(opData);
             
-            showToast('📡 All settings pushed to users!');
+            localStorage.setItem('operatorPlansData', JSON.stringify(planData));
+            localStorage.setItem('planUpdateTimestamp', Date.now().toString());
+            
+            document.querySelectorAll('iframe').forEach(iframe => {
+                try {
+                    iframe.contentWindow.postMessage({ type: 'operatorPlansUpdated', data: planData }, '*');
+                } catch(e) {}
+            });
+            
+            showToast('📡 All plans pushed to users!');
         }
 
         // ================================================================
@@ -2131,15 +2379,8 @@
                 const lastCheck = localStorage.getItem('_lastCheck') || '0';
                 if (parseInt(timestamp) > parseInt(lastCheck)) {
                     localStorage.setItem('_lastCheck', timestamp);
-                    loadPlan();
-                }
-            }
-            const opTimestamp = localStorage.getItem('operatorUpdateTimestamp');
-            if (opTimestamp) {
-                const lastOpCheck = localStorage.getItem('_lastOpCheck') || '0';
-                if (parseInt(opTimestamp) > parseInt(lastOpCheck)) {
-                    localStorage.setItem('_lastOpCheck', opTimestamp);
-                    loadOperatorPrices();
+                    loadOperatorPlansFromStorage();
+                    renderAllOperatorPlans();
                 }
             }
         }, 5000);
@@ -2147,12 +2388,13 @@
         // ================================================================
         //  INIT
         // ================================================================
-        loadPlan();
+        loadOperatorPlansFromStorage();
         loadOperatorPrices();
         loadOrders();
         loadUsers();
         updateDashboardStats();
         loadSalesHours();
+        renderAllOperatorPlans();
 
         // ================================================================
         //  EXPOSE GLOBALS
@@ -2161,25 +2403,27 @@
         window.switchSection = switchSection;
         window.toggleTheme = toggleTheme;
         window.showToast = showToast;
-        window.addFeature = addFeature;
-        window.removeFeature = removeFeature;
-        window.updateFeature = updateFeature;
-        window.savePlan = savePlan;
-        window.resetToDefault = resetToDefault;
-        window.loadOperatorPrices = loadOperatorPrices;
-        window.saveOperatorPrices = saveOperatorPrices;
-        window.pushToUsers = pushToUsers;
-        window.loadAllData = loadAllData;
         window.loadOrders = loadOrders;
         window.loadUsers = loadUsers;
-        window.loadPlan = loadPlan;
-        window.populateForm = populateForm;
+        window.loadAllData = loadAllData;
         window.loadSalesHours = loadSalesHours;
         window.setMode = setMode;
         window.toggleManualShop = toggleManualShop;
         window.updateSalesHours = updateSalesHours;
+        window.renderAllOperatorPlans = renderAllOperatorPlans;
+        window.saveOperatorPlan = saveOperatorPlan;
+        window.saveAllOperatorPlans = saveAllOperatorPlans;
+        window.resetOperatorPlan = resetOperatorPlan;
+        window.loadAllOperatorPlans = loadAllOperatorPlans;
+        window.addOperatorFeature = addOperatorFeature;
+        window.removeOperatorFeature = removeOperatorFeature;
+        window.collectOperatorPlanData = collectOperatorPlanData;
+        window.saveOperatorPrices = saveOperatorPrices;
+        window.loadOperatorPrices = loadOperatorPrices;
+        window.pushToUsers = pushToUsers;
+        window.escapeHtml = escapeHtml;
 
-        console.log('🛠️ Professional Admin Panel loaded successfully');
+        console.log('🛠️ Professional Admin Panel with Operator-Specific Plans loaded successfully');
     </script>
 </body>
 </html>
