@@ -1,5 +1,5 @@
 // ============================================================
-// server.js - Full Server with Admin API Routes (FIXED PATH)
+// server.js - Full Server with Admin API Routes
 // ============================================================
 
 const express = require('express');
@@ -17,44 +17,27 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// ===== STATIC FILES - FIXED PATH =====
-// ဒီနေရာမှာ 'public' ကို 'frontend/public' လို့ ပြောင်းပါ
-const publicPath = path.join(__dirname, 'frontend', 'public');
-app.use(express.static(publicPath));
+app.use(express.static(path.join(__dirname, 'frontend', 'public')));
 
 // ===== SERVE HTML FILES =====
 app.get('/', (req, res) => {
-    res.sendFile(path.join(publicPath, 'index.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'index.html'));
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(publicPath, 'admin.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'admin.html'));
 });
 
 app.get('/admin.html', (req, res) => {
-    res.sendFile(path.join(publicPath, 'admin.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'admin.html'));
 });
 
-// ===== OPERATOR PAGES =====
-app.get('/atom', (req, res) => {
-    res.sendFile(path.join(publicPath, 'atom.html'));
+app.get('/operators', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'operators.html'));
 });
 
-app.get('/mytel', (req, res) => {
-    res.sendFile(path.join(publicPath, 'mytel.html'));
-});
-
-app.get('/ooredoo', (req, res) => {
-    res.sendFile(path.join(publicPath, 'ooredoo.html'));
-});
-
-app.get('/mpt', (req, res) => {
-    res.sendFile(path.join(publicPath, 'mpt.html'));
-});
-
-app.get('/plans-widget.html', (req, res) => {
-    res.sendFile(path.join(publicPath, 'plans-widget.html'));
+app.get('/operators.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'operators.html'));
 });
 
 // ============================================================
@@ -72,6 +55,68 @@ app.locals.salesHours = {
 
 app.locals.orders = [];
 app.locals.users = [];
+app.locals.operatorPlans = [];
+
+// ===== DEFAULT OPERATOR PLANS =====
+const DEFAULT_PLANS = [
+    {
+        id: 'atom',
+        name: 'ATOM',
+        logo: 'https://i.imgur.com/I5iRYm8.png',
+        icon: '📱',
+        status: 'active',
+        plans: [
+            { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+            { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+            { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+            { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
+        ]
+    },
+    {
+        id: 'mytel',
+        name: 'MYTEL',
+        logo: 'https://i.imgur.com/Xl3B5xF.jpeg',
+        icon: '📶',
+        status: 'active',
+        plans: [
+            { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+            { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+            { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+            { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
+        ]
+    },
+    {
+        id: 'ooredoo',
+        name: 'OOREDOO',
+        logo: 'https://i.imgur.com/eNdLhsk.png',
+        icon: '🚀',
+        status: 'active',
+        plans: [
+            { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+            { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+            { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+            { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
+        ]
+    },
+    {
+        id: 'mpt',
+        name: 'MPT',
+        logo: 'https://i.imgur.com/BNUZimj.png',
+        icon: '🌟',
+        status: 'active',
+        plans: [
+            { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
+            { name: 'VIP LEVEL - 2', price: 20000, details: ['⭐ 40 GB အာထရာဒေတာ', '📞 250 မိနစ် (ကွန်ရက်တွင်း)', '📞 25 မိနစ် (အခြားကွန်ရက်)'] },
+            { name: 'VIP LEVEL - 3', price: 25000, details: ['💎 40 GB အမြန်နှုန်း + အပို', '📞 1,400 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 8,000 SMS'] },
+            { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
+        ]
+    }
+];
+
+// Set default plans if empty
+if (app.locals.operatorPlans.length === 0) {
+    app.locals.operatorPlans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
+}
 
 // ===== LOAD DATA FROM FILE =====
 const dataPath = path.join(__dirname, 'data.json');
@@ -83,7 +128,11 @@ function loadDataFromFile() {
             if (data.orders) app.locals.orders = data.orders;
             if (data.users) app.locals.users = data.users;
             if (data.salesHours) app.locals.salesHours = data.salesHours;
+            if (data.operatorPlans) app.locals.operatorPlans = data.operatorPlans;
             console.log('📁 Data loaded from file');
+        } else {
+            // Create default data file
+            saveDataToFile();
         }
     } catch (e) {
         console.error('Error loading data:', e);
@@ -96,7 +145,8 @@ function saveDataToFile() {
         const data = {
             orders: app.locals.orders || [],
             users: app.locals.users || [],
-            salesHours: app.locals.salesHours || {}
+            salesHours: app.locals.salesHours || {},
+            operatorPlans: app.locals.operatorPlans || DEFAULT_PLANS
         };
         fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
         console.log('💾 Data saved to file');
@@ -235,6 +285,54 @@ app.get('/api/orders/:phone', (req, res) => {
     try {
         const orders = app.locals.orders.filter(o => o.phone === req.params.phone);
         res.json({ success: true, orders });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ============================================================
+// OPERATOR PLANS API (REAL-TIME SYNC)
+// ============================================================
+
+// ===== GET ALL OPERATOR PLANS =====
+app.get('/api/operator-plans', (req, res) => {
+    try {
+        const plans = app.locals.operatorPlans || DEFAULT_PLANS;
+        res.json({ success: true, plans });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== UPDATE OPERATOR PLANS =====
+app.post('/api/operator-plans', (req, res) => {
+    try {
+        const { plans } = req.body;
+        
+        if (!plans || !Array.isArray(plans)) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Invalid plans data' 
+            });
+        }
+        
+        // Validate plans structure
+        for (const op of plans) {
+            if (!op.id || !op.plans || !Array.isArray(op.plans)) {
+                return res.status(400).json({ 
+                    success: false, 
+                    error: 'Invalid plan structure' 
+                });
+            }
+        }
+        
+        app.locals.operatorPlans = plans;
+        saveDataToFile();
+        
+        res.json({ 
+            success: true, 
+            message: 'Operator plans updated successfully' 
+        });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -459,6 +557,7 @@ app.post('/api/admin/system-reset', (req, res) => {
             mode: 'auto',
             manualStatus: true
         };
+        app.locals.operatorPlans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
         
         saveDataToFile();
         res.json({ 
@@ -474,7 +573,7 @@ app.post('/api/admin/system-reset', (req, res) => {
 // ADMIN CHAT
 // ============================================================
 app.get('/admin-chat.html', (req, res) => {
-    res.sendFile(path.join(publicPath, 'admin-chat.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'public', 'admin-chat.html'));
 });
 
 // ============================================================
@@ -486,7 +585,6 @@ app.listen(PORT, () => {
     console.log(`║  📡 Port: ${PORT}                          ║`);
     console.log(`║  🌐 URL: http://localhost:${PORT}        ║`);
     console.log(`║  📁 Directory: ${__dirname}    ║`);
-    console.log(`║  📁 Public: ${publicPath}    ║`);
     console.log(`║  ⏰ Started: ${new Date().toLocaleString()}  ║`);
     console.log('║  Press Ctrl+C to stop the server        ║');
     console.log('╚══════════════════════════════════════════╝');
