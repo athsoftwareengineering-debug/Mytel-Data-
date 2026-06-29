@@ -7,6 +7,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -75,7 +76,6 @@ app.get('/live.html', (req, res) => {
 // STORE DATA IN MEMORY
 // ============================================================
 
-// Initialize app.locals with default data
 app.locals.salesHours = {
     enabled: true,
     startHour: 9,
@@ -164,7 +164,6 @@ function loadDataFromFile() {
             if (data.chatMessages) app.locals.chatMessages = data.chatMessages;
             console.log('📁 Data loaded from file');
         } else {
-            // Create default data file
             saveDataToFile();
         }
     } catch (e) {
@@ -172,7 +171,9 @@ function loadDataFromFile() {
     }
 }
 
-// ===== SAVE DATA TO FILE =====
+// ===== SAVE DATA TO FILE (Optimized - only when changes detected) =====
+let lastSavedHash = '';
+
 function saveDataToFile() {
     try {
         const data = {
@@ -182,8 +183,16 @@ function saveDataToFile() {
             operatorPlans: app.locals.operatorPlans || DEFAULT_PLANS,
             chatMessages: app.locals.chatMessages || []
         };
-        fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
-        console.log('💾 Data saved to file');
+        
+        const dataString = JSON.stringify(data, null, 2);
+        const currentHash = crypto.createHash('md5').update(dataString).digest('hex');
+        
+        // Only save if data has changed
+        if (currentHash !== lastSavedHash) {
+            fs.writeFileSync(dataPath, dataString);
+            lastSavedHash = currentHash;
+            console.log('💾 Data saved to file (changes detected)');
+        }
     } catch (e) {
         console.error('Error saving data:', e);
     }
@@ -192,8 +201,8 @@ function saveDataToFile() {
 // Load data on startup
 loadDataFromFile();
 
-// Save data every 30 seconds
-setInterval(saveDataToFile, 30000);
+// Save data every 2 minutes (instead of 30 seconds)
+setInterval(saveDataToFile, 120000);
 
 // ============================================================
 // USER API ROUTES
@@ -268,24 +277,18 @@ app.get('/api/user/:phone', (req, res) => {
     }
 });
 
-// ===== CREATE ORDER (FormData + JSON support) =====
+// ===== CREATE ORDER =====
 app.post('/api/orders', upload.none(), (req, res) => {
     try {
-        // Get data from FormData or JSON
         const { phone, plan, price, payment_method, sender_name, last5_digits } = req.body;
         
-        console.log('📝 Order received:', { phone, plan, price, payment_method });
-        
-        // Validate required fields
         if (!phone || !plan || !price) {
             return res.status(400).json({ 
                 success: false, 
-                error: 'Phone, plan and price are required',
-                received: { phone, plan, price }
+                error: 'Phone, plan and price are required'
             });
         }
         
-        // Create order
         const order = {
             id: 'ORD' + Date.now().toString().slice(-6),
             phone: phone.trim(),
@@ -300,17 +303,14 @@ app.post('/api/orders', upload.none(), (req, res) => {
             activated_at: null
         };
         
-        // Save to memory
         app.locals.orders.push(order);
         
-        // Update user's orders
         const user = app.locals.users.find(u => u.phone === phone);
         if (user) {
             if (!user.orders) user.orders = [];
             user.orders.push(order);
         }
         
-        // Save to file
         saveDataToFile();
         
         res.json({
@@ -335,10 +335,9 @@ app.get('/api/orders/:phone', (req, res) => {
 });
 
 // ============================================================
-// OPERATOR PLANS API (REAL-TIME SYNC)
+// OPERATOR PLANS API
 // ============================================================
 
-// ===== GET ALL OPERATOR PLANS =====
 app.get('/api/operator-plans', (req, res) => {
     try {
         const plans = app.locals.operatorPlans || DEFAULT_PLANS;
@@ -348,7 +347,6 @@ app.get('/api/operator-plans', (req, res) => {
     }
 });
 
-// ===== UPDATE OPERATOR PLANS =====
 app.post('/api/operator-plans', (req, res) => {
     try {
         const { plans } = req.body;
@@ -358,15 +356,6 @@ app.post('/api/operator-plans', (req, res) => {
                 success: false, 
                 error: 'Invalid plans data' 
             });
-        }
-        
-        for (const op of plans) {
-            if (!op.id || !op.plans || !Array.isArray(op.plans)) {
-                return res.status(400).json({ 
-                    success: false, 
-                    error: 'Invalid plan structure' 
-                });
-            }
         }
         
         app.locals.operatorPlans = plans;
@@ -385,7 +374,6 @@ app.post('/api/operator-plans', (req, res) => {
 // CHAT API ROUTES
 // ============================================================
 
-// ===== GET ALL CHAT MESSAGES =====
 app.get('/api/chat/messages', (req, res) => {
     try {
         const messages = app.locals.chatMessages || [];
@@ -395,7 +383,6 @@ app.get('/api/chat/messages', (req, res) => {
     }
 });
 
-// ===== SEND A CHAT MESSAGE =====
 app.post('/api/chat/send', (req, res) => {
     try {
         const { user_id, username, phone, message } = req.body;
@@ -419,14 +406,11 @@ app.post('/api/chat/send', (req, res) => {
         
         app.locals.chatMessages.push(newMessage);
         
-        // Keep only last 500 messages
         if (app.locals.chatMessages.length > 500) {
             app.locals.chatMessages = app.locals.chatMessages.slice(-500);
         }
         
-        // Broadcast to other clients
         broadcastChatUpdate(newMessage);
-        
         saveDataToFile();
         
         res.json({ success: true, message: newMessage });
@@ -435,7 +419,6 @@ app.post('/api/chat/send', (req, res) => {
     }
 });
 
-// ===== DELETE CHAT MESSAGES =====
 app.post('/api/chat/delete', (req, res) => {
     try {
         const { user_id, admin_id } = req.body;
@@ -450,14 +433,12 @@ app.post('/api/chat/delete', (req, res) => {
         let deletedCount = 0;
         
         if (user_id === 'all') {
-            // Delete all messages except admin's own messages
             const before = app.locals.chatMessages.length;
             app.locals.chatMessages = app.locals.chatMessages.filter(msg => 
                 msg.user_id === admin_id || msg.user_id === 'admin'
             );
             deletedCount = before - app.locals.chatMessages.length;
         } else {
-            // Delete messages with specific user
             const before = app.locals.chatMessages.length;
             app.locals.chatMessages = app.locals.chatMessages.filter(msg => 
                 msg.user_id !== user_id && 
@@ -478,7 +459,6 @@ app.post('/api/chat/delete', (req, res) => {
     }
 });
 
-// ===== BROADCAST CHAT UPDATE =====
 function broadcastChatUpdate(message) {
     try {
         if (typeof BroadcastChannel !== 'undefined') {
@@ -488,18 +468,13 @@ function broadcastChatUpdate(message) {
                 channel.close();
             } catch(e) {}
         }
-        
-        localStorage.setItem('_chatUpdateTimestamp', Date.now().toString());
-    } catch(e) {
-        console.log('Chat broadcast not available');
-    }
+    } catch(e) {}
 }
 
 // ============================================================
 // ADMIN API ROUTES
 // ============================================================
 
-// ===== SALES HOURS =====
 app.get('/api/admin/sales-hours', (req, res) => {
     try {
         const salesHours = app.locals.salesHours || {
@@ -532,7 +507,6 @@ app.post('/api/admin/sales-hours', (req, res) => {
     }
 });
 
-// ===== SALES STATUS =====
 app.get('/api/sales/status', (req, res) => {
     try {
         const salesHours = app.locals.salesHours || {
@@ -579,7 +553,6 @@ app.get('/api/sales/status', (req, res) => {
     }
 });
 
-// ===== ORDERS =====
 app.get('/api/admin/orders', (req, res) => {
     try {
         const orders = app.locals.orders || [];
@@ -632,7 +605,6 @@ app.delete('/api/admin/orders/:id', (req, res) => {
     }
 });
 
-// ===== USER STATS =====
 app.get('/api/admin/user-stats', (req, res) => {
     try {
         const users = app.locals.users || [];
@@ -652,7 +624,6 @@ app.get('/api/admin/user-stats', (req, res) => {
     }
 });
 
-// ===== ADMIN LOGIN =====
 app.post('/api/admin/login', (req, res) => {
     try {
         const { password } = req.body;
@@ -668,7 +639,6 @@ app.post('/api/admin/login', (req, res) => {
     }
 });
 
-// ===== CLEANUP OLD ORDERS =====
 app.post('/api/admin/cleanup-old', (req, res) => {
     try {
         const thirtyDaysAgo = new Date();
@@ -693,10 +663,9 @@ app.post('/api/admin/cleanup-old', (req, res) => {
     }
 });
 
-// ===== SYSTEM RESET =====
 app.post('/api/admin/system-reset', (req, res) => {
     try {
-        const { confirm, keepProducts } = req.body;
+        const { confirm } = req.body;
         
         if (confirm !== 'RESET_ALL_DATA') {
             return res.status(400).json({ 
