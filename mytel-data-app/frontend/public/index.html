@@ -1044,6 +1044,165 @@
             border: 1px solid rgba(0,212,255,0.04);
         }
         
+        /* ===== SUCCESS MODAL - CUSTOM ===== */
+        .success-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeInModal 0.3s ease;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .success-modal-box {
+            background: linear-gradient(145deg, #1a1d2e, #0f111a);
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            border-radius: 28px;
+            padding: 35px 30px 30px;
+            max-width: 420px;
+            width: 92%;
+            text-align: center;
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(0, 212, 255, 0.05);
+        }
+        @keyframes slideUpModal {
+            from { opacity: 0; transform: translateY(40px) scale(0.92); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .success-modal-box .check-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 40px;
+            color: white;
+            box-shadow: 0 8px 40px rgba(16, 185, 129, 0.35);
+            animation: pulseCheck 1.5s ease-in-out infinite;
+        }
+        @keyframes pulseCheck {
+            0%, 100% { transform: scale(1); box-shadow: 0 8px 40px rgba(16, 185, 129, 0.35); }
+            50% { transform: scale(1.05); box-shadow: 0 8px 60px rgba(16, 185, 129, 0.5); }
+        }
+        .success-modal-box h2 {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+        .success-modal-box .sub-text {
+            color: #10b981;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 14px;
+        }
+        .success-modal-box .order-details-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin: 12px 0 18px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: left;
+        }
+        .success-modal-box .order-details-card .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .success-modal-box .order-details-card .detail-row:last-child {
+            border-bottom: none;
+        }
+        .success-modal-box .order-details-card .detail-label {
+            color: #94a3b8;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .success-modal-box .order-details-card .detail-value {
+            color: #e2e8f0;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .success-modal-box .order-details-card .detail-value.price {
+            color: #10b981;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .success-modal-box .order-details-card .detail-value.cyan {
+            color: #00d4ff;
+        }
+        .success-modal-box .btn-ok-success {
+            width: 100%;
+            padding: 14px 0;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .success-modal-box .btn-ok-success:hover {
+            transform: scale(0.97);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+        }
+        .success-modal-box .btn-ok-success:active {
+            transform: scale(0.95);
+        }
+        .success-modal-box .order-id-badge {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            color: #00d4ff;
+            margin-bottom: 6px;
+        }
+        /* Confetti effect */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10001;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-10px) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
+        }
+        
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .container { padding: 0 10px; }
@@ -1079,6 +1238,9 @@
             .plan-display-card .plan-name { font-size: 0.85rem; }
             .plan-display-card .plan-price { font-size: 0.9rem; }
             .orders-renew-buttons { gap: 8px; }
+            .success-modal-box { padding: 25px 20px 20px; }
+            .success-modal-box .check-circle { width: 64px; height: 64px; font-size: 32px; }
+            .success-modal-box h2 { font-size: 1.2rem; }
         }
         @media (max-width: 380px) {
             .order-phone-price { flex-direction: column; align-items: flex-start; }
@@ -1094,6 +1256,8 @@
             .payment-tab-buttons { gap: 6px; }
             .payment-tab-btn { padding: 6px 10px; font-size: 0.6rem; min-height: 32px; }
             .orders-renew-buttons { gap: 6px; }
+            .success-modal-box { padding: 20px 16px 16px; }
+            .success-modal-box .check-circle { width: 56px; height: 56px; font-size: 28px; }
         }
     </style>
 </head>
@@ -1854,31 +2018,23 @@
             if (!response.ok) throw new Error('Failed to load live');
             const html = await response.text();
             
-            // Parse HTML and extract scripts
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             
-            // Get scripts before removing them
             const scripts = tempDiv.querySelectorAll('script');
-            
-            // Remove scripts from content
             scripts.forEach(script => script.remove());
             
-            // Set HTML content (without scripts)
             container.innerHTML = tempDiv.innerHTML;
             liveLoaded = true;
             
-            // Execute scripts with proper variable handling
             scripts.forEach(script => {
                 const newScript = document.createElement('script');
                 if (script.src) {
                     newScript.src = script.src;
                 } else {
                     let content = script.textContent;
-                    // Replace const/let with var to avoid redeclaration errors
                     content = content.replace(/const API_BASE/g, 'var API_BASE');
                     content = content.replace(/let API_BASE/g, 'var API_BASE');
-                    // Add check at beginning
                     content = `if (typeof API_BASE === 'undefined') { var API_BASE = window.location.origin; }\n` + content;
                     newScript.textContent = content;
                 }
@@ -2061,7 +2217,6 @@
     function openRenewModal(mode) {
         currentRenewMode = mode;
         
-        // Set phone number based on mode
         if (mode === 'self') {
             if (!currentUser) { 
                 showToast("ကျေးဇူးပြု၍ အကောင့်ဝင်ပါ", true); 
@@ -2082,9 +2237,7 @@
             document.getElementById('phoneNoteText').innerHTML = "※ လက်ခံမည့်သူ၏ ဖုန်းနံပါတ်";
         }
         
-        // ===== AUTO-SELECT PLAN FROM OPERATORS PAGE =====
         if (selectedPlanFromOperators) {
-            // Find and select the matching plan in dropdown
             const select = document.getElementById('planSelect');
             let found = false;
             for (let i = 0; i < select.options.length; i++) {
@@ -2095,7 +2248,6 @@
                     break;
                 }
             }
-            // If not found, try to select by price
             if (!found && selectedPlanPriceFromOperators) {
                 for (let i = 0; i < select.options.length; i++) {
                     const opt = select.options[i];
@@ -2106,36 +2258,27 @@
                     }
                 }
             }
-            // Update display
             updatePlanDisplay();
-            
-            // Show toast notification
             showToast(`✅ "${selectedPlanFromOperators}" ကို ရွေးထားပါသည်။ ပြောင်းလိုပါက ပြန်ရွေးနိုင်ပါသည်။`);
         } else {
-            // Default: select VIP LEVEL - 1
             const select = document.getElementById('planSelect');
             select.selectedIndex = 0;
             updatePlanDisplay();
         }
         
-        // Reset form fields
         document.getElementById('slipImage').value = '';
         document.getElementById('fileNameDisplay').innerHTML = '';
         document.getElementById('senderName').value = '';
         document.getElementById('last5Digits').value = '';
         switchToScreenshot();
         
-        // Open modal
         document.getElementById('paymentModal').classList.add('active');
     }
     
     // ===== OPEN PAYMENT MODAL FROM PLAN (called from operators page) =====
     function openPaymentModalFromPlan(plan, price) {
-        // Store selected plan
         selectedPlanFromOperators = plan;
         selectedPlanPriceFromOperators = price;
-        
-        // Open renew modal with 'other' mode
         openRenewModal('other');
     }
     
@@ -2146,7 +2289,120 @@
     document.getElementById('slipImage')?.addEventListener('change', function() {
         if (this.files.length) document.getElementById('fileNameDisplay').innerHTML = `<i class="fas fa-check-circle" style="color:var(--cyan);"></i> ${this.files[0].name}`;
     });
-    
+
+    // ================================================================
+    //  SUCCESS MODAL - CUSTOM (အော်ဒါတင်ပြီးပါပြီ)
+    // ================================================================
+
+    function showOrderSuccessModal(plan, price, phone, orderId, orderDate) {
+        // Close any existing modals first
+        const existing = document.getElementById('successModalOverlay');
+        if (existing) existing.remove();
+        
+        // Create modal HTML
+        const modalHtml = `
+            <div id="successModalOverlay" class="success-modal-overlay" onclick="if(event.target===this) closeSuccessModal()">
+                <div class="success-modal-box">
+                    <div class="check-circle">✅</div>
+                    <h2>အော်ဒါတင်ပြီးပါပြီ!</h2>
+                    <div class="sub-text">သင့်အော်ဒါကို အောင်မြင်စွာ တင်ဆောင်ပြီးပါပြီ။</div>
+                    
+                    <div class="order-id-badge">
+                        <i class="fas fa-receipt"></i> Order ID: ${escapeHtml(orderId || 'N/A')}
+                    </div>
+                    
+                    <div class="order-details-card">
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fas fa-tag"></i> Plan</span>
+                            <span class="detail-value">${escapeHtml(plan)}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fas fa-coins"></i> စျေးနှုန်း</span>
+                            <span class="detail-value price">${parseInt(price).toLocaleString()} MMK</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fas fa-phone-alt"></i> လက်ခံမည့်သူ</span>
+                            <span class="detail-value cyan">${escapeHtml(phone)}</span>
+                        </div>
+                        ${orderDate ? `
+                        <div class="detail-row">
+                            <span class="detail-label"><i class="fas fa-calendar-day"></i> အော်ဒါရက်စွဲ</span>
+                            <span class="detail-value">${escapeHtml(orderDate)}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div style="font-size:0.6rem;color:#64748b;margin-bottom:12px;">
+                        <i class="fas fa-clock"></i> အော်ဒါကို မိနစ်အနည်းငယ်အတွင်း အတည်ပြုပေးပါမည်။
+                    </div>
+                    
+                    <button class="btn-ok-success" onclick="closeSuccessModal()">
+                        <i class="fas fa-check-circle"></i> အိုကေ ပြီးပါပြီ
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        // Append to body
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+        // Trigger confetti
+        triggerConfetti();
+        
+        // Auto close after 8 seconds
+        setTimeout(() => {
+            closeSuccessModal();
+        }, 8000);
+    }
+
+    // ================================================================
+    //  CLOSE SUCCESS MODAL
+    // ================================================================
+    function closeSuccessModal() {
+        const overlay = document.getElementById('successModalOverlay');
+        if (overlay) {
+            overlay.style.transition = 'opacity 0.3s ease';
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.remove();
+            }, 350);
+        }
+        document.querySelectorAll('.confetti-container').forEach(el => el.remove());
+    }
+
+    // ================================================================
+    //  CONFETTI EFFECT
+    // ================================================================
+    function triggerConfetti() {
+        const container = document.createElement('div');
+        container.className = 'confetti-container';
+        document.body.appendChild(container);
+        
+        const colors = ['#00d4ff', '#10b981', '#f59e0b', '#f43f5e', '#8b5cf6', '#34d399', '#fb7185', '#fbbf24'];
+        const shapes = ['■', '●', '▲', '★', '♦', '♥'];
+        
+        for (let i = 0; i < 80; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = '-10px';
+            confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.fontSize = (Math.random() * 14 + 8) + 'px';
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            confetti.style.animationDelay = (Math.random() * 1.5) + 's';
+            confetti.style.opacity = Math.random() * 0.8 + 0.2;
+            container.appendChild(confetti);
+        }
+        
+        setTimeout(() => {
+            if (container.parentNode) container.remove();
+        }, 5000);
+    }
+
+    // ================================================================
+    //  SUBMIT ORDER - UPDATED WITH CUSTOM MODAL
+    // ================================================================
     async function submitOrder() {
         if (!isShopOpen) {
             const statusResponse = await fetch('/api/sales/status');
@@ -2173,7 +2429,6 @@
             if (!last5 || last5.length !== 5) { showToast("ငွေလွှဲပြေစာအမှတ် နောက်ဆုံး ၅ လုံး အတိအကျ ထည့်ပါ", true); return; }
         }
         
-        // Get selected plan from hidden inputs
         const plan = document.getElementById('orderPlan').value || "VIP LEVEL - 1";
         const price = parseInt(document.getElementById('orderPrice').value) || 15000;
         
@@ -2192,12 +2447,24 @@
         try {
             const res = await fetch(`${API_BASE}/api/orders`, { method: 'POST', body: fd });
             const data = await res.json();
+            
             if (data.success) {
-                showToast(`✅ အော်ဒါအောင်မြင်ပါပြီ။ Order ID: ${data.orderId}`);
                 closePaymentModal();
-                // Clear selected plan after successful order
+                
+                const orderDate = new Date().toLocaleString('my-MM', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // ✅ CUSTOM SUCCESS MODAL
+                showOrderSuccessModal(plan, price, phone, data.orderId, orderDate);
+                
                 selectedPlanFromOperators = null;
                 selectedPlanPriceFromOperators = null;
+                
                 if (currentUser === phone) {
                     await loadUserOrders();
                     if (document.getElementById('ordersTab').classList.contains('active')) renderMyOrders();
@@ -2301,7 +2568,6 @@
         
         const t = translations[lang] || translations['my'];
         
-        // Update Drawer Menu
         const drawerLinks = document.querySelectorAll('.drawer-menu li a');
         const drawerTextKeys = ['home', 'plans', 'orders', 'live', 'profile', 'exportOrders', 'support', 'logout'];
         drawerLinks.forEach((link, index) => {
@@ -2311,7 +2577,6 @@
             }
         });
         
-        // Update Bottom Nav
         const navItems = document.querySelectorAll('.bottom-nav .nav-item');
         const navTextKeys = ['home', 'plans', 'orders', 'live', 'chat'];
         navItems.forEach((item, index) => {
@@ -2321,13 +2586,11 @@
             }
         });
         
-        // Update Orders Tab buttons
         const selfBtn = document.querySelector('.orders-renew-btn.self');
         const otherBtn = document.querySelector('.orders-renew-btn.other');
         if (selfBtn) selfBtn.innerHTML = `<span class="btn-icon">👤</span><div><span class="btn-label">${t.buyForSelf}</span><span class="btn-sub">သင့်အကောင့်အတွက် ပြန်လည်ဝယ်ယူရန်</span></div>`;
         if (otherBtn) otherBtn.innerHTML = `<span class="btn-icon">👥</span><div><span class="btn-label">${t.buyForOther}</span><span class="btn-sub">အခြားသူ၏ အကောင့်အတွက် ဝယ်ယူပေးရန်</span></div>`;
         
-        // Update Welcome Text
         const welcomeSpan = document.getElementById('welcomeText');
         if (welcomeSpan) welcomeSpan.textContent = t.welcome;
         
@@ -2434,6 +2697,9 @@
     window.loadSalesStatus = loadSalesStatus;
     window.startSalesStatusPolling = startSalesStatusPolling;
     window.updatePlanDisplay = updatePlanDisplay;
+    window.showOrderSuccessModal = showOrderSuccessModal;
+    window.closeSuccessModal = closeSuccessModal;
+    window.triggerConfetti = triggerConfetti;
 </script>
 
 </body>
