@@ -1,4 +1,3 @@
-<!-- admin.html - Full Admin Panel with Fixed Order Actions -->
 <!DOCTYPE html>
 <html lang="my" data-theme="dark">
 <head>
@@ -11,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ===== BASE STYLES (compressed for brevity) ===== */
+        /* ===== BASE STYLES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { touch-action: pan-x pan-y; -webkit-text-size-adjust: 100%; }
         :root {
@@ -290,6 +289,116 @@
         .btn-delete { background: linear-gradient(135deg, #64748b, #475569); color: white; }
         .btn-delete:hover { background: linear-gradient(135deg, #94a3b8, #64748b); }
         
+        /* ===== CHAT STYLES ===== */
+        .chat-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+        .chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            padding-right: 6px;
+        }
+        .chat-messages::-webkit-scrollbar { width: 3px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 10px; }
+        .chat-message {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 1rem;
+            max-width: 85%;
+            word-wrap: break-word;
+            font-size: 0.8rem;
+            animation: slideIn 0.2s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chat-message.user {
+            background: rgba(0,212,255,0.1);
+            border: 1px solid rgba(0,212,255,0.15);
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-message.admin {
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.15);
+            margin-right: auto;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-message .msg-sender {
+            font-size: 0.55rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .chat-message.user .msg-sender { color: var(--cyan); }
+        .chat-message.admin .msg-sender { color: var(--emerald); }
+        .chat-message .msg-time {
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            display: block;
+            text-align: right;
+        }
+        .chat-input-box {
+            display: flex;
+            gap: 8px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 60px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            outline: none;
+        }
+        .chat-input:focus { border-color: var(--cyan); }
+        .chat-send-btn {
+            padding: 10px 20px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, var(--cyan), #0891b2);
+            border: none;
+            color: #030712;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.25s;
+            touch-action: manipulation;
+        }
+        .chat-send-btn:hover {
+            transform: scale(0.97);
+            box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+        }
+        .chat-clear-btn {
+            padding: 10px 16px;
+            border-radius: 60px;
+            background: rgba(244,63,94,0.15);
+            border: 1px solid rgba(244,63,94,0.2);
+            color: #fb7185;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.25s;
+            touch-action: manipulation;
+        }
+        .chat-clear-btn:hover {
+            background: rgba(244,63,94,0.25);
+            transform: scale(0.97);
+        }
+        .chat-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             body { padding: 10px; padding-bottom: 70px; }
@@ -319,6 +428,8 @@
             .order-card .order-actions-row-3 button { width: 100%; min-height: 40px; padding: 8px 12px; font-size: 0.65rem; border-radius: 10px; }
             .bottom-nav .nav-item { padding: 4px 6px; font-size: 0.5rem; min-width: 40px; }
             .bottom-nav .nav-item i { font-size: 1rem; }
+            .chat-message { max-width: 95%; font-size: 0.75rem; }
+            .chat-messages { max-height: 300px; }
         }
     </style>
 </head>
@@ -345,6 +456,7 @@
                 <button class="top-icon-btn" onclick="window.manualRefresh()"><i class="fas fa-sync-alt"></i></button>
                 <button class="top-icon-btn" onclick="window.toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
                 <button class="top-icon-btn" onclick="window.location.href='/'"><i class="fas fa-store"></i></button>
+                <button class="top-icon-btn" onclick="window.openAdminChatWidget()"><i class="fas fa-comments"></i></button>
             </div>
         </div>
 
@@ -370,6 +482,7 @@
                 <li><a onclick="window.closeDrawer(); window.switchTab('menu')"><i class="fas fa-chart-line"></i> မီနူး</a></li>
                 <li><a onclick="window.closeDrawer(); window.switchTab('orders')"><i class="fas fa-list-ul"></i> အမိန့်စာများ</a></li>
                 <li><a onclick="window.closeDrawer(); window.switchTab('users')"><i class="fas fa-users"></i> အသုံးပြုသူများ</a></li>
+                <li><a onclick="window.closeDrawer(); window.switchTab('chat')"><i class="fas fa-comments"></i> စကားဝိုင်း</a></li>
                 <li><div class="drawer-divider"></div></li>
                 <li><a onclick="window.closeDrawer(); window.exportOrdersToCSV()"><i class="fas fa-file-excel"></i> အမိန့်စာများ CSV</a></li>
                 <li><a onclick="window.closeDrawer(); window.showCleanupAlert()"><i class="fas fa-trash-alt"></i> အမိန့်စာဟောင်းများရှင်း</a></li>
@@ -415,6 +528,24 @@
                 <div class="loading" style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="fas fa-spinner fa-pulse"></i> Loading users...</div>
             </div>
         </div>
+
+        <!-- ===== CHAT TAB ===== -->
+        <div id="chatTab" class="tab-content">
+            <div class="chat-container">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 style="font-size:1rem; display:flex; align-items:center; gap:8px;"><i class="fas fa-comments" style="color:var(--cyan);"></i> စကားဝိုင်း</h3>
+                    <span style="font-size:0.6rem; color:var(--text-secondary);" id="chatUserCount">0 users online</span>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-empty"><i class="fas fa-comment-slash"></i> စကားဝိုင်းမရှိသေးပါ</div>
+                </div>
+                <div class="chat-input-box">
+                    <input type="text" id="chatInput" class="chat-input" placeholder="စာရိုက်ပါ..." onkeypress="if(event.key==='Enter') window.sendAdminChat()">
+                    <button class="chat-send-btn" onclick="window.sendAdminChat()"><i class="fas fa-paper-plane"></i> ပို့မည်</button>
+                    <button class="chat-clear-btn" onclick="window.clearAllChat()"><i class="fas fa-trash"></i> ရှင်း</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ===== BOTTOM NAV ===== -->
@@ -422,6 +553,8 @@
         <button class="nav-item active" data-tab="menu" onclick="window.switchTab('menu')"><i class="fas fa-chart-line"></i><span>မီနူး</span></button>
         <button class="nav-item" data-tab="orders" onclick="window.switchTab('orders')"><i class="fas fa-list-ul"></i><span>အမိန့်စာ</span></button>
         <button class="nav-item" data-tab="users" onclick="window.switchTab('users')"><i class="fas fa-users"></i><span>အသုံးပြုသူ</span></button>
+        <button class="nav-item" data-tab="chat" onclick="window.switchTab('chat')"><i class="fas fa-comments"></i><span>စကားဝိုင်း</span></button>
+        <button class="nav-item" data-tab="chat-widget" onclick="window.openAdminChatWidget()"><i class="fas fa-comment-dots"></i><span>Chat</span></button>
     </div>
 
     <!-- ===== ALERTS ===== -->
@@ -465,10 +598,13 @@
             let token = localStorage.getItem('adminToken');
             let allOrders = [];
             let userStats = [];
+            let chatMessages = [];
             let autoSyncInterval = null;
+            let chatSyncInterval = null;
             let currentSearchPhone = '';
             let currentTab = 'menu';
             let currentOrderFilter = 'all';
+            let adminChatWidgetOpen = false;
 
             const costPriceMap = {
                 "VIP LEVEL - 1": 14500,
@@ -576,6 +712,9 @@
                     currentOrderFilter = 'all';
                     applyFiltersAndSearch();
                 }
+                if (tab === 'chat') {
+                    loadChatMessages();
+                }
                 closeDrawer();
             };
 
@@ -620,6 +759,7 @@
                         document.getElementById('adminContent').style.display = 'block';
                         document.getElementById('bottomNav').style.display = 'flex';
                         loadAllData();
+                        loadChatMessages();
                         showToast('✅ ဝင်ရောက်မှု အောင်မြင်ပါပြီ');
                     } else {
                         showToast('စကားဝှက် မှားယွင်းနေသည်', true);
@@ -631,6 +771,7 @@
 
             window.logout = function() {
                 stopAutoSync();
+                stopChatSync();
                 localStorage.removeItem('adminToken');
                 token = null;
                 document.getElementById('loginBox').style.display = 'block';
@@ -656,8 +797,21 @@
                 autoSyncInterval = null;
             }
 
+            function startChatSync() {
+                if (chatSyncInterval) clearInterval(chatSyncInterval);
+                chatSyncInterval = setInterval(() => {
+                    if (token === 'logged_in') loadChatMessages();
+                }, 5000);
+            }
+
+            function stopChatSync() {
+                if (chatSyncInterval) clearInterval(chatSyncInterval);
+                chatSyncInterval = null;
+            }
+
             window.manualRefresh = function() {
                 loadAllData();
+                loadChatMessages();
                 showToast('🔄 ဒေတာ စင့်ခ်လုပ်ပြီးပါပြီ');
             };
 
@@ -702,6 +856,140 @@
                     updateAllStats();
                 }
             }
+
+            // ===== CHAT FUNCTIONS =====
+            async function loadChatMessages() {
+                try {
+                    const res = await fetchWithRetry(`${API_BASE}/api/chat/messages`);
+                    if (!res) return;
+                    const data = await res.json();
+                    if (data.success && data.messages) {
+                        chatMessages = data.messages;
+                        renderChatMessages();
+                    }
+                } catch (e) {
+                    console.error('Error loading chat:', e);
+                }
+            }
+
+            function renderChatMessages() {
+                const container = document.getElementById('chatMessages');
+                if (!container) return;
+
+                if (!chatMessages || chatMessages.length === 0) {
+                    container.innerHTML = '<div class="chat-empty"><i class="fas fa-comment-slash"></i> စကားဝိုင်းမရှိသေးပါ</div>';
+                    return;
+                }
+
+                // Update user count
+                const users = new Set(chatMessages.map(m => m.user_id).filter(id => id !== 'admin'));
+                const userCount = document.getElementById('chatUserCount');
+                if (userCount) userCount.textContent = `${users.size} users online`;
+
+                let html = '';
+                // Show latest 50 messages
+                const messages = chatMessages.slice(-50);
+                for (const msg of messages) {
+                    const isAdmin = msg.type === 'admin' || msg.user_id === 'admin';
+                    const sender = isAdmin ? '👤 Admin' : (msg.username || msg.user_id || 'User');
+                    const time = new Date(msg.created_at).toLocaleTimeString();
+                    html += `
+                        <div class="chat-message ${isAdmin ? 'admin' : 'user'}">
+                            <div class="msg-sender">${escapeHtml(sender)}</div>
+                            ${escapeHtml(msg.message)}
+                            <span class="msg-time">${time}</span>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html;
+                container.scrollTop = container.scrollHeight;
+            }
+
+            window.sendAdminChat = async function() {
+                const input = document.getElementById('chatInput');
+                const message = input?.value?.trim();
+                if (!message) return;
+
+                try {
+                    const res = await fetch(`${API_BASE}/api/chat/send`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: 'admin',
+                            username: 'Admin',
+                            phone: '',
+                            message: message
+                        }),
+                        credentials: 'include'
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        input.value = '';
+                        await loadChatMessages();
+                    } else {
+                        showToast('❌ Failed to send', true);
+                    }
+                } catch (e) {
+                    showToast('Connection error', true);
+                }
+            };
+
+            window.clearAllChat = async function() {
+                if (!confirm('အားလုံးကို ဖျက်မည်လား?')) return;
+                try {
+                    const res = await fetch(`${API_BASE}/api/chat/delete`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ user_id: 'all', admin_id: 'admin' }),
+                        credentials: 'include'
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        showToast(`🗑 ${data.deleted} messages deleted`);
+                        await loadChatMessages();
+                    } else {
+                        showToast('❌ Failed to clear', true);
+                    }
+                } catch (e) {
+                    showToast('Connection error', true);
+                }
+            };
+
+            // ===== ADMIN CHAT WIDGET =====
+            window.openAdminChatWidget = function() {
+                if (adminChatWidgetOpen) {
+                    const iframe = document.getElementById('adminChatIframe');
+                    if (iframe) {
+                        iframe.style.display = iframe.style.display === 'none' ? 'block' : 'none';
+                    }
+                    return;
+                }
+                const iframe = document.createElement('iframe');
+                iframe.src = '/admin-chat.html';
+                iframe.style.cssText = `
+                    position: fixed;
+                    bottom: 70px;
+                    right: 16px;
+                    width: 380px;
+                    height: 520px;
+                    border: none;
+                    border-radius: 1.2rem;
+                    z-index: 999;
+                    background: transparent;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+                `;
+                iframe.id = 'adminChatIframe';
+                document.body.appendChild(iframe);
+                adminChatWidgetOpen = true;
+            };
+
+            window.closeAdminChatWidget = function() {
+                const iframe = document.getElementById('adminChatIframe');
+                if (iframe) {
+                    iframe.remove();
+                    adminChatWidgetOpen = false;
+                }
+            };
 
             // ===== UPDATE STATS =====
             function updateAllStats() {
@@ -862,7 +1150,7 @@
                 updateAllStats();
             }
 
-            // ===== ✅ FIXED: RENDER ORDERS WITH QUOTED IDs =====
+            // ===== RENDER ORDERS WITH QUOTED IDs =====
             function renderOrders(orders) {
                 const container = document.getElementById('ordersList');
                 if (!container) return;
@@ -878,7 +1166,6 @@
                     const statusColor = o.status === 'Pending' ? '#fbbf24' : (o.status === 'Approved' ? '#34d399' : '#fb7185');
                     const statusBg = o.status === 'Pending' ? 'rgba(245,158,11,0.2)' : (o.status === 'Approved' ? 'rgba(16,185,129,0.2)' : 'rgba(244,63,94,0.2)');
 
-                    // ✅ FIX: Order ID ကို Quote ထည့်ပြီး ခေါ်ပါ
                     const orderId = o.id;
 
                     html += `
@@ -1000,7 +1287,7 @@
             };
 
             // ================================================================
-            //  ✅ ORDER ACTIONS - FIXED WITH QUOTED IDs
+            //  ORDER ACTIONS - FIXED WITH QUOTED IDs
             // ================================================================
 
             window.approveOrder = async function(orderId) {
@@ -1158,7 +1445,9 @@
                 document.getElementById('adminContent').style.display = 'block';
                 document.getElementById('bottomNav').style.display = 'flex';
                 loadAllData();
+                loadChatMessages();
                 startAutoSync();
+                startChatSync();
             }
 
         })();
