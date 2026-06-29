@@ -21,7 +21,9 @@ const upload = multer({
 // ===== MIDDLEWARE =====
 app.use(cors({
     origin: '*',
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -70,6 +72,22 @@ app.get('/live', (req, res) => {
 
 app.get('/live.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'public', 'live.html'));
+});
+
+// ============================================================
+// HEALTH CHECK
+// ============================================================
+app.get('/api/health', (req, res) => {
+    res.json({ 
+        success: true, 
+        status: 'ok', 
+        timestamp: new Date().toISOString(),
+        dataCount: {
+            orders: app.locals.orders ? app.locals.orders.length : 0,
+            users: app.locals.users ? app.locals.users.length : 0,
+            messages: app.locals.chatMessages ? app.locals.chatMessages.length : 0
+        }
+    });
 });
 
 // ============================================================
@@ -171,7 +189,7 @@ function loadDataFromFile() {
     }
 }
 
-// ===== SAVE DATA TO FILE (Optimized - only when changes detected) =====
+// ===== SAVE DATA TO FILE =====
 let lastSavedHash = '';
 
 function saveDataToFile() {
@@ -187,11 +205,10 @@ function saveDataToFile() {
         const dataString = JSON.stringify(data, null, 2);
         const currentHash = crypto.createHash('md5').update(dataString).digest('hex');
         
-        // Only save if data has changed
         if (currentHash !== lastSavedHash) {
             fs.writeFileSync(dataPath, dataString);
             lastSavedHash = currentHash;
-            console.log('💾 Data saved to file (changes detected)');
+            console.log('💾 Data saved to file');
         }
     } catch (e) {
         console.error('Error saving data:', e);
@@ -201,7 +218,7 @@ function saveDataToFile() {
 // Load data on startup
 loadDataFromFile();
 
-// Save data every 2 minutes (instead of 30 seconds)
+// Save data every 2 minutes
 setInterval(saveDataToFile, 120000);
 
 // ============================================================
@@ -277,18 +294,24 @@ app.get('/api/user/:phone', (req, res) => {
     }
 });
 
-// ===== CREATE ORDER =====
+// ===== CREATE ORDER (FormData + JSON support) =====
 app.post('/api/orders', upload.none(), (req, res) => {
     try {
+        console.log('📝 Order received:', req.body);
+        
         const { phone, plan, price, payment_method, sender_name, last5_digits } = req.body;
         
+        // Validate required fields
         if (!phone || !plan || !price) {
+            console.error('❌ Missing required fields:', { phone, plan, price });
             return res.status(400).json({ 
                 success: false, 
-                error: 'Phone, plan and price are required'
+                error: 'Phone, plan and price are required',
+                received: { phone, plan, price }
             });
         }
         
+        // Create order
         const order = {
             id: 'ORD' + Date.now().toString().slice(-6),
             phone: phone.trim(),
@@ -303,15 +326,20 @@ app.post('/api/orders', upload.none(), (req, res) => {
             activated_at: null
         };
         
+        // Save to memory
         app.locals.orders.push(order);
         
+        // Update user's orders
         const user = app.locals.users.find(u => u.phone === phone);
         if (user) {
             if (!user.orders) user.orders = [];
             user.orders.push(order);
         }
         
+        // Save to file
         saveDataToFile();
+        
+        console.log('✅ Order created:', order.id);
         
         res.json({
             success: true,
@@ -335,9 +363,10 @@ app.get('/api/orders/:phone', (req, res) => {
 });
 
 // ============================================================
-// OPERATOR PLANS API
+// OPERATOR PLANS API (REAL-TIME SYNC)
 // ============================================================
 
+// ===== GET ALL OPERATOR PLANS =====
 app.get('/api/operator-plans', (req, res) => {
     try {
         const plans = app.locals.operatorPlans || DEFAULT_PLANS;
@@ -347,6 +376,7 @@ app.get('/api/operator-plans', (req, res) => {
     }
 });
 
+// ===== UPDATE OPERATOR PLANS =====
 app.post('/api/operator-plans', (req, res) => {
     try {
         const { plans } = req.body;
@@ -356,6 +386,15 @@ app.post('/api/operator-plans', (req, res) => {
                 success: false, 
                 error: 'Invalid plans data' 
             });
+        }
+        
+        for (const op of plans) {
+            if (!op.id || !op.plans || !Array.isArray(op.plans)) {
+                return res.status(400).json({ 
+                    success: false, 
+                    error: 'Invalid plan structure' 
+                });
+            }
         }
         
         app.locals.operatorPlans = plans;
@@ -374,6 +413,7 @@ app.post('/api/operator-plans', (req, res) => {
 // CHAT API ROUTES
 // ============================================================
 
+// ===== GET ALL CHAT MESSAGES =====
 app.get('/api/chat/messages', (req, res) => {
     try {
         const messages = app.locals.chatMessages || [];
@@ -383,6 +423,7 @@ app.get('/api/chat/messages', (req, res) => {
     }
 });
 
+// ===== SEND A CHAT MESSAGE =====
 app.post('/api/chat/send', (req, res) => {
     try {
         const { user_id, username, phone, message } = req.body;
@@ -406,11 +447,14 @@ app.post('/api/chat/send', (req, res) => {
         
         app.locals.chatMessages.push(newMessage);
         
+        // Keep only last 500 messages
         if (app.locals.chatMessages.length > 500) {
             app.locals.chatMessages = app.locals.chatMessages.slice(-500);
         }
         
+        // Broadcast to other clients
         broadcastChatUpdate(newMessage);
+        
         saveDataToFile();
         
         res.json({ success: true, message: newMessage });
@@ -419,6 +463,7 @@ app.post('/api/chat/send', (req, res) => {
     }
 });
 
+// ===== DELETE CHAT MESSAGES =====
 app.post('/api/chat/delete', (req, res) => {
     try {
         const { user_id, admin_id } = req.body;
@@ -459,6 +504,7 @@ app.post('/api/chat/delete', (req, res) => {
     }
 });
 
+// ===== BROADCAST CHAT UPDATE =====
 function broadcastChatUpdate(message) {
     try {
         if (typeof BroadcastChannel !== 'undefined') {
@@ -468,13 +514,18 @@ function broadcastChatUpdate(message) {
                 channel.close();
             } catch(e) {}
         }
-    } catch(e) {}
+        
+        localStorage.setItem('_chatUpdateTimestamp', Date.now().toString());
+    } catch(e) {
+        console.log('Chat broadcast not available');
+    }
 }
 
 // ============================================================
 // ADMIN API ROUTES
 // ============================================================
 
+// ===== SALES HOURS =====
 app.get('/api/admin/sales-hours', (req, res) => {
     try {
         const salesHours = app.locals.salesHours || {
@@ -507,6 +558,7 @@ app.post('/api/admin/sales-hours', (req, res) => {
     }
 });
 
+// ===== SALES STATUS =====
 app.get('/api/sales/status', (req, res) => {
     try {
         const salesHours = app.locals.salesHours || {
@@ -553,6 +605,7 @@ app.get('/api/sales/status', (req, res) => {
     }
 });
 
+// ===== ADMIN ORDERS =====
 app.get('/api/admin/orders', (req, res) => {
     try {
         const orders = app.locals.orders || [];
@@ -605,6 +658,7 @@ app.delete('/api/admin/orders/:id', (req, res) => {
     }
 });
 
+// ===== ADMIN USER STATS =====
 app.get('/api/admin/user-stats', (req, res) => {
     try {
         const users = app.locals.users || [];
@@ -624,6 +678,69 @@ app.get('/api/admin/user-stats', (req, res) => {
     }
 });
 
+// ===== ADMIN USER ACTIONS =====
+app.post('/api/admin/user-block', (req, res) => {
+    try {
+        const { phone, block } = req.body;
+        const users = app.locals.users || [];
+        const user = users.find(u => u.phone === phone);
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        user.blocked = block;
+        saveDataToFile();
+        res.json({ success: true, message: `User ${block ? 'blocked' : 'unblocked'}` });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/api/admin/user-delete', (req, res) => {
+    try {
+        const { phone } = req.body;
+        const users = app.locals.users || [];
+        const index = users.findIndex(u => u.phone === phone);
+        if (index === -1) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        users.splice(index, 1);
+        saveDataToFile();
+        res.json({ success: true, message: 'User deleted' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/api/admin/user-delete-orders', (req, res) => {
+    try {
+        const { phone } = req.body;
+        const orders = app.locals.orders || [];
+        const filtered = orders.filter(o => o.phone !== phone);
+        app.locals.orders = filtered;
+        saveDataToFile();
+        res.json({ success: true, message: 'User orders deleted' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/api/admin/clear-suspect', (req, res) => {
+    try {
+        const { phone } = req.body;
+        const users = app.locals.users || [];
+        const user = users.find(u => u.phone === phone);
+        if (!user) {
+            return res.status(404).json({ success: false, error: 'User not found' });
+        }
+        user.suspect_flag = false;
+        saveDataToFile();
+        res.json({ success: true, message: 'Suspect flag cleared' });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// ===== ADMIN LOGIN =====
 app.post('/api/admin/login', (req, res) => {
     try {
         const { password } = req.body;
@@ -639,6 +756,7 @@ app.post('/api/admin/login', (req, res) => {
     }
 });
 
+// ===== CLEANUP OLD ORDERS =====
 app.post('/api/admin/cleanup-old', (req, res) => {
     try {
         const thirtyDaysAgo = new Date();
@@ -663,6 +781,7 @@ app.post('/api/admin/cleanup-old', (req, res) => {
     }
 });
 
+// ===== SYSTEM RESET =====
 app.post('/api/admin/system-reset', (req, res) => {
     try {
         const { confirm } = req.body;
@@ -699,13 +818,16 @@ app.post('/api/admin/system-reset', (req, res) => {
 // ============================================================
 // START SERVER
 // ============================================================
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log('╔══════════════════════════════════════════╗');
     console.log('║  🚀 Server is running!                  ║');
     console.log(`║  📡 Port: ${PORT}                          ║`);
     console.log(`║  🌐 URL: http://localhost:${PORT}        ║`);
     console.log(`║  📁 Directory: ${__dirname}    ║`);
     console.log(`║  ⏰ Started: ${new Date().toLocaleString()}  ║`);
+    console.log(`║  📊 Orders: ${app.locals.orders.length}     ║`);
+    console.log(`║  👥 Users: ${app.locals.users.length}       ║`);
+    console.log(`║  💬 Messages: ${app.locals.chatMessages.length}   ║`);
     console.log('║  Press Ctrl+C to stop the server        ║');
     console.log('╚══════════════════════════════════════════╝');
 });
