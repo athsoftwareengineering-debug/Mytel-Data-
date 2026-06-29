@@ -2,7 +2,7 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>Operators - ATH DIGITAL HUB</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -27,48 +27,57 @@
         }
         .tab-headers {
             display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
+            gap: 10px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 10px;
+            padding-bottom: 14px;
         }
+        /* 
+           50% + 50% ထားခိုင်းတာ → tab တွေကို အပေါ်ဆုံးမှာ ခပ်ကြီးကြီးပြီး 
+           2 လုံးစီ တန်းညီညီ ပြဖို့ flex: 1 1 40% နဲ့ padding ကြီးအောင်လုပ်ထား 
+        */
         .tab-btn {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
+            gap: 14px;
+            padding: 18px 20px;
             border: none;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.05);
             color: #94a3b8;
-            flex: 1;
+            flex: 1 1 40%;          /* ← 50% + 50% ပုံစံ */
             justify-content: center;
-            min-width: 60px;
+            min-width: 120px;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.10);
             color: #e2e8f0;
         }
         .tab-btn.active {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(8, 145, 178, 0.2));
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.25), rgba(8, 145, 178, 0.25));
             color: #00d4ff;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.08);
         }
         .tab-btn img {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             object-fit: cover;
             background: rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
         }
         .tab-btn .tab-label {
             display: inline-block;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
         
         .tab-content {
@@ -85,14 +94,14 @@
         
         .operator-plans {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 12px;
-            padding: 4px 0;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            padding: 6px 0;
         }
         .plan-card {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 20px 16px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             transition: all 0.3s ease;
         }
@@ -102,50 +111,50 @@
             transform: translateY(-2px);
         }
         .plan-card .plan-name {
-            font-size: 0.85rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #e2e8f0;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
         .plan-card .plan-details {
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             color: #94a3b8;
-            line-height: 1.8;
+            line-height: 2;
         }
         .plan-card .plan-details i {
             color: #00d4ff;
-            width: 18px;
+            width: 22px;
         }
         .plan-card .plan-price {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #10b981;
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             align-items: baseline;
-            gap: 4px;
+            gap: 6px;
         }
         .plan-card .plan-price small {
-            font-size: 0.6rem;
+            font-size: 0.75rem;
             color: #94a3b8;
             font-weight: normal;
         }
         .plan-buy-btn {
             width: 100%;
-            margin-top: 10px;
+            margin-top: 14px;
             background: linear-gradient(135deg, #00d4ff, #0891b2);
             border: none;
-            padding: 8px;
-            border-radius: 40px;
+            padding: 12px 0;
+            border-radius: 60px;
             color: white;
             font-weight: 600;
-            font-size: 0.7rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
         }
         .plan-buy-btn:hover:not(:disabled) {
             transform: scale(0.97);
@@ -160,36 +169,36 @@
         
         .operator-badge {
             display: inline-block;
-            font-size: 0.6rem;
-            padding: 2px 10px;
-            border-radius: 40px;
+            font-size: 0.75rem;
+            padding: 4px 14px;
+            border-radius: 60px;
             background: rgba(16, 185, 129, 0.15);
             color: #10b981;
             border: 1px solid rgba(16, 185, 129, 0.2);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         
         .loading-text {
             text-align: center;
-            padding: 40px;
+            padding: 50px;
             color: #94a3b8;
-            font-size: 0.85rem;
+            font-size: 1rem;
         }
         .loading-text i {
-            margin-right: 8px;
+            margin-right: 10px;
         }
         
         /* ===== UPDATE NOTIFICATION ===== */
         .update-notification {
             position: fixed;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0,212,255,0.15);
             border: 1px solid rgba(0,212,255,0.3);
             border-radius: 60px;
-            padding: 10px 24px;
-            font-size: 0.75rem;
+            padding: 14px 30px;
+            font-size: 0.9rem;
             color: #e2e8f0;
             z-index: 1000;
             display: none;
@@ -205,50 +214,77 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
         
-        @media (max-width: 480px) {
+        /* ===== RESPONSIVE – TAB 50% + 50% အတွက် ===== */
+        @media (max-width: 700px) {
             .tab-btn {
-                padding: 8px 12px;
-                font-size: 0.7rem;
-                flex: 1 1 auto;
-                min-width: 50px;
+                padding: 16px 14px;
+                font-size: 1rem;
+                gap: 12px;
+                flex: 1 1 40%;        /* 50% + 50% အတွက် 2 တန်း */
+                min-width: 100px;
             }
             .tab-btn img {
-                width: 22px;
-                height: 22px;
+                width: 40px;
+                height: 40px;
             }
             .tab-btn .tab-label {
-                font-size: 0.65rem;
+                font-size: 1rem;
             }
             .operator-plans {
                 grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+            .plan-card {
+                padding: 18px 14px;
             }
             .plan-card .plan-name {
-                font-size: 0.75rem;
-            }
-            .plan-card .plan-price {
                 font-size: 0.95rem;
             }
+            .plan-card .plan-details {
+                font-size: 0.8rem;
+                line-height: 1.8;
+            }
+            .plan-card .plan-price {
+                font-size: 1.2rem;
+            }
+            .plan-buy-btn {
+                font-size: 0.85rem;
+                padding: 14px 0;
+            }
             .update-notification {
-                padding: 8px 16px;
-                font-size: 0.65rem;
-                bottom: 12px;
+                padding: 12px 20px;
+                font-size: 0.8rem;
+                bottom: 20px;
             }
         }
-        @media (max-width: 380px) {
+        @media (max-width: 450px) {
+            .tab-headers {
+                gap: 8px;
+            }
+            .tab-btn {
+                padding: 14px 10px;
+                font-size: 0.9rem;
+                min-width: 80px;
+                flex: 1 1 40%;
+                gap: 8px;
+            }
+            .tab-btn img {
+                width: 34px;
+                height: 34px;
+            }
+            .tab-btn .tab-label {
+                font-size: 0.85rem;
+            }
             .operator-plans {
                 grid-template-columns: 1fr;
             }
-            .tab-headers {
-                gap: 4px;
+            .plan-card {
+                padding: 20px 16px;
             }
-            .tab-btn {
-                padding: 6px 10px;
-                font-size: 0.6rem;
-                min-width: 40px;
-            }
-            .tab-btn img {
-                width: 18px;
-                height: 18px;
+        }
+        @media (min-width: 1200px) {
+            .operator-plans {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     </style>
@@ -277,13 +313,14 @@
         let syncInterval = null;
 
         // ================================================================
-        //  OPERATORS DATA - WILL BE UPDATED FROM SERVER
+        //  OPERATORS DATA 
+        //  MYTEL နဲ့ ATOM နေရာချိန်းပြီး => MYTEL က ပထမ၊ ATOM က ဒုတိယ
         // ================================================================
         let operatorsData = [{
-            id: 'atom',
-            name: 'ATOM',
-            logo: 'https://i.imgur.com/I5iRYm8.png',
-            icon: '📱',
+            id: 'mytel',
+            name: 'MYTEL',
+            logo: 'https://i.imgur.com/Xl3B5xF.jpeg',
+            icon: '📶',
             status: 'active',
             plans: [
                 { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
@@ -292,10 +329,10 @@
                 { name: 'VIP LEVEL - 4 (ULTRA)', price: 30000, details: ['👑 120 GB ဂိမ်းဒေတာ', '🎬 အကန့်အသတ်မရှိ Streaming', '🛡️ ဦးစားပေး ပံ့ပိုးမှု'] }
             ]
         }, {
-            id: 'mytel',
-            name: 'MYTEL',
-            logo: 'https://i.imgur.com/Xl3B5xF.jpeg',
-            icon: '📶',
+            id: 'atom',
+            name: 'ATOM',
+            logo: 'https://i.imgur.com/I5iRYm8.png',
+            icon: '📱',
             status: 'active',
             plans: [
                 { name: 'VIP LEVEL - 1', price: 15000, details: ['🔥 22 GB အမြန်နှုန်းမြင့်ဒေတာ', '📞 8,000 မိနစ် (ကွန်ရက်တွင်း)', '✉️ 5,000 SMS'] },
@@ -369,7 +406,6 @@
                         for (const serverOp of data.plans) {
                             const localOp = operatorsData.find(o => o.id === serverOp.id);
                             if (localOp) {
-                                // Check if prices changed
                                 let priceChanged = false;
                                 for (let i = 0; i < localOp.plans.length; i++) {
                                     if (serverOp.plans[i] && localOp.plans[i].price !== serverOp.plans[i].price) {
@@ -384,10 +420,7 @@
                                 if (priceChanged) updated = true;
                             }
                         }
-                        
-                        // Save to localStorage as backup
                         savePricesToStorage();
-                        
                         if (updated) {
                             showUpdateNotification('🔄 Prices updated by admin!');
                             renderTabs();
@@ -418,7 +451,7 @@
         }
 
         // ================================================================
-        //  RENDER TABS
+        //  RENDER TABS – 50% + 50% layout on top
         // ================================================================
         function renderTabs() {
             const app = document.getElementById('app');
@@ -466,8 +499,8 @@
 
                     tabsHtml += `
                         <div class="plan-card">
-                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                                <span style="font-size:1.2rem;">${planIcon}</span>
+                            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                                <span style="font-size:1.5rem;">${planIcon}</span>
                                 <div class="plan-name">${plan.name}</div>
                             </div>
                             <div class="plan-details">${detailsHtml}</div>
@@ -609,10 +642,9 @@
         }
 
         // ================================================================
-        //  REAL-TIME SYNC - LISTEN FOR UPDATES
+        //  REAL-TIME SYNC
         // ================================================================
         function listenForUpdates() {
-            // ===== BroadcastChannel =====
             if (typeof BroadcastChannel !== 'undefined') {
                 try {
                     const channel = new BroadcastChannel('operator-updates');
@@ -630,7 +662,6 @@
                 }
             }
 
-            // ===== localStorage =====
             window.addEventListener('storage', (e) => {
                 if (e.key === '_operatorUpdateTimestamp') {
                     console.log('📦 Storage update detected');
@@ -641,7 +672,6 @@
                 }
             });
 
-            // ===== postMessage (iframes) =====
             window.addEventListener('message', (event) => {
                 if (event.data && event.data.type === 'operatorPlansUpdated') {
                     console.log('📦 Plan update from iframe');
@@ -684,10 +714,8 @@
             const app = document.getElementById('app');
             app.innerHTML = '<div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading operators...</div>';
 
-            // Load saved prices from localStorage first
             loadPricesFromStorage();
 
-            // Then try to load from server
             loadPlansFromServer().then(() => {
                 renderTabs();
                 startShopStatusPolling();
@@ -713,7 +741,7 @@
         // ================================================================
         init();
 
-        console.log('📱 Operators page loaded with real-time sync');
+        console.log('📱 Operators page loaded: MYTEL and ATOM swapped positions');
     </script>
 </body>
 </html>
