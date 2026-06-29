@@ -33,10 +33,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             padding-bottom: 14px;
         }
-        /* 
-           50% + 50% ထားခိုင်းတာ → tab တွေကို အပေါ်ဆုံးမှာ ခပ်ကြီးကြီးပြီး 
-           2 လုံးစီ တန်းညီညီ ပြဖို့ flex: 1 1 40% နဲ့ padding ကြီးအောင်လုပ်ထား 
-        */
         .tab-btn {
             display: flex;
             align-items: center;
@@ -50,7 +46,7 @@
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.05);
             color: #94a3b8;
-            flex: 1 1 40%;          /* ← 50% + 50% ပုံစံ */
+            flex: 1 1 40%;
             justify-content: center;
             min-width: 120px;
             letter-spacing: 0.3px;
@@ -214,13 +210,13 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
         
-        /* ===== RESPONSIVE – TAB 50% + 50% အတွက် ===== */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 700px) {
             .tab-btn {
                 padding: 16px 14px;
                 font-size: 1rem;
                 gap: 12px;
-                flex: 1 1 40%;        /* 50% + 50% အတွက် 2 တန်း */
+                flex: 1 1 40%;
                 min-width: 100px;
             }
             .tab-btn img {
@@ -308,13 +304,39 @@
 
         const API_BASE = window.location.origin;
         let isShopOpen = true;
-        let activeTab = 'atom';
+        let activeTab = 'mytel';
         let shopStatusInterval = null;
         let syncInterval = null;
+        let currentLang = 'my';
 
         // ================================================================
-        //  OPERATORS DATA 
-        //  MYTEL နဲ့ ATOM နေရာချိန်းပြီး => MYTEL က ပထမ၊ ATOM က ဒုတိယ
+        //  LANGUAGE TRANSLATIONS
+        // ================================================================
+        const translations = {
+            my: {
+                loading: 'Operators များ ဖွင့်နေသည်...',
+                badgeActive: 'အဆင်သင့်',
+                badgeMaintenance: 'ပြုပြင်နေဆဲ',
+                buyBtn: 'ဝယ်ယူမည်',
+                shopClosed: 'ဆိုင်ပိတ်ချိန်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ နံနက် ၉ နာရီမှ ညနေ ၇ နာရီအတွင်းမှသာ ဝယ်ယူနိုင်ပါသည်။',
+                priceUpdated: 'စျေးနှုန်းများ ပြင်ဆင်ပြီးပါပြီ!',
+                plansUpdated: 'Plan များ ပြင်ဆင်ပြီးပါပြီ!',
+                selectPlan: 'Plan ရွေးပါ'
+            },
+            en: {
+                loading: 'Loading operators...',
+                badgeActive: 'Active',
+                badgeMaintenance: 'Maintenance',
+                buyBtn: 'Buy Now',
+                shopClosed: 'Shop is closed. Please purchase between 9:00 AM and 7:00 PM.',
+                priceUpdated: 'Prices updated!',
+                plansUpdated: 'Plans updated!',
+                selectPlan: 'Select Plan'
+            }
+        };
+
+        // ================================================================
+        //  OPERATORS DATA
         // ================================================================
         let operatorsData = [{
             id: 'mytel',
@@ -367,7 +389,39 @@
         }];
 
         // ================================================================
-        //  LOAD FROM LOCAL STORAGE (FALLBACK)
+        //  GET LANGUAGE FROM PARENT
+        // ================================================================
+        function getLanguageFromParent() {
+            try {
+                if (window.parent && window.parent.getCurrentLang) {
+                    const lang = window.parent.getCurrentLang();
+                    if (lang) {
+                        currentLang = lang;
+                        return lang;
+                    }
+                }
+            } catch(e) {
+                console.log('Cannot access parent language');
+            }
+            
+            try {
+                const savedLang = localStorage.getItem('app_language');
+                if (savedLang) {
+                    currentLang = savedLang;
+                    return savedLang;
+                }
+            } catch(e) {}
+            
+            return 'my';
+        }
+
+        function t(key) {
+            const lang = currentLang || 'my';
+            return translations[lang]?.[key] || translations['my'][key] || key;
+        }
+
+        // ================================================================
+        //  LOAD FROM LOCAL STORAGE
         // ================================================================
         function loadPricesFromStorage() {
             try {
@@ -391,7 +445,7 @@
         }
 
         // ================================================================
-        //  LOAD FROM SERVER (REAL-TIME SYNC)
+        //  LOAD FROM SERVER
         // ================================================================
         async function loadPlansFromServer() {
             try {
@@ -422,7 +476,7 @@
                         }
                         savePricesToStorage();
                         if (updated) {
-                            showUpdateNotification('🔄 Prices updated by admin!');
+                            showUpdateNotification(t('priceUpdated'));
                             renderTabs();
                         }
                         return true;
@@ -451,7 +505,7 @@
         }
 
         // ================================================================
-        //  RENDER TABS – 50% + 50% layout on top
+        //  RENDER TABS
         // ================================================================
         function renderTabs() {
             const app = document.getElementById('app');
@@ -480,7 +534,7 @@
                 const isActive = op.id === activeTab;
                 tabsHtml += `
                     <div class="tab-content ${isActive ? 'active' : ''}" id="tab-${op.id}">
-                        <span class="operator-badge"><i class="fas fa-check-circle"></i> ${op.status === 'active' ? 'အဆင်သင့်' : 'ပြုပြင်နေဆဲ'}</span>
+                        <span class="operator-badge"><i class="fas fa-check-circle"></i> ${op.status === 'active' ? t('badgeActive') : t('badgeMaintenance')}</span>
                         <div class="operator-plans">
                 `;
 
@@ -497,16 +551,19 @@
                     else if (plan.name.includes('VIP 3') || plan.name.includes('VIP LEVEL - 3')) planIcon = '💎';
                     else if (plan.name.includes('ULTRA') || plan.name.includes('VIP 4')) planIcon = '👑';
 
+                    // ✅ Plan Name in Burmese (keep as is)
+                    let displayName = plan.name;
+                    
                     tabsHtml += `
                         <div class="plan-card">
                             <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
                                 <span style="font-size:1.5rem;">${planIcon}</span>
-                                <div class="plan-name">${plan.name}</div>
+                                <div class="plan-name">${displayName}</div>
                             </div>
                             <div class="plan-details">${detailsHtml}</div>
                             <div class="plan-price">${priceFormatted} <small>MMK</small></div>
                             <button class="plan-buy-btn" onclick="handleBuy('${op.name}', '${plan.name}', ${plan.price})" ${!isShopOpen ? 'disabled' : ''}>
-                                <i class="fas fa-shopping-cart"></i> ဝယ်ယူမည်
+                                <i class="fas fa-shopping-cart"></i> ${t('buyBtn')}
                             </button>
                         </div>
                     `;
@@ -593,18 +650,41 @@
         }
 
         // ================================================================
-        //  HANDLE BUY
+        //  HANDLE BUY - ✅ SEND PLAN TO PARENT
         // ================================================================
         function handleBuy(operatorName, planName, planPrice) {
             if (!isShopOpen) {
-                showNotification("ဆိုင်ပိတ်ချိန်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ နံနက် ၉ နာရီမှ ညနေ ၇ နာရီအတွင်းမှသာ ဝယ်ယူနိုင်ပါသည်။", true);
+                const msg = t('shopClosed');
+                if (window.parent && window.parent.showToast) {
+                    window.parent.showToast(msg, true);
+                } else {
+                    alert(msg);
+                }
                 return;
             }
 
             const fullPlanName = `${operatorName} - ${planName}`;
+            
+            // ✅ Send selected plan to parent (index.html)
+            try {
+                if (window.parent) {
+                    window.parent.postMessage({
+                        type: 'planSelected',
+                        plan: planName,
+                        price: planPrice,
+                        operator: operatorName,
+                        fullPlanName: fullPlanName
+                    }, '*');
+                }
+            } catch(e) {
+                console.log('Cannot send message to parent');
+            }
+            
+            // ✅ Open payment modal in parent
             if (window.parent && window.parent.openPaymentModalFromPlan) {
-                window.parent.openPaymentModalFromPlan(fullPlanName, planPrice);
+                window.parent.openPaymentModalFromPlan(planName, planPrice);
             } else {
+                // Fallback
                 alert(`🛒 ${fullPlanName} - ${planPrice.toLocaleString()} MMK ဝယ်ယူရန်`);
             }
         }
@@ -645,13 +725,29 @@
         //  REAL-TIME SYNC
         // ================================================================
         function listenForUpdates() {
+            // Listen for language changes from parent
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'languageChanged') {
+                    currentLang = event.data.lang || 'my';
+                    localStorage.setItem('app_language', currentLang);
+                    renderTabs();
+                    console.log('🌐 Language changed to:', currentLang);
+                }
+                // Listen for shop status from parent
+                if (event.data && event.data.type === 'shopStatus') {
+                    isShopOpen = event.data.isOpen !== false;
+                    updateButtonsStatus();
+                    console.log('🏪 Shop status updated:', isShopOpen);
+                }
+            });
+
             if (typeof BroadcastChannel !== 'undefined') {
                 try {
                     const channel = new BroadcastChannel('operator-updates');
                     channel.onmessage = (event) => {
                         if (event.data.type === 'pricesUpdated') {
                             console.log('📦 Received update from admin (BroadcastChannel)');
-                            showUpdateNotification('🔄 Prices updated by admin!');
+                            showUpdateNotification(t('priceUpdated'));
                             loadPlansFromServer().then(() => {
                                 renderTabs();
                             });
@@ -665,7 +761,7 @@
             window.addEventListener('storage', (e) => {
                 if (e.key === '_operatorUpdateTimestamp') {
                     console.log('📦 Storage update detected');
-                    showUpdateNotification('🔄 Prices updated!');
+                    showUpdateNotification(t('priceUpdated'));
                     loadPlansFromServer().then(() => {
                         renderTabs();
                     });
@@ -685,7 +781,7 @@
                         }
                         savePricesToStorage();
                         renderTabs();
-                        showUpdateNotification('✅ Plans updated successfully!');
+                        showUpdateNotification(t('plansUpdated'));
                     }
                 }
             });
@@ -712,8 +808,11 @@
         // ================================================================
         function init() {
             const app = document.getElementById('app');
-            app.innerHTML = '<div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> Loading operators...</div>';
+            app.innerHTML = `<div class="loading-text"><i class="fas fa-spinner fa-pulse"></i> ${t('loading')}</div>`;
 
+            // Get language from parent or localStorage
+            getLanguageFromParent();
+            
             loadPricesFromStorage();
 
             loadPlansFromServer().then(() => {
@@ -735,6 +834,7 @@
         window.startShopStatusPolling = startShopStatusPolling;
         window.loadPlansFromServer = loadPlansFromServer;
         window.showUpdateNotification = showUpdateNotification;
+        window.getCurrentLang = function() { return currentLang; };
 
         // ================================================================
         //  START
@@ -742,6 +842,8 @@
         init();
 
         console.log('📱 Operators page loaded: MYTEL and ATOM swapped positions');
+        console.log('🌐 Language:', currentLang);
+        console.log('✅ Plan selection will be sent to parent via postMessage');
     </script>
 </body>
 </html>
