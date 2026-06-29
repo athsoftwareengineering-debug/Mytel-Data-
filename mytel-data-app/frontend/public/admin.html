@@ -1232,11 +1232,9 @@
         }
 
         /* ============================================================
-           USER, AD, PRODUCT CARDS
+           USER CARDS
            ============================================================ */
-        .user-card,
-        .ad-card,
-        .product-card {
+        .user-card {
             background: var(--bg-card);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border-color);
@@ -1244,93 +1242,8 @@
             padding: 14px;
             transition: all 0.2s;
         }
-        .user-card:hover,
-        .ad-card:hover,
-        .product-card:hover {
+        .user-card:hover {
             border-color: rgba(0, 212, 255, 0.3);
-        }
-
-        .ad-card img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            max-height: 120px;
-            object-fit: cover;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .ad-status-active {
-            background: var(--emerald);
-            color: white;
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.6rem;
-            margin-bottom: 8px;
-        }
-        .ad-status-inactive {
-            background: #64748b;
-            color: white;
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.6rem;
-            margin-bottom: 8px;
-        }
-        .ad-status-expired {
-            background: var(--rose);
-            color: white;
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 0.6rem;
-            margin-bottom: 8px;
-        }
-
-        .ad-card-actions,
-        .product-card-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        .ad-card-actions button,
-        .product-card-actions button {
-            flex: 1;
-            padding: 6px;
-            border-radius: 40px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            touch-action: manipulation;
-        }
-        .ad-card-actions button:hover,
-        .product-card-actions button:hover {
-            transform: scale(0.98);
-        }
-
-        .ad-edit-btn {
-            background: rgba(0, 212, 255, 0.2);
-            color: var(--cyan);
-        }
-        .ad-toggle-btn {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fbbf24;
-        }
-        .ad-delete-btn {
-            background: rgba(244, 63, 94, 0.2);
-            color: #fb7185;
-        }
-
-        .product-card-actions .edit-btn {
-            background: rgba(0, 212, 255, 0.2);
-            color: var(--cyan);
-        }
-        .product-card-actions .delete-btn {
-            background: rgba(244, 63, 94, 0.2);
-            color: #fb7185;
         }
 
         /* ============================================================
@@ -1868,8 +1781,6 @@
         .clear-search,
         .modal-btn,
         .alert-btn,
-        .ad-card-actions button,
-        .product-card-actions button,
         .order-card .order-actions-wrapper button {
             touch-action: manipulation;
             -webkit-touch-callout: none;
@@ -1897,14 +1808,12 @@
                 padding: 12px 10px;
             }
 
-            /* ===== ORDER CARD - TWO ROWS 50%+50% ===== */
             .order-card {
                 flex-direction: column;
                 padding: 12px;
                 gap: 8px;
             }
 
-            /* Row 1: Order ID + Status (50%+50%) */
             .order-card .order-header {
                 display: flex;
                 flex-direction: row;
@@ -1940,7 +1849,6 @@
                 order: -1;
             }
 
-            /* Row 2: Order Info + Prices (50%+50%) */
             .order-card .order-left-and-right {
                 display: flex;
                 flex-direction: row;
@@ -2002,7 +1910,6 @@
                 font-size: 0.55rem;
             }
 
-            /* ===== PROOF SECTION ===== */
             .order-card .order-proof {
                 padding: 6px 10px;
                 margin-top: 4px;
@@ -2017,7 +1924,6 @@
                 font-size: 0.5rem;
             }
 
-            /* ===== PAYMENT + COUNTDOWN (50%+50%) ===== */
             .order-card .order-payment-countdown {
                 padding: 5px 10px;
                 margin-top: 3px;
@@ -2036,7 +1942,6 @@
                 font-size: 0.6rem;
             }
 
-            /* ===== ACTIONS (မူလအတိုင်း 50%+50%) ===== */
             .order-card .order-actions-wrapper {
                 margin-top: 8px;
                 padding-top: 8px;
@@ -2073,7 +1978,6 @@
                 font-size: 0.75rem;
             }
 
-            /* ===== ORDERS FILTER BAR (Mobile) ===== */
             .orders-filter-bar {
                 gap: 6px;
                 flex-wrap: wrap;
@@ -2088,7 +1992,6 @@
                 padding: 1px 8px;
             }
 
-            /* ===== TOP BAR ===== */
             .top-bar {
                 padding: 10px 14px;
                 border-radius: 1rem;
@@ -2105,7 +2008,6 @@
                 font-size: 1rem;
             }
 
-            /* ===== SEARCH & FILTER ===== */
             .search-bar,
             .filter-bar {
                 padding: 10px;
@@ -2145,7 +2047,6 @@
                 min-width: 60px;
             }
 
-            /* ===== BOTTOM NAV ===== */
             .bottom-nav .nav-item {
                 padding: 4px 6px;
                 font-size: 0.5rem;
@@ -2156,7 +2057,6 @@
                 font-size: 1rem;
             }
 
-            /* ===== MODALS ===== */
             .modal-card,
             .alert-card {
                 padding: 1rem;
@@ -2187,7 +2087,6 @@
                 min-height: 44px;
             }
 
-            /* ===== SALES HOURS ===== */
             .sales-hours-controls {
                 flex-direction: column;
                 align-items: stretch;
@@ -2233,7 +2132,6 @@
                 transform: translateX(24px);
             }
 
-            /* ===== DRAWER ===== */
             .drawer {
                 width: 260px;
                 left: -260px;
@@ -2271,7 +2169,6 @@
                 font-size: 0.65rem;
             }
 
-            /* ===== OTHERS ===== */
             .sales-status {
                 font-size: 0.65rem;
                 padding: 8px;
@@ -2338,27 +2235,6 @@
                 min-width: 50px;
             }
 
-            .ad-card-actions,
-            .product-card-actions {
-                flex-direction: column;
-            }
-
-            .ad-card-actions button,
-            .product-card-actions button {
-                padding: 10px 8px;
-                font-size: 0.7rem;
-                min-height: 40px;
-                border-radius: 12px;
-            }
-
-            .add-product-btn {
-                padding: 8px 14px;
-                font-size: 0.75rem;
-                min-height: 40px;
-                border-radius: 12px;
-            }
-
-            /* Language Switcher Mobile */
             .lang-dropdown {
                 min-width: 130px;
                 right: -10px;
@@ -2506,7 +2382,6 @@
                 gap: 16px;
             }
 
-            /* ===== ORDER CARD - DESKTOP LAYOUT ===== */
             .order-card {
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -2609,7 +2484,6 @@
                 font-size: 0.65rem;
             }
 
-            /* ===== PROOF SECTION ===== */
             .order-card .order-proof {
                 padding: 8px 14px;
                 margin-top: 4px;
@@ -2625,7 +2499,6 @@
                 font-size: 0.6rem;
             }
 
-            /* ===== PAYMENT + COUNTDOWN ===== */
             .order-card .order-payment-countdown {
                 padding: 8px 16px;
                 margin-top: 4px;
@@ -2644,7 +2517,6 @@
                 font-size: 0.8rem;
             }
 
-            /* ===== ACTIONS ===== */
             .order-card .order-actions-wrapper {
                 margin-top: 12px;
                 padding-top: 12px;
@@ -2681,7 +2553,6 @@
                 font-size: 0.9rem;
             }
 
-            /* ===== ORDERS FILTER BAR ===== */
             .orders-filter-bar {
                 gap: 12px;
                 margin-bottom: 16px;
@@ -2697,7 +2568,6 @@
                 padding: 2px 12px;
             }
 
-            /* ===== TOP BAR ===== */
             .top-bar {
                 padding: 14px 24px;
                 border-radius: 1.5rem;
@@ -2714,7 +2584,6 @@
                 font-size: 1.2rem;
             }
 
-            /* ===== SEARCH & FILTER ===== */
             .search-bar,
             .filter-bar {
                 padding: 14px 18px;
@@ -2755,7 +2624,6 @@
                 min-height: 48px;
             }
 
-            /* ===== MODALS ===== */
             .modal-card,
             .alert-card {
                 max-width: 500px;
@@ -2763,7 +2631,6 @@
                 border-radius: 2rem;
             }
 
-            /* ===== BOTTOM NAV ===== */
             .bottom-nav .nav-item {
                 padding: 8px 16px;
                 font-size: 0.7rem;
@@ -2774,7 +2641,6 @@
                 font-size: 1.4rem;
             }
 
-            /* ===== LOGIN ===== */
             .login-box {
                 max-width: 400px;
                 padding: 2.5rem 3rem;
@@ -2836,7 +2702,7 @@
                         <i class="fas fa-moon" id="themeIcon"></i>
                     </button>
 
-                    <!-- ===== LANGUAGE SWITCHER - GLOBE WITH DROPDOWN ===== -->
+                    <!-- ===== LANGUAGE SWITCHER ===== -->
                     <div class="lang-switcher-wrapper">
                         <button class="top-icon-btn" id="langToggleBtn" title="Switch Language">
                             🌐
@@ -2871,57 +2737,35 @@
 
                 <div class="drawer-stats">
                     <div class="drawer-stats-title"><i class="fas fa-database"></i> ဒေတာဘေ့စ် စာရင်းအင်း</div>
-                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-shopping-cart"></i>
-                            စုစုပေါင်း အမိန့်စာ</span><span class="drawer-stat-value" id="drawerTotalOrders">0</span>
-                    </div>
-                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-users"></i> စုစုပေါင်း
-                            အသုံးပြုသူ</span><span class="drawer-stat-value" id="drawerTotalUsers">0</span></div>
-                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-clock"></i>
-                            ဆိုင်းငံ့ထားသော</span><span class="drawer-stat-value" id="drawerPendingOrders">0</span></div>
-                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-check-circle"></i>
-                            အတည်ပြုပြီး</span><span class="drawer-stat-value" id="drawerApprovedOrders">0</span></div>
-                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-times-circle"></i>
-                            ပယ်ချထားသော</span><span class="drawer-stat-value" id="drawerRejectedOrders">0</span></div>
-                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-coins"></i> စုစုပေါင်း
-                            ဝင်ငွေ</span><span class="drawer-stat-value" id="drawerTotalRevenue">0</span></div>
-                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-chart-line"></i>
-                            စုစုပေါင်း အမြတ်</span><span class="drawer-stat-value" id="drawerTotalProfit">0</span></div>
+                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-shopping-cart"></i> စုစုပေါင်း အမိန့်စာ</span><span class="drawer-stat-value" id="drawerTotalOrders">0</span></div>
+                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-users"></i> စုစုပေါင်း အသုံးပြုသူ</span><span class="drawer-stat-value" id="drawerTotalUsers">0</span></div>
+                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-clock"></i> ဆိုင်းငံ့ထားသော</span><span class="drawer-stat-value" id="drawerPendingOrders">0</span></div>
+                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-check-circle"></i> အတည်ပြုပြီး</span><span class="drawer-stat-value" id="drawerApprovedOrders">0</span></div>
+                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-times-circle"></i> ပယ်ချထားသော</span><span class="drawer-stat-value" id="drawerRejectedOrders">0</span></div>
+                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-coins"></i> စုစုပေါင်း ဝင်ငွေ</span><span class="drawer-stat-value" id="drawerTotalRevenue">0</span></div>
+                    <div class="drawer-stat-item"><span class="drawer-stat-label"><i class="fas fa-chart-line"></i> စုစုပေါင်း အမြတ်</span><span class="drawer-stat-value" id="drawerTotalProfit">0</span></div>
                 </div>
 
                 <div class="drawer-stats-title" style="margin-top: 8px;"><i class="fas fa-bars"></i> မီနူး</div>
                 <ul class="drawer-menu">
-                    <li><a onclick="window.closeDrawer(); window.switchTab('menu')"><i class="fas fa-chart-line"></i>
-                            မီနူး</a></li>
-                    <li><a onclick="window.closeDrawer(); window.switchTab('orders')"><i class="fas fa-list-ul"></i>
-                            အမိန့်စာများ</a></li>
-                    <li><a onclick="window.closeDrawer(); window.switchTab('users')"><i class="fas fa-users"></i>
-                            အသုံးပြုသူများ</a></li>
-                    <li><a onclick="window.closeDrawer(); window.switchTab('market')"><i class="fas fa-store"></i>
-                            စတိုးဆိုင်</a></li>
-                    <li><a onclick="window.closeDrawer(); window.switchTab('ads')"><i class="fas fa-ad"></i>
-                            ကြော်ငြာများ</a></li>
-                    <li><a onclick="window.closeDrawer(); openAdminChatWidget()"><i class="fas fa-comments"></i>
-                            စကားဝိုင်း</a></li>
+                    <li><a onclick="window.closeDrawer(); window.switchTab('menu')"><i class="fas fa-chart-line"></i> မီနူး</a></li>
+                    <li><a onclick="window.closeDrawer(); window.switchTab('orders')"><i class="fas fa-list-ul"></i> အမိန့်စာများ</a></li>
+                    <li><a onclick="window.closeDrawer(); window.switchTab('users')"><i class="fas fa-users"></i> အသုံးပြုသူများ</a></li>
+                    <li><a onclick="window.closeDrawer(); openAdminChatWidget()"><i class="fas fa-comments"></i> စကားဝိုင်း</a></li>
                     <li>
                         <div class="drawer-divider"></div>
                     </li>
-                    <li><a onclick="window.closeDrawer(); window.exportUsersToCSV()"><i class="fas fa-file-excel"></i>
-                            အသုံးပြုသူများ CSV</a></li>
-                    <li><a onclick="window.closeDrawer(); window.exportOrdersToCSV()"><i class="fas fa-file-excel"></i>
-                            အမိန့်စာများ CSV</a></li>
+                    <li><a onclick="window.closeDrawer(); window.exportUsersToCSV()"><i class="fas fa-file-excel"></i> အသုံးပြုသူများ CSV</a></li>
+                    <li><a onclick="window.closeDrawer(); window.exportOrdersToCSV()"><i class="fas fa-file-excel"></i> အမိန့်စာများ CSV</a></li>
                     <li>
                         <div class="drawer-divider"></div>
                     </li>
-                    <li><a onclick="window.closeDrawer(); window.showCleanupAlert()"><i class="fas fa-trash-alt"></i>
-                            အမိန့်စာဟောင်းများရှင်း</a></li>
-                    <li><a onclick="window.closeDrawer(); window.showSystemResetAlert()"
-                            style="color: var(--rose);"><i class="fas fa-database"></i> စနစ်ပြန်လည်သတ်မှတ်ခြင်း</a>
-                    </li>
+                    <li><a onclick="window.closeDrawer(); window.showCleanupAlert()"><i class="fas fa-trash-alt"></i> အမိန့်စာဟောင်းများရှင်း</a></li>
+                    <li><a onclick="window.closeDrawer(); window.showSystemResetAlert()" style="color: var(--rose);"><i class="fas fa-database"></i> စနစ်ပြန်လည်သတ်မှတ်ခြင်း</a></li>
                     <li>
                         <div class="drawer-divider"></div>
                     </li>
-                    <li><a onclick="window.closeDrawer(); window.logout()"><i class="fas fa-sign-out-alt"></i>
-                            ထွက်ရန်</a></li>
+                    <li><a onclick="window.closeDrawer(); window.logout()"><i class="fas fa-sign-out-alt"></i> ထွက်ရန်</a></li>
                 </ul>
             </div>
 
@@ -2954,59 +2798,35 @@
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 0.65rem;">စတင်:</span>
                             <select id="startHour" class="hour-select" onchange="window.updateSalesHours()">
-                                <option value="0">12 ည</option>
-                                <option value="1">1 နံနက်</option>
-                                <option value="2">2 နံနက်</option>
-                                <option value="3">3 နံနက်</option>
-                                <option value="4">4 နံနက်</option>
-                                <option value="5">5 နံနက်</option>
-                                <option value="6">6 နံနက်</option>
-                                <option value="7">7 နံနက်</option>
-                                <option value="8">8 နံနက်</option>
-                                <option value="9">9 နံနက်</option>
-                                <option value="10">10 နံနက်</option>
-                                <option value="11">11 နံနက်</option>
-                                <option value="12">12 မွန်းတည့်</option>
-                                <option value="13">1 ညနေ</option>
-                                <option value="14">2 ညနေ</option>
-                                <option value="15">3 ညနေ</option>
-                                <option value="16">4 ညနေ</option>
-                                <option value="17">5 ညနေ</option>
-                                <option value="18">6 ညနေ</option>
-                                <option value="19">7 ညနေ</option>
-                                <option value="20">8 ညနေ</option>
-                                <option value="21">9 ညနေ</option>
-                                <option value="22">10 ညနေ</option>
-                                <option value="23">11 ညနေ</option>
+                                <option value="0">12 ည</option><option value="1">1 နံနက်</option>
+                                <option value="2">2 နံနက်</option><option value="3">3 နံနက်</option>
+                                <option value="4">4 နံနက်</option><option value="5">5 နံနက်</option>
+                                <option value="6">6 နံနက်</option><option value="7">7 နံနက်</option>
+                                <option value="8">8 နံနက်</option><option value="9">9 နံနက်</option>
+                                <option value="10">10 နံနက်</option><option value="11">11 နံနက်</option>
+                                <option value="12">12 မွန်းတည့်</option><option value="13">1 ညနေ</option>
+                                <option value="14">2 ညနေ</option><option value="15">3 ညနေ</option>
+                                <option value="16">4 ညနေ</option><option value="17">5 ညနေ</option>
+                                <option value="18">6 ညနေ</option><option value="19">7 ညနေ</option>
+                                <option value="20">8 ညနေ</option><option value="21">9 ညနေ</option>
+                                <option value="22">10 ညနေ</option><option value="23">11 ညနေ</option>
                             </select>
                         </div>
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 0.65rem;">ပိတ်:</span>
                             <select id="endHour" class="hour-select" onchange="window.updateSalesHours()">
-                                <option value="0">12 ည</option>
-                                <option value="1">1 နံနက်</option>
-                                <option value="2">2 နံနက်</option>
-                                <option value="3">3 နံနက်</option>
-                                <option value="4">4 နံနက်</option>
-                                <option value="5">5 နံနက်</option>
-                                <option value="6">6 နံနက်</option>
-                                <option value="7">7 နံနက်</option>
-                                <option value="8">8 နံနက်</option>
-                                <option value="9">9 နံနက်</option>
-                                <option value="10">10 နံနက်</option>
-                                <option value="11">11 နံနက်</option>
-                                <option value="12">12 မွန်းတည့်</option>
-                                <option value="13">1 ညနေ</option>
-                                <option value="14">2 ညနေ</option>
-                                <option value="15">3 ညနေ</option>
-                                <option value="16">4 ညနေ</option>
-                                <option value="17">5 ညနေ</option>
-                                <option value="18">6 ညနေ</option>
-                                <option value="19">7 ညနေ</option>
-                                <option value="20">8 ညနေ</option>
-                                <option value="21">9 ညနေ</option>
-                                <option value="22">10 ညနေ</option>
-                                <option value="23">11 ညနေ</option>
+                                <option value="0">12 ည</option><option value="1">1 နံနက်</option>
+                                <option value="2">2 နံနက်</option><option value="3">3 နံနက်</option>
+                                <option value="4">4 နံနက်</option><option value="5">5 နံနက်</option>
+                                <option value="6">6 နံနက်</option><option value="7">7 နံနက်</option>
+                                <option value="8">8 နံနက်</option><option value="9">9 နံနက်</option>
+                                <option value="10">10 နံနက်</option><option value="11">11 နံနက်</option>
+                                <option value="12">12 မွန်းတည့်</option><option value="13">1 ညနေ</option>
+                                <option value="14">2 ညနေ</option><option value="15">3 ညနေ</option>
+                                <option value="16">4 ညနေ</option><option value="17">5 ညနေ</option>
+                                <option value="18">6 ညနေ</option><option value="19">7 ညနေ</option>
+                                <option value="20">8 ညနေ</option><option value="21">9 ညနေ</option>
+                                <option value="22">10 ညနေ</option><option value="23">11 ညနေ</option>
                             </select>
                         </div>
                     </div>
@@ -3018,43 +2838,11 @@
                                 <input type="checkbox" id="manualToggle" onchange="window.toggleManualShop()">
                                 <span class="toggle-slider"></span>
                             </label>
-                            <span id="manualStatusText" style="font-size: 0.65rem; font-weight: 600; color: #34d399;">🟢
-                                ဖွင့်ထား</span>
+                            <span id="manualStatusText" style="font-size: 0.65rem; font-weight: 600; color: #34d399;">🟢 ဖွင့်ထား</span>
                         </div>
                     </div>
 
                     <div id="salesStatus" class="sales-status">Loading...</div>
-                </div>
-
-                <!-- Ad Settings -->
-                <div class="sales-hours-card">
-                    <div class="sales-hours-title">
-                        <i class="fas fa-ad"></i> ကြော်ငြာ ပြပုံအပြင်အဆင်
-                    </div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.65rem;">ပြမယ့်ပုံစံ:</span>
-                            <select id="adRotationMode" class="hour-select" style="width: auto;">
-                                <option value="random">ကျပန်း</option>
-                                <option value="weighted">အလေးချိန်</option>
-                                <option value="roundrobin">အလှည့်ကျ</option>
-                            </select>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.65rem;">Auto လှည့် (စက္ကန့်):</span>
-                            <input type="number" id="adAutoCycle" class="hour-select" style="width: 70px;" value="0"
-                                step="1" min="0">
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <label style="display: flex; align-items: center; gap: 4px; font-size: 0.65rem;">
-                                <input type="checkbox" id="adShowNavigation" checked> ခလုတ်ပြမယ်
-                            </label>
-                        </div>
-                        <button onclick="window.saveAdSettings()"
-                            style="background:rgba(0,212,255,0.15); border:1px solid rgba(0,212,255,0.3); padding:6px 16px; border-radius:40px; cursor:pointer; font-size:0.65rem; color:var(--text-primary); touch-action:manipulation;">
-                            <i class="fas fa-save"></i> သိမ်းမယ်
-                        </button>
-                    </div>
                 </div>
 
                 <!-- Stats -->
@@ -3109,12 +2897,9 @@
                 </div>
 
                 <div class="search-bar">
-                    <input type="text" id="searchInput" class="search-input"
-                        placeholder="🔍 ဖုန်းနံပါတ်၊ အသုံးပြုသူ ID သို့မဟုတ် အမည်ဖြင့် ရှာဖွေရန်">
-                    <button class="search-btn" onclick="window.searchByPhoneOrId()"><i class="fas fa-search"></i>
-                        ရှာဖွေရန်</button>
-                    <button class="clear-search" onclick="window.clearSearch()"><i class="fas fa-times"></i>
-                        ရှင်းလင်းရန်</button>
+                    <input type="text" id="searchInput" class="search-input" placeholder="🔍 ဖုန်းနံပါတ်၊ အသုံးပြုသူ ID သို့မဟုတ် အမည်ဖြင့် ရှာဖွေရန်">
+                    <button class="search-btn" onclick="window.searchByPhoneOrId()"><i class="fas fa-search"></i> ရှာဖွေရန်</button>
+                    <button class="clear-search" onclick="window.clearSearch()"><i class="fas fa-times"></i> ရှင်းလင်းရန်</button>
                 </div>
 
                 <div class="filter-bar">
@@ -3129,16 +2914,10 @@
                         </select>
                     </div>
                     <div style="display: flex; gap: 6px;">
-                        <button class="filter-btn" onclick="window.applyFilters()"><i class="fas fa-filter"></i>
-                            စစ်ထုတ်ရန်</button>
-                        <button class="filter-btn" onclick="window.clearFilters()"
-                            style="background:#334155;"><i class="fas fa-undo"></i></button>
-                        <button class="filter-btn" onclick="window.loadFilterPreset()"
-                            style="background:rgba(139,92,246,0.2);" title="သိမ်းထားတဲ့ Filter ပြန်ဖွင့်"><i
-                                class="fas fa-history"></i></button>
-                        <button class="filter-btn" onclick="window.saveFilterPreset()"
-                            style="background:rgba(139,92,246,0.2);" title="Filter သိမ်းမယ်"><i
-                                class="fas fa-save"></i></button>
+                        <button class="filter-btn" onclick="window.applyFilters()"><i class="fas fa-filter"></i> စစ်ထုတ်ရန်</button>
+                        <button class="filter-btn" onclick="window.clearFilters()" style="background:#334155;"><i class="fas fa-undo"></i></button>
+                        <button class="filter-btn" onclick="window.loadFilterPreset()" style="background:rgba(139,92,246,0.2);" title="သိမ်းထားတဲ့ Filter ပြန်ဖွင့်"><i class="fas fa-history"></i></button>
+                        <button class="filter-btn" onclick="window.saveFilterPreset()" style="background:rgba(139,92,246,0.2);" title="Filter သိမ်းမယ်"><i class="fas fa-save"></i></button>
                     </div>
                 </div>
 
@@ -3153,45 +2932,12 @@
             <!-- ===== USERS TAB ===== -->
             <div id="usersTab" class="tab-content">
                 <div class="search-bar">
-                    <input type="text" id="userSearchInput" class="search-input"
-                        placeholder="🔍 ဖုန်းနံပါတ်၊ အသုံးပြုသူ ID သို့မဟုတ် အမည်ဖြင့် ရှာဖွေရန်">
-                    <button class="search-btn" onclick="window.searchUsers()"><i class="fas fa-search"></i>
-                        ရှာဖွေရန်</button>
-                    <button class="clear-search" onclick="window.clearUserSearch()"><i class="fas fa-times"></i>
-                        ရှင်းလင်းရန်</button>
+                    <input type="text" id="userSearchInput" class="search-input" placeholder="🔍 ဖုန်းနံပါတ်၊ အသုံးပြုသူ ID သို့မဟုတ် အမည်ဖြင့် ရှာဖွေရန်">
+                    <button class="search-btn" onclick="window.searchUsers()"><i class="fas fa-search"></i> ရှာဖွေရန်</button>
+                    <button class="clear-search" onclick="window.clearUserSearch()"><i class="fas fa-times"></i> ရှင်းလင်းရန်</button>
                 </div>
                 <div class="users-list" id="usersList">
                     <div class="loading"><i class="fas fa-spinner fa-pulse"></i> အသုံးပြုသူများ ဖွင့်နေသည်...</div>
-                </div>
-            </div>
-
-            <!-- ===== MARKET TAB ===== -->
-            <div id="marketTab" class="tab-content">
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                    <h3 style="font-size: 1rem;"><i class="fas fa-store"></i> ထုတ်ကုန်များ</h3>
-                    <button class="add-product-btn" onclick="window.openAddProductModal()"
-                        style="background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:10px 20px; border-radius:12px; font-size:0.75rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:8px; touch-action:manipulation; min-height:44px; transition:all 0.25s ease;">
-                        <i class="fas fa-plus"></i> ထုတ်ကုန်ထည့်ရန်
-                    </button>
-                </div>
-                <div class="product-list" id="productList">
-                    <div class="loading"><i class="fas fa-spinner fa-pulse"></i> ထုတ်ကုန်များ ဖွင့်နေသည်...</div>
-                </div>
-            </div>
-
-            <!-- ===== ADS TAB ===== -->
-            <div id="adsTab" class="tab-content">
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                    <h3 style="font-size: 1rem;"><i class="fas fa-ad"></i> ကြော်ငြာများ</h3>
-                    <button class="add-product-btn" onclick="window.openAddAdModal()"
-                        style="background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:10px 20px; border-radius:12px; font-size:0.75rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:8px; touch-action:manipulation; min-height:44px; transition:all 0.25s ease;">
-                        <i class="fas fa-plus"></i> ကြော်ငြာအသစ်
-                    </button>
-                </div>
-                <div class="ads-list" id="adsList">
-                    <div class="loading"><i class="fas fa-spinner fa-pulse"></i> ကြော်ငြာများ ဖွင့်နေသည်...</div>
                 </div>
             </div>
 
@@ -3203,20 +2949,15 @@
             <button class="nav-item active" data-tab="menu"><i class="fas fa-chart-line"></i><span>မီနူး</span></button>
             <button class="nav-item" data-tab="orders"><i class="fas fa-list-ul"></i><span>အမိန့်စာ</span></button>
             <button class="nav-item" data-tab="users"><i class="fas fa-users"></i><span>အသုံးပြုသူ</span></button>
-            <button class="nav-item" data-tab="market"><i class="fas fa-store"></i><span>စတိုး</span></button>
-            <button class="nav-item" data-tab="ads"><i class="fas fa-ad"></i><span>ကြော်ငြာ</span></button>
-            <button class="nav-item" data-tab="chat" onclick="openAdminChatWidget()"><i
-                    class="fas fa-comments"></i><span>စကားဝိုင်း</span></button>
+            <button class="nav-item" data-tab="chat" onclick="openAdminChatWidget()"><i class="fas fa-comments"></i><span>စကားဝိုင်း</span></button>
         </div>
 
         <!-- ===== LOGIN ===== -->
         <div id="loginBox" class="login-box">
             <div class="logo-icon"><i class="fas fa-lock"></i></div>
             <h2 style="font-size: 1.2rem; margin-bottom: 0.5rem;">အဒ်မင် ဝင်ရောက်ရန်</h2>
-            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 1rem;">စီမံခန့်ခွဲမှုစနစ်သို့
-                ဝင်ရောက်ပါ</p>
-            <input type="password" id="adminPassword" placeholder="စကားဝှက် ထည့်သွင်းပါ"
-                onkeypress="if(event.key==='Enter') window.login()">
+            <p style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 1rem;">စီမံခန့်ခွဲမှုစနစ်သို့ ဝင်ရောက်ပါ</p>
+            <input type="password" id="adminPassword" placeholder="စကားဝှက် ထည့်သွင်းပါ" onkeypress="if(event.key==='Enter') window.login()">
             <button class="login-btn" onclick="window.login()"><i class="fas fa-unlock-alt"></i> ဝင်ရောက်ရန်</button>
         </div>
     </div>
@@ -3234,7 +2975,6 @@
                     <li>❌ ရက် ၃၀ ကျော် ဆိုင်းငံ့ထားသော အမိန့်စာများ</li>
                     <li>❌ ရက် ၃၀ ကျော် ပယ်ချထားသော အမိန့်စာများ</li>
                     <li>✅ အတည်ပြုပြီး အမိန့်စာများကို ထိန်းသိမ်းမည်</li>
-                    <li>✅ ထုတ်ကုန်များ ထိခိုက်မည်မဟုတ်</li>
                 </ul>
             </div>
             <div class="alert-buttons">
@@ -3249,60 +2989,19 @@
         <div class="alert-card">
             <div class="alert-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
             <div class="alert-title danger">⚠️ စနစ်ပြန်လည်သတ်မှတ်ခြင်း</div>
-            <div class="alert-message">ဤလုပ်ဆောင်ချက်ကို <strong>ပြန်လည်ဖျက်လို့မရပါ!</strong> အတည်ပြုရန် <strong
-                    style="color:var(--rose);">"RESET_ALL_DATA"</strong> ဟု ရိုက်ထည့်ပါ။</div>
+            <div class="alert-message">ဤလုပ်ဆောင်ချက်ကို <strong>ပြန်လည်ဖျက်လို့မရပါ!</strong> အတည်ပြုရန် <strong style="color:var(--rose);">"RESET_ALL_DATA"</strong> ဟု ရိုက်ထည့်ပါ။</div>
             <div class="alert-items">
                 <ul>
                     <li>❌ အသုံးပြုသူအားလုံး ဖျက်မည်</li>
                     <li>❌ အမိန့်စာအားလုံး ဖျက်မည်</li>
                     <li>❌ အသုံးပြုသူစာရင်းအင်းအားလုံး ဖျက်မည်</li>
                     <li>❌ တင်ထားသော ဖန်သားပြင်ဓာတ်ပုံများအားလုံး ဖျက်မည်</li>
-                    <li>✅ ထုတ်ကုန်များကို ထိန်းသိမ်းမည် (အောက်တွင် ရွေးချယ်နိုင်သည်)</li>
                 </ul>
             </div>
             <input type="text" id="resetConfirmInput" class="alert-input" placeholder='"RESET_ALL_DATA" ဟု ရိုက်ထည့်ပါ'>
-            <label class="checkbox-label">
-                <input type="checkbox" id="keepProductsCheckbox" checked> ထုတ်ကုန်များကို ထိန်းသိမ်းမည် (မဖျက်ရန်)
-            </label>
             <div class="alert-buttons">
-                <button class="alert-btn confirm" onclick="window.executeSystemResetFromAlert()">ဟုတ်ကဲ့၊
-                    အားလုံးပြန်လည်သတ်မှတ်မည်</button>
+                <button class="alert-btn confirm" onclick="window.executeSystemResetFromAlert()">ဟုတ်ကဲ့၊ အားလုံးပြန်လည်သတ်မှတ်မည်</button>
                 <button class="alert-btn cancel" onclick="window.closeSystemResetAlert()">မလုပ်တော့ပါ</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Product Modal -->
-    <div id="productModal" class="modal">
-        <div class="modal-card">
-            <h3 id="productModalTitle">ထုတ်ကုန်ထည့်ရန်</h3>
-            <input type="text" id="productName" placeholder="ထုတ်ကုန်အမည် *">
-            <input type="number" id="productPrice" placeholder="စျေးနှုန်း (MMK) *">
-            <input type="text" id="productImage" placeholder="ပုံ URL (ရွေးချယ်နိုင်သည်)">
-            <input type="text" id="productCategory" placeholder="အမျိုးအစား">
-            <input type="text" id="productIcon" placeholder="အိုင်ကွန် (ဥပမာ- fas fa-tshirt)">
-            <input type="number" id="productDiscount" placeholder="လျှော့စျေး %">
-            <input type="number" id="productStock" placeholder="ကျန်အရေအတွက်" value="999">
-            <div style="display: flex; gap: 10px; margin-top: 14px;">
-                <button class="modal-btn save" onclick="window.saveProduct()">သိမ်းရန်</button>
-                <button class="modal-btn cancel" onclick="window.closeProductModal()">မလုပ်တော့ပါ</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Ad Modal -->
-    <div id="adModal" class="modal">
-        <div class="modal-card">
-            <h3 id="adModalTitle">ကြော်ငြာအသစ်ထည့်ရန်</h3>
-            <input type="text" id="adName" placeholder="ကြော်ငြာအမည် *">
-            <input type="text" id="adImageUrl" placeholder="ပုံ URL *">
-            <input type="text" id="adDestinationUrl" placeholder="Website Link *">
-            <textarea id="adAltText" placeholder="စာသား (ရွေးချယ်နိုင်သည်)" rows="2"></textarea>
-            <input type="number" id="adDisplayWeight" placeholder="အလေးချိန် (1-20)" value="5">
-            <input type="date" id="adExpiryDate" placeholder="သက်တမ်းကုန်ဆုံးရက်">
-            <div style="display: flex; gap: 10px; margin-top: 14px;">
-                <button class="modal-btn save" onclick="window.saveAd()">သိမ်းရန်</button>
-                <button class="modal-btn cancel" onclick="window.closeAdModal()">မလုပ်တော့ပါ</button>
             </div>
         </div>
     </div>
@@ -3310,8 +3009,7 @@
     <!-- Screenshot Modal -->
     <div id="screenshotModal" class="image-modal" onclick="window.closeModal()">
         <div class="image-modal-content" onclick="event.stopPropagation()">
-            <div
-                style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid var(--border-color);">
                 <span style="font-size:0.8rem;"><i class="fas fa-image"></i> ငွေပေးချေမှု ဖန်သားပြင်ဓာတ်ပုံ</span>
                 <button class="close-modal" onclick="window.closeModal()">&times;</button>
             </div>
@@ -3337,15 +3035,11 @@
             let token = localStorage.getItem('adminToken');
             let allOrders = [];
             let userStats = [];
-            let products = [];
-            let allAds = [];
             let autoSyncInterval = null;
             let activeCountdowns = {};
             let currentSearchPhone = '';
             let currentUserSearchPhone = '';
             let currentTab = 'menu';
-            let editingProductId = null;
-            let editingAdId = null;
             let selectedOrders = new Set();
             let sessionTimer = null;
             const SESSION_TIMEOUT = 30 * 60 * 1000;
@@ -3390,12 +3084,8 @@
                 // Drawer Stat Labels
                 const drawerLabels = document.querySelectorAll('.drawer-stat-item .drawer-stat-label');
                 const statMap = {
-                    en: ['Total Orders', 'Total Users', 'Pending', 'Approved', 'Rejected', 'Total Revenue',
-                        'Total Profit'
-                    ],
-                    my: ['စုစုပေါင်း အမိန့်စာ', 'စုစုပေါင်း အသုံးပြုသူ', 'ဆိုင်းငံ့ထားသော', 'အတည်ပြုပြီး', 'ပယ်ချထားသော',
-                        'စုစုပေါင်း ဝင်ငွေ', 'စုစုပေါင်း အမြတ်'
-                    ]
+                    en: ['Total Orders', 'Total Users', 'Pending', 'Approved', 'Rejected', 'Total Revenue', 'Total Profit'],
+                    my: ['စုစုပေါင်း အမိန့်စာ', 'စုစုပေါင်း အသုံးပြုသူ', 'ဆိုင်းငံ့ထားသော', 'အတည်ပြုပြီး', 'ပယ်ချထားသော', 'စုစုပေါင်း ဝင်ငွေ', 'စုစုပေါင်း အမြတ်']
                 };
                 drawerLabels.forEach((label, i) => {
                     if (i < statMap.en.length) {
@@ -3407,13 +3097,8 @@
                 // Drawer Menu
                 const menuItems = document.querySelectorAll('.drawer-menu a');
                 const menuMap = {
-                    en: ['Dashboard', 'Orders', 'Users', 'Store', 'Ads', 'Chat', 'Export Users CSV',
-                        'Export Orders CSV', 'Clean Old Orders', 'System Reset', 'Logout'
-                    ],
-                    my: ['မီနူး', 'အမိန့်စာများ', 'အသုံးပြုသူများ', 'စတိုးဆိုင်', 'ကြော်ငြာများ', 'စကားဝိုင်း',
-                        'အသုံးပြုသူများ CSV', 'အမိန့်စာများ CSV', 'အမိန့်စာဟောင်းများရှင်း',
-                        'စနစ်ပြန်လည်သတ်မှတ်ခြင်း', 'ထွက်ရန်'
-                    ]
+                    en: ['Dashboard', 'Orders', 'Users', 'Chat', 'Export Users CSV', 'Export Orders CSV', 'Clean Old Orders', 'System Reset', 'Logout'],
+                    my: ['မီနူး', 'အမိန့်စာများ', 'အသုံးပြုသူများ', 'စကားဝိုင်း', 'အသုံးပြုသူများ CSV', 'အမိန့်စာများ CSV', 'အမိန့်စာဟောင်းများရှင်း', 'စနစ်ပြန်လည်သတ်မှတ်ခြင်း', 'ထွက်ရန်']
                 };
                 menuItems.forEach((item, i) => {
                     if (i < menuMap.en.length) {
@@ -3425,8 +3110,8 @@
                 // Bottom Nav
                 const navItems = document.querySelectorAll('.nav-item');
                 const navMap = {
-                    en: ['Dashboard', 'Orders', 'Users', 'Store', 'Ads', 'Chat'],
-                    my: ['မီနူး', 'အမိန့်စာ', 'အသုံးပြုသူ', 'စတိုး', 'ကြော်ငြာ', 'စကားဝိုင်း']
+                    en: ['Dashboard', 'Orders', 'Users', 'Chat'],
+                    my: ['မီနူး', 'အမိန့်စာ', 'အသုံးပြုသူ', 'စကားဝိုင်း']
                 };
                 navItems.forEach((item, i) => {
                     if (i < navMap.en.length) {
@@ -3438,12 +3123,8 @@
                 // Stats Labels
                 const statLabels = document.querySelectorAll('.stat-label');
                 const statsMap = {
-                    en: ['Total Orders', 'Pending', 'Approved', 'Rejected', 'Revenue', 'Cost', 'Profit',
-                        'Avg Profit'
-                    ],
-                    my: ['စုစုပေါင်း အမိန့်စာ', 'ဆိုင်းငံ့ထားသော', 'အတည်ပြုပြီး', 'ပယ်ချထားသော', 'ဝင်ငွေ', 'ကုန်ကျစရိတ်',
-                        'အမြတ်', 'ပျမ်းမျှအမြတ်'
-                    ]
+                    en: ['Total Orders', 'Pending', 'Approved', 'Rejected', 'Revenue', 'Cost', 'Profit', 'Avg Profit'],
+                    my: ['စုစုပေါင်း အမိန့်စာ', 'ဆိုင်းငံ့ထားသော', 'အတည်ပြုပြီး', 'ပယ်ချထားသော', 'ဝင်ငွေ', 'ကုန်ကျစရိတ်', 'အမြတ်', 'ပျမ်းမျှအမြတ်']
                 };
                 statLabels.forEach((label, i) => {
                     if (i < statsMap.en.length) {
@@ -3502,14 +3183,6 @@
                         '<i class="fas fa-clock"></i> ရောင်းချချိန် သတ်မှတ်ချက်';
                 }
 
-                // Ad Settings Title
-                const adTitle = document.querySelector('.sales-hours-card:last-child .sales-hours-title');
-                if (adTitle) {
-                    adTitle.innerHTML = isEn ?
-                        '<i class="fas fa-ad"></i> Ad Display Settings' :
-                        '<i class="fas fa-ad"></i> ကြော်ငြာ ပြပုံအပြင်အဆင်';
-                }
-
                 // Orders Filter Bar
                 const newOrdersBtn = document.getElementById('filterNewOrders');
                 const approvedBtn = document.getElementById('filterApprovedOrders');
@@ -3544,50 +3217,10 @@
                         '<i class="fas fa-unlock-alt"></i> ဝင်ရောက်ရန်';
                 }
 
-                // Modal Buttons
-                document.querySelectorAll('.modal-btn.save').forEach(btn => {
-                    btn.textContent = isEn ? 'Save' : 'သိမ်းရန်';
-                });
-                document.querySelectorAll('.modal-btn.cancel').forEach(btn => {
-                    btn.textContent = isEn ? 'Cancel' : 'မလုပ်တော့ပါ';
-                });
-                document.querySelectorAll('.modal-btn.danger').forEach(btn => {
-                    btn.textContent = isEn ? 'Delete' : 'ဖျက်မယ်';
-                });
-
-                // Product/Ad Buttons
-                const addProductBtn = document.querySelector('.add-product-btn');
-                if (addProductBtn) {
-                    addProductBtn.innerHTML = isEn ? '<i class="fas fa-plus"></i> Add Product' :
-                        '<i class="fas fa-plus"></i> ထုတ်ကုန်ထည့်ရန်';
-                }
-                const addAdBtn = document.querySelector('.add-product-btn[onclick*="openAddAdModal"]');
-                if (addAdBtn) {
-                    addAdBtn.innerHTML = isEn ? '<i class="fas fa-plus"></i> New Ad' :
-                        '<i class="fas fa-plus"></i> ကြော်ငြာအသစ်';
-                }
-
-                // Product Modal Title
-                const productModalTitle = document.getElementById('productModalTitle');
-                if (productModalTitle) {
-                    productModalTitle.textContent = editingProductId ?
-                        (isEn ? 'Edit Product' : 'ထုတ်ကုန်တည်းဖြတ်ရန်') :
-                        (isEn ? 'Add Product' : 'ထုတ်ကုန်ထည့်ရန်');
-                }
-
-                // Ad Modal Title
-                const adModalTitle = document.getElementById('adModalTitle');
-                if (adModalTitle) {
-                    adModalTitle.textContent = editingAdId ?
-                        (isEn ? 'Edit Ad' : 'ကြော်ငြာတည်းဖြတ်ရန်') :
-                        (isEn ? 'New Ad' : 'ကြော်ငြာအသစ်ထည့်ရန်');
-                }
-
                 // Alert Titles
                 document.querySelectorAll('.alert-title.warning').forEach(el => {
                     if (el.textContent.includes('အမိန့်စာဟောင်း')) {
-                        el.textContent = isEn ? '⚠️ Old Orders Cleanup' :
-                        '⚠️ အမိန့်စာဟောင်းများ ရှင်းလင်းခြင်း';
+                        el.textContent = isEn ? '⚠️ Old Orders Cleanup' : '⚠️ အမိန့်စာဟောင်းများ ရှင်းလင်းခြင်း';
                     }
                 });
                 document.querySelectorAll('.alert-title.danger').forEach(el => {
@@ -3599,18 +3232,11 @@
                 // Document Title
                 document.title = isEn ? 'Admin Panel | ATH DIGITAL HUB' : 'အဒ်မင် အကန့် | ATH DIGITAL HUB';
 
-                // Refresh orders list if visible
                 if (currentTab === 'orders') {
                     applyFiltersAndSearch();
                 }
                 if (currentTab === 'users') {
                     renderUsersTab();
-                }
-                if (currentTab === 'market') {
-                    renderProducts();
-                }
-                if (currentTab === 'ads') {
-                    renderAds();
                 }
             }
 
@@ -3655,7 +3281,6 @@
                     });
                 }
 
-                // Set initial language
                 updateActiveLang();
                 applyLanguageToAllTexts();
             });
@@ -3800,13 +3425,11 @@
                 const avgEl = document.getElementById('avgProfit');
                 if (avgEl) avgEl.textContent = (approved ? Math.round(profit / approved) : 0).toLocaleString() + 'K';
 
-                // Update filter bar counts
                 const pendingCountEl = document.getElementById('pendingCount');
                 if (pendingCountEl) pendingCountEl.textContent = pending;
                 const approvedCountEl = document.getElementById('approvedCount');
                 if (approvedCountEl) approvedCountEl.textContent = approved;
 
-                // Drawer stats
                 const drawerMap = {
                     'drawerTotalOrders': total,
                     'drawerTotalUsers': userStats ? userStats.length : 0,
@@ -3842,17 +3465,12 @@
                     item.classList.toggle('active', item.dataset.tab === tab);
                 });
                 if (tab === 'orders') {
-                    // Reset filter when switching to orders tab
                     currentOrderFilter = 'all';
                     document.getElementById('filterNewOrders').classList.add('active');
                     document.getElementById('filterApprovedOrders').classList.remove('active');
                     applyFiltersAndSearch();
                 } else if (tab === 'users') {
                     renderUsersTab();
-                } else if (tab === 'market') {
-                    loadProducts();
-                } else if (tab === 'ads') {
-                    loadAds();
                 }
                 closeDrawer();
             };
@@ -3867,7 +3485,7 @@
                 });
             });
 
-            // ===== ORDER FILTER (New Orders / Approved Orders) =====
+            // ===== ORDER FILTER =====
             window.setOrderFilter = function(filter) {
                 currentOrderFilter = filter;
                 const newBtn = document.getElementById('filterNewOrders');
@@ -3909,18 +3527,14 @@
                         document.getElementById('bottomNav').style.display = 'flex';
                         loadAllData();
                         loadSalesHours();
-                        loadAdSettings();
-                        loadAds();
                         startAutoSync();
                         resetSessionTimer();
-                        showToast(currentLang === 'en' ? '✅ Login successful' :
-                        '✅ ဝင်ရောက်မှု အောင်မြင်ပါပြီ');
+                        showToast(currentLang === 'en' ? '✅ Login successful' : '✅ ဝင်ရောက်မှု အောင်မြင်ပါပြီ');
                     } else {
                         showToast(currentLang === 'en' ? 'Invalid password' : 'စကားဝှက် မှားယွင်းနေသည်', true);
                     }
                 } catch (e) {
-                    showToast(currentLang === 'en' ? 'Connection error: ' + e.message : 'ချိတ်ဆက်မှု အမှား: ' + e
-                        .message,
+                    showToast(currentLang === 'en' ? 'Connection error: ' + e.message : 'ချိတ်ဆက်မှု အမှား: ' + e.message,
                         true);
                 }
             };
@@ -3958,7 +3572,6 @@
             window.manualRefresh = function() {
                 loadAllData();
                 loadSalesHours();
-                loadAdSettings();
                 showToast(currentLang === 'en' ? '🔄 Data synced' : '🔄 ဒေတာ စင့်ခ်လုပ်ပြီးပါပြီ');
             };
 
@@ -3966,9 +3579,7 @@
             async function loadAllData() {
                 await Promise.all([
                     loadOrders(),
-                    loadUserStats(),
-                    loadProducts(),
-                    loadAds()
+                    loadUserStats()
                 ]);
                 updateAllStats();
             }
@@ -4019,379 +3630,13 @@
                 }
             }
 
-            async function loadProducts() {
-                try {
-                    const res = await fetchWithRetry(`${API_BASE}/api/market/products`);
-                    if (!res) return;
-                    const data = await res.json();
-                    products = data.products || [];
-                    if (currentTab === 'market') renderProducts();
-                } catch (e) {
-                    console.error('Error loading products:', e);
-                    renderProducts();
-                }
-            }
-
-            // ===== RENDER PRODUCTS =====
-            function renderProducts() {
-                const container = document.getElementById('productList');
-                if (!container) return;
-                const isEn = currentLang === 'en';
-                if (!products.length) {
-                    container.innerHTML =
-                        `<div class="loading">${isEn ? 'No products. Click "Add Product" to create.' : 'ထုတ်ကုန်မရှိပါ။ "ထုတ်ကုန်ထည့်ရန်" ကိုနှိပ်၍ ဖန်တီးပါ။'}</div>`;
-                    return;
-                }
-                let html = '';
-                for (const p of products) {
-                    const stockColor = (p.stock || 999) > 50 ? '#34d399' : (p.stock || 999) > 10 ? '#fbbf24' :
-                        '#fb7185';
-                    html += `
-                            <div class="product-card">
-                                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border-color);">
-                                    <div style="display:flex; align-items:center; gap:12px;">
-                                        ${p.image ? `<img src="${escapeHtml(p.image)}" style="width:50px; height:50px; object-fit:cover; border-radius:8px; background:rgba(0,0,0,0.3);" onerror="this.style.display='none'">` : `<div style="width:50px; height:50px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.3); border-radius:8px;"><i class="${escapeHtml(p.icon || 'fas fa-box')}"></i></div>`}
-                                        <div>
-                                            <strong style="font-size:0.9rem;">${escapeHtml(p.name)}</strong>
-                                            <br>
-                                            <span style="font-size:0.65rem;">💰 ${p.price.toLocaleString()} MMK</span>
-                                            <span style="font-size:0.65rem; margin-left:8px; color:${stockColor};">📦 ${p.stock || 999}</span>
-                                        </div>
-                                    </div>
-                                    <span style="font-size:0.6rem; background:rgba(0,212,255,0.15); padding:2px 10px; border-radius:40px;">${escapeHtml(p.category || 'Uncategorized')}</span>
-                                </div>
-                                <div style="margin-bottom:8px;">
-                                    ${p.discount ? `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; font-size:0.6rem; display:inline-block; padding:2px 8px; border-radius:40px;">-${p.discount}%</span>` : ''}
-                                    ${(p.stock !== undefined && p.stock <= 10) ? `<span style="background:rgba(244,63,94,0.2); color:#fb7185; font-size:0.6rem; display:inline-block; padding:2px 8px; border-radius:40px; margin-left:8px;">⚠️ ${isEn ? 'Low stock' : 'အနည်းငယ်ကျန်'}</span>` : ''}
-                                </div>
-                                <div class="product-card-actions">
-                                    <button class="edit-btn" onclick="window.openEditProductModal(${p.id})"><i class="fas fa-edit"></i> ${isEn ? 'Edit' : 'တည်းဖြတ်'}</button>
-                                    <button class="delete-btn" onclick="window.deleteProduct(${p.id})"><i class="fas fa-trash"></i> ${isEn ? 'Delete' : 'ဖျက်မယ်'}</button>
-                                </div>
-                            </div>
-                        `;
-                }
-                container.innerHTML = html;
-            }
-
-            // ===== PRODUCT CRUD =====
-            window.openAddProductModal = function() {
-                editingProductId = null;
-                const isEn = currentLang === 'en';
-                document.getElementById('productModalTitle').textContent = isEn ? 'Add Product' : 'ထုတ်ကုန်ထည့်ရန်';
-                document.getElementById('productName').value = '';
-                document.getElementById('productPrice').value = '';
-                document.getElementById('productImage').value = '';
-                document.getElementById('productCategory').value = '';
-                document.getElementById('productIcon').value = 'fas fa-box';
-                document.getElementById('productDiscount').value = '';
-                document.getElementById('productStock').value = '999';
-                document.getElementById('productModal').classList.add('active');
-            };
-
-            window.openEditProductModal = function(id) {
-                const p = products.find(x => x.id === id);
-                if (!p) return;
-                editingProductId = id;
-                const isEn = currentLang === 'en';
-                document.getElementById('productModalTitle').textContent = isEn ? 'Edit Product' :
-                'ထုတ်ကုန်တည်းဖြတ်ရန်';
-                document.getElementById('productName').value = p.name;
-                document.getElementById('productPrice').value = p.price;
-                document.getElementById('productImage').value = p.image || '';
-                document.getElementById('productCategory').value = p.category || '';
-                document.getElementById('productIcon').value = p.icon || 'fas fa-box';
-                document.getElementById('productDiscount').value = p.discount || '';
-                document.getElementById('productStock').value = p.stock || 999;
-                document.getElementById('productModal').classList.add('active');
-            };
-
-            window.closeProductModal = function() {
-                document.getElementById('productModal').classList.remove('active');
-            };
-
-            window.saveProduct = async function() {
-                const name = document.getElementById('productName').value.trim();
-                const price = parseInt(document.getElementById('productPrice').value || '0');
-                const image = document.getElementById('productImage').value.trim();
-                const category = document.getElementById('productCategory').value.trim();
-                const icon = document.getElementById('productIcon').value.trim();
-                const discount = parseInt(document.getElementById('productDiscount').value || '0') || 0;
-                const stock = parseInt(document.getElementById('productStock').value || '999') || 999;
-
-                const isEn = currentLang === 'en';
-                if (!name || !price) {
-                    showToast(isEn ? 'Please fill in name and price' :
-                        'ကျေးဇူးပြု၍ ထုတ်ကုန်အမည်နှင့် စျေးနှုန်းကို ဖြည့်သွင်းပါ', true);
-                    return;
-                }
-
-                const url = editingProductId ? `${API_BASE}/api/market/products/${editingProductId}` :
-                    `${API_BASE}/api/market/products`;
-                const method = editingProductId ? 'PUT' : 'POST';
-
-                try {
-                    const res = await fetchWithRetry(url, {
-                        method,
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name, price, image, category, icon, discount, stock })
-                    });
-                    if (res && res.ok) {
-                        showToast(editingProductId ?
-                            (isEn ? '✅ Product updated' : '✅ ထုတ်ကုန် အပ်ဒိတ်လုပ်ပြီးပါပြီ') :
-                            (isEn ? '✅ Product added' : '✅ ထုတ်ကုန် ထည့်သွင်းပြီးပါပြီ'));
-                        closeProductModal();
-                        loadProducts();
-                    } else {
-                        showToast(isEn ? 'Error saving product' : 'ထုတ်ကုန်သိမ်းဆည်းရာတွင် အမှားရှိသည်', true);
-                    }
-                } catch (e) {
-                    showToast(isEn ? 'Error saving product' : 'ထုတ်ကုန်သိမ်းဆည်းရာတွင် အမှားရှိသည်', true);
-                }
-            };
-
-            window.deleteProduct = async function(id) {
-                const isEn = currentLang === 'en';
-                if (!confirm(isEn ? 'Delete this product?' : 'ဤထုတ်ကုန်ကို ဖျက်မည်လား။')) return;
-                try {
-                    const res = await fetchWithRetry(`${API_BASE}/api/market/products/${id}`, { method: 'DELETE' });
-                    if (res && res.ok) {
-                        showToast(isEn ? '🗑 Product deleted' : '🗑 ထုတ်ကုန် ဖျက်ပြီးပါပြီ');
-                        loadProducts();
-                    } else {
-                        showToast(isEn ? 'Error deleting product' : 'ထုတ်ကုန်ဖျက်ရာတွင် အမှားရှိသည်', true);
-                    }
-                } catch (e) {
-                    showToast(isEn ? 'Error deleting product' : 'ထုတ်ကုန်ဖျက်ရာတွင် အမှားရှိသည်', true);
-                }
-            };
-
-            // ===== ADS =====
-            async function loadAds() {
-                try {
-                    const res = await fetchWithRetry(`${API_BASE}/api/admin/ads`);
-                    if (!res) return;
-                    const data = await res.json();
-                    allAds = data.success ? (data.ads || []) : [];
-                    if (currentTab === 'ads') renderAds();
-                } catch (e) {
-                    console.error('Error loading ads:', e);
-                    allAds = [];
-                    renderAds();
-                }
-            }
-
-            async function loadAdSettings() {
-                try {
-                    const res = await fetch(`${API_BASE}/api/ad-settings`);
-                    const data = await res.json();
-                    if (data.success && data.settings) {
-                        const modeSelect = document.getElementById('adRotationMode');
-                        const autoCycle = document.getElementById('adAutoCycle');
-                        const showNav = document.getElementById('adShowNavigation');
-                        if (modeSelect) modeSelect.value = data.settings.rotation_mode || 'weighted';
-                        if (autoCycle) autoCycle.value = data.settings.auto_cycle_seconds || 0;
-                        if (showNav) showNav.checked = data.settings.show_navigation !== false;
-                    }
-                } catch (e) { console.error('Error loading ad settings:', e); }
-            }
-
-            window.saveAdSettings = async function() {
-                const rotation_mode = document.getElementById('adRotationMode')?.value || 'weighted';
-                const auto_cycle_seconds = parseInt(document.getElementById('adAutoCycle')?.value || '0');
-                const show_navigation = document.getElementById('adShowNavigation')?.checked || false;
-
-                const isEn = currentLang === 'en';
-                try {
-                    const res = await fetch(`${API_BASE}/api/admin/ad-settings`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ rotation_mode, auto_cycle_seconds, show_navigation }),
-                        credentials: 'include'
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        showToast(isEn ? '✅ Ad settings saved' : '✅ ကြော်ငြာဆက်တင်များ သိမ်းပြီးပါပြီ');
-                    } else {
-                        showToast(isEn ? '❌ Failed to save' : '❌ သိမ်းဆည်းရန် မအောင်မြင်ပါ', true);
-                    }
-                } catch (e) {
-                    showToast('Error: ' + e.message, true);
-                }
-            };
-
-            function renderAds() {
-                const container = document.getElementById('adsList');
-                if (!container) return;
-                const isEn = currentLang === 'en';
-                if (!allAds.length) {
-                    container.innerHTML =
-                        `<div class="loading">${isEn ? 'No ads. Click "New Ad" to create.' : 'ကြော်ငြာမရှိသေးပါ။ "ကြော်ငြာအသစ်" ကိုနှိပ်၍ ဖန်တီးပါ။'}</div>`;
-                    return;
-                }
-                const today = new Date().toISOString().slice(0, 10);
-                let html = '';
-                for (const ad of allAds) {
-                    const isExpired = ad.expiry_date && ad.expiry_date < today;
-                    let statusClass = 'ad-status-active';
-                    let statusText = isEn ? '✅ Active' : '✅ ဖွင့်ထား';
-                    if (!ad.active) {
-                        statusClass = 'ad-status-inactive';
-                        statusText = isEn ? '❌ Inactive' : '❌ ပိတ်ထား';
-                    } else if (isExpired) {
-                        statusClass = 'ad-status-expired';
-                        statusText = isEn ? '⏰ Expired' : '⏰ သက်တမ်းကုန်';
-                    }
-                    html += `
-                            <div class="ad-card">
-                                <div class="${statusClass}">${statusText}</div>
-                                <img src="${escapeHtml(ad.image_url)}" onerror="this.src='https://placehold.co/728x200/333/white?text=No+Image'">
-                                <div><strong>${escapeHtml(ad.name)}</strong></div>
-                                <div style="font-size:0.65rem; color:var(--text-secondary); margin-top:4px;">🔗 ${escapeHtml(ad.destination_url.substring(0, 50))}</div>
-                                ${ad.alt_text ? `<div style="font-size:0.6rem; color:var(--text-secondary); margin-top:6px;">📝 ${escapeHtml(ad.alt_text)}</div>` : ''}
-                                <div style="font-size:0.6rem; color:var(--text-secondary); margin-top:8px;">
-                                    <i class="fas fa-weight-hanging"></i> ${isEn ? 'Weight' : 'အလေးချိန်'}: ${ad.display_weight || 5} | 
-                                    <i class="fas fa-calendar"></i> ${ad.expiry_date || (isEn ? 'No expiry' : 'သက်တမ်းမသတ်မှတ်ရ')} |
-                                    <i class="fas fa-eye"></i> ${ad.views || 0} | 
-                                    <i class="fas fa-mouse-pointer"></i> ${ad.clicks || 0}
-                                </div>
-                                <div class="ad-card-actions">
-                                    <button class="ad-edit-btn" onclick="window.editAd(${ad.id})"><i class="fas fa-edit"></i> ${isEn ? 'Edit' : 'တည်းဖြတ်'}</button>
-                                    <button class="ad-toggle-btn" onclick="window.toggleAd(${ad.id}, ${!ad.active})"><i class="fas ${ad.active ? 'fa-ban' : 'fa-play'}"></i> ${ad.active ? (isEn ? 'Disable' : 'ပိတ်မယ်') : (isEn ? 'Enable' : 'ဖွင့်မယ်')}</button>
-                                    <button class="ad-delete-btn" onclick="window.deleteAd(${ad.id})"><i class="fas fa-trash"></i> ${isEn ? 'Delete' : 'ဖျက်မယ်'}</button>
-                                </div>
-                            </div>
-                        `;
-                }
-                container.innerHTML = html;
-            }
-
-            window.openAddAdModal = function() {
-                editingAdId = null;
-                const isEn = currentLang === 'en';
-                document.getElementById('adModalTitle').textContent = isEn ? 'New Ad' : 'ကြော်ငြာအသစ်ထည့်ရန်';
-                document.getElementById('adName').value = '';
-                document.getElementById('adImageUrl').value = '';
-                document.getElementById('adDestinationUrl').value = '';
-                document.getElementById('adAltText').value = '';
-                document.getElementById('adDisplayWeight').value = '5';
-                document.getElementById('adExpiryDate').value = '';
-                document.getElementById('adModal').classList.add('active');
-            };
-
-            window.closeAdModal = function() {
-                document.getElementById('adModal').classList.remove('active');
-            };
-
-            window.editAd = function(id) {
-                const ad = allAds.find(a => a.id === id);
-                if (!ad) return;
-                editingAdId = id;
-                const isEn = currentLang === 'en';
-                document.getElementById('adModalTitle').textContent = isEn ? 'Edit Ad' : 'ကြော်ငြာတည်းဖြတ်ရန်';
-                document.getElementById('adName').value = ad.name;
-                document.getElementById('adImageUrl').value = ad.image_url;
-                document.getElementById('adDestinationUrl').value = ad.destination_url;
-                document.getElementById('adAltText').value = ad.alt_text || '';
-                document.getElementById('adDisplayWeight').value = ad.display_weight || 5;
-                document.getElementById('adExpiryDate').value = ad.expiry_date || '';
-                document.getElementById('adModal').classList.add('active');
-            };
-
-            window.saveAd = async function() {
-                const name = document.getElementById('adName')?.value.trim();
-                const image_url = document.getElementById('adImageUrl')?.value.trim();
-                const destination_url = document.getElementById('adDestinationUrl')?.value.trim();
-                const alt_text = document.getElementById('adAltText')?.value.trim();
-                const display_weight = parseInt(document.getElementById('adDisplayWeight')?.value || '5');
-                const expiry_date = document.getElementById('adExpiryDate')?.value || null;
-
-                const isEn = currentLang === 'en';
-                if (!name || !image_url || !destination_url) {
-                    showToast(isEn ? 'Please fill in name, image URL and destination link' :
-                        'ကျေးဇူးပြု၍ အမည်၊ ပုံ URL နှင့် Website Link ကို ဖြည့်ပါ', true);
-                    return;
-                }
-
-                const url = editingAdId ? `${API_BASE}/api/admin/ads/${editingAdId}` :
-                    `${API_BASE}/api/admin/ads`;
-                const method = editingAdId ? 'PUT' : 'POST';
-                const body = { name, image_url, destination_url, alt_text, display_weight, expiry_date };
-
-                try {
-                    const res = await fetch(url, {
-                        method,
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(body),
-                        credentials: 'include'
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        showToast(editingAdId ?
-                            (isEn ? '✅ Ad updated' : '✅ ကြော်ငြာ တည်းဖြတ်ပြီးပါပြီ') :
-                            (isEn ? '✅ Ad added' : '✅ ကြော်ငြာအသစ် ထည့်ပြီးပါပြီ'));
-                        closeAdModal();
-                        loadAds();
-                    } else {
-                        showToast(isEn ? '❌ Failed to save' : '❌ သိမ်းဆည်းရန် မအောင်မြင်ပါ', true);
-                    }
-                } catch (e) {
-                    showToast('Error: ' + e.message, true);
-                }
-            };
-
-            window.toggleAd = async function(id, newActiveStatus) {
-                const isEn = currentLang === 'en';
-                try {
-                    const res = await fetch(`${API_BASE}/api/admin/ads/${id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ active: newActiveStatus }),
-                        credentials: 'include'
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        showToast(newActiveStatus ?
-                            (isEn ? '✅ Ad enabled' : '✅ ကြော်ငြာ ဖွင့်ပြီးပါပြီ') :
-                            (isEn ? '❌ Ad disabled' : '❌ ကြော်ငြာ ပိတ်ပြီးပါပြီ'));
-                        loadAds();
-                    } else {
-                        showToast(isEn ? '❌ Failed' : '❌ မအောင်မြင်ပါ', true);
-                    }
-                } catch (e) {
-                    showToast('Error: ' + e.message, true);
-                }
-            };
-
-            window.deleteAd = async function(id) {
-                const isEn = currentLang === 'en';
-                if (!confirm(isEn ? 'Delete this ad? Cannot be undone.' :
-                        'ဒီကြော်ငြာကို ဖျက်မှာလား။ ပြန်လည်ရယူလို့မရပါ။')) return;
-                try {
-                    const res = await fetch(`${API_BASE}/api/admin/ads/${id}`, {
-                        method: 'DELETE',
-                        credentials: 'include'
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        showToast(isEn ? '🗑 Ad deleted' : '🗑 ကြော်ငြာ ဖျက်ပြီးပါပြီ');
-                        loadAds();
-                    } else {
-                        showToast(isEn ? '❌ Failed to delete' : '❌ ဖျက်ရန် မအောင်မြင်ပါ', true);
-                    }
-                } catch (e) {
-                    showToast('Error: ' + e.message, true);
-                }
-            };
-
             // ===== USERS =====
             function renderUsersTab() {
                 const container = document.getElementById('usersList');
                 if (!container) return;
                 const isEn = currentLang === 'en';
                 if (!userStats.length) {
-                    container.innerHTML =
-                        `<div class="loading">${isEn ? 'No user data' : 'အသုံးပြုသူဒေတာ မရှိပါ'}</div>`;
+                    container.innerHTML = `<div class="loading">${isEn ? 'No user data' : 'အသုံးပြုသူဒေတာ မရှိပါ'}</div>`;
                     return;
                 }
                 let filtered = [...userStats];
@@ -4601,7 +3846,6 @@
             function applyFiltersAndSearch() {
                 let filtered = [...allOrders];
 
-                // Apply order filter (New Orders / Approved Orders)
                 if (currentOrderFilter === 'pending') {
                     filtered = filtered.filter(o => o.status === 'Pending');
                 } else if (currentOrderFilter === 'approved') {
@@ -4651,7 +3895,6 @@
                 showToast(currentLang === 'en' ? '✅ Filters cleared' : '✅ စစ်ထုတ်မှုများ ရှင်းလင်းပြီးပါပြီ');
             };
 
-            // ===== FILTER PRESETS =====
             window.saveFilterPreset = function() {
                 const preset = {
                     status: document.getElementById('statusFilter')?.value || 'all',
@@ -4690,8 +3933,7 @@
                 if (!container) return;
                 const isEn = currentLang === 'en';
                 if (!orders || !orders.length) {
-                    container.innerHTML =
-                        `<div class="loading">${isEn ? 'No orders found' : 'အမိန့်စာ မတွေ့ပါ'}</div>`;
+                    container.innerHTML = `<div class="loading">${isEn ? 'No orders found' : 'အမိန့်စာ မတွေ့ပါ'}</div>`;
                     return;
                 }
 
@@ -4713,7 +3955,6 @@
                     const statusBg = o.status === 'Pending' ? 'rgba(245,158,11,0.2)' :
                         (o.status === 'Approved' ? 'rgba(16,185,129,0.2)' : 'rgba(244,63,94,0.2)');
 
-                    // Build proof items
                     let senderNameItem = '';
                     let last5Item = '';
                     let paymentMethodItem = '';
@@ -4743,7 +3984,6 @@
                         `;
                     }
 
-                    // Countdown
                     let countdownHtml = '';
                     let countdownExpired = false;
                     if (o.status === 'Approved' && o.activated_at) {
@@ -4765,20 +4005,17 @@
                         }
                     }
 
-                    // Check if we have any proof items
                     const hasProof = senderNameItem || last5Item;
                     const hasPaymentCountdown = paymentMethodItem || countdownHtml;
 
                     html += `
                         <div class="order-card" data-order-id="${o.id}">
-                            <!-- Row 1: Order ID + Status (50%+50%) -->
                             <div class="order-header">
                                 <input type="checkbox" class="order-checkbox" onchange="window.toggleSelectOrder(${o.id})">
                                 <span class="order-id"><i class="fas fa-hashtag"></i> ${o.id}</span>
                                 <span class="order-status" style="background:${statusBg}; color:${statusColor};">${statusText}</span>
                             </div>
 
-                            <!-- Row 2: Order Info + Prices (50%+50%) -->
                             <div class="order-left-and-right">
                                 <div class="order-left">
                                     <div class="order-plan"><i class="fas fa-tag"></i> ${escapeHtml(o.plan)}</div>
@@ -4797,7 +4034,6 @@
                             </div>
 
                             ${hasProof ? `
-                            <!-- Row 3: Proof - Sender + Last5 (50%+50%) -->
                             <div class="order-proof">
                                 <div class="proof-row-1">
                                     ${senderNameItem ? `<div class="proof-item">${senderNameItem}</div>` : `<div class="proof-item"></div>`}
@@ -4807,7 +4043,6 @@
                             ` : ''}
 
                             ${hasPaymentCountdown ? `
-                            <!-- Row 4: Payment + Countdown (50%+50%) -->
                             <div class="order-payment-countdown">
                                 <div class="payment-section">
                                     ${paymentMethodItem ? paymentMethodItem : '<span style="font-size:0.55rem; color:var(--text-secondary);">-</span>'}
@@ -4818,9 +4053,7 @@
                             </div>
                             ` : ''}
 
-                            <!-- ===== ACTIONS (မူလအတိုင်း) ===== -->
                             <div class="order-actions-wrapper">
-                                <!-- Row 5: Detail + Screenshot (50%+50%) -->
                                 <div class="order-actions-row-1">
                                     <button class="btn-detail" onclick="window.viewOrderDetail(${o.id})">
                                         <i class="fas fa-info-circle"></i> ${btnText.detail}
@@ -4834,7 +4067,6 @@
                                     </button>`}
                                 </div>
 
-                                <!-- Row 6: Approve + Reject (50%+50%) - only if Pending -->
                                 ${o.status === 'Pending' ? `
                                 <div class="order-actions-row-2">
                                     <button class="btn-approve" onclick="window.approveOrder(${o.id})">
@@ -4846,7 +4078,6 @@
                                 </div>
                                 ` : ''}
 
-                                <!-- Row 7: Delete (100%) -->
                                 <div class="order-actions-row-3">
                                     <button class="btn-delete" onclick="window.deleteOrder(${o.id})">
                                         <i class="fas fa-trash"></i> ${btnText.delete}
@@ -4858,7 +4089,6 @@
                 }
                 container.innerHTML = html;
 
-                // Start countdowns for approved orders
                 for (const o of orders) {
                     if (o.status === 'Approved' && o.activated_at) {
                         startCountdownForOrder(o.id, o.activated_at);
@@ -5176,7 +4406,6 @@
 
             window.showSystemResetAlert = function() {
                 document.getElementById('resetConfirmInput').value = '';
-                document.getElementById('keepProductsCheckbox').checked = true;
                 document.getElementById('systemResetAlert').classList.add('active');
             };
             window.closeSystemResetAlert = function() {
@@ -5185,7 +4414,6 @@
 
             window.executeSystemResetFromAlert = async function() {
                 const confirmText = document.getElementById('resetConfirmInput')?.value.trim() || '';
-                const keepProducts = document.getElementById('keepProductsCheckbox')?.checked || true;
                 const isEn = currentLang === 'en';
                 if (confirmText !== 'RESET_ALL_DATA') {
                     showToast(isEn ?
@@ -5200,7 +4428,7 @@
                     const res = await fetchWithRetry(`${API_BASE}/api/admin/system-reset`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ confirm: confirmText, keepProducts })
+                        body: JSON.stringify({ confirm: confirmText })
                     });
                     if (!res) return;
                     const data = await res.json();
@@ -5380,28 +4608,27 @@
 
             window.openPaymentModalFromPlan = function(planName, planPrice) {
                 const isEn = currentLang === 'en';
-
-                // Show toast notification
                 showToast(
                     isEn ?
                     `🛒 ${planName} - ${planPrice.toLocaleString()} MMK - Please go to Orders tab to purchase` :
                     `🛒 ${planName} - ${planPrice.toLocaleString()} MMK - ဝယ်ယူရန် Orders Tab ကိုသွားပါ`
                 );
-
-                // Switch to orders tab
                 window.switchTab('orders');
             };
 
             // ================================================================
-            //  END PAYMENT MODAL FROM PLANS WIDGET
+            //  KEYBOARD SHORTCUTS
             // ================================================================
-
-            // ===== KEYBOARD SHORTCUTS =====
             document.addEventListener('keydown', function(e) {
-                if (e.ctrlKey && e.key >= '1' && e.key <= '5') {
+                if (e.ctrlKey && e.key >= '1' && e.key <= '4') {
                     e.preventDefault();
-                    const tabs = ['menu', 'orders', 'users', 'market', 'ads'];
-                    window.switchTab(tabs[parseInt(e.key) - 1]);
+                    const tabs = ['menu', 'orders', 'users', 'chat'];
+                    const idx = parseInt(e.key) - 1;
+                    if (idx === 3) {
+                        openAdminChatWidget();
+                    } else {
+                        window.switchTab(tabs[idx]);
+                    }
                 }
                 if (e.key === 'Escape') {
                     document.querySelectorAll('.modal.active, .custom-alert.active, .image-modal.active').forEach(
@@ -5423,7 +4650,6 @@
                 document.getElementById('bottomNav').style.display = 'flex';
                 loadAllData();
                 loadSalesHours();
-                loadAdSettings();
                 startAutoSync();
                 resetSessionTimer();
                 setInterval(updateSalesStatusDisplay, 60000);
